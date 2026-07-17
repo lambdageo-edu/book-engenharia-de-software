@@ -1,0 +1,79 @@
+site_name: Engenharia de Software
+site_description: >
+  Livro didático da disciplina de Engenharia de Software: processos,
+  requisitos, arquitetura, qualidade e práticas modernas de DevOps.
+site_author: "Sergio Souza Costa"
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: pt
+  font: false
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - content.tooltips
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Alternar para modo escuro
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Alternar para modo claro
+
+plugins:
+  - search
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - pymdownx.details
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences
+  - tables
+  - toc:
+      permalink: true
+
+extra_css:
+  - stylesheets/lambdageo.css
+
+extra_javascript:
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Apresentação: index.md
+
+  - Engenharia de Software:
+    - "Plano da Disciplina":                              unidade1/00_plano_unidade1.md
+    - "Cap 1: Introdução à Engenharia de Software":       unidade1/01_introducao_engenharia_software.md
+    - "Cap 2: Processos: do Cascata ao Ágil e DevOps":    unidade1/02_processos_desenvolvimento.md
+    - "Cap 3: Especificação de Requisitos":               unidade1/03_especificacao_requisitos.md
+    - "Cap 4: Projeto e Arquitetura de Software":         unidade1/04_projeto_arquitetura.md
+    - "Cap 5: Implementação e Qualidade de Código":       unidade1/05_implementacao_qualidade.md
+    - "Cap 6: Testes e Validação":                        unidade1/06_testes_validacao.md
+    - "Cap 7: Integração e Entrega Contínua (CI/CD)":     unidade1/07_integracao_entrega_continua.md
+    - "Cap 8: Evolução, Manutenção e Débito Técnico":     unidade1/08_evolucao_manutencao.md
