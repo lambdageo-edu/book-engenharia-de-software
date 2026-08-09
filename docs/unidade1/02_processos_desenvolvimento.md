@@ -88,6 +88,9 @@ Kanban tem origem no sistema de produção da Toyota e foi adaptado ao desenvolv
 
 Na prática, muitas equipes usam híbridos (às vezes chamados *Scrumban*): sprints para planejamento e alinhamento, com um quadro Kanban e limites de WIP para gerenciar o fluxo do dia a dia.
 
+!!! note "Scrum não é a única resposta a processos ágeis"
+    Scrum continua sendo o framework ágil mais adotado no mercado, mas não é unânime: é comum times relatarem "fadiga de cerimônias" quando o ritmo de sprints, *dailies* e retrospectivas vira ritual repetitivo em vez de ferramenta útil — o que alguns autores chamam de "Scrum de fachada" (todas as cerimônias, nenhuma agilidade real). Como resposta, abordagens mais leves como o **Shape Up** (criado na Basecamp) vêm ganhando adoção real em alguns times e empresas: substituem sprints curtos e cerimônias diárias por ciclos mais longos (tipicamente 6 semanas) de trabalho focado, com um período de "resfriamento" entre ciclos. Isso não torna Scrum obsoleto — continua sendo uma escolha sólida, especialmente com múltiplos times que precisam de sincronização — mas reforça o ponto já feito neste capítulo: não existe processo universalmente superior, e vale conhecer alternativas ao framework mais popular.
+
 ## 🛠️ DevOps: além do processo de desenvolvimento
 
 Enquanto o Ágil trata principalmente de como uma equipe planeja e executa o trabalho de *desenvolvimento*, o **DevOps** ataca a fronteira histórica entre times de desenvolvimento (Dev) e operações/infraestrutura (Ops). O termo surgiu por volta de 2009, popularizado por conferências como a *DevOpsDays*, como resposta a um problema recorrente: times de desenvolvimento otimizados para entregar mudanças rápido, e times de operação otimizados para manter sistemas estáveis — com incentivos frequentemente opostos.

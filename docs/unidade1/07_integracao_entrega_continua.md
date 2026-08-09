@@ -48,7 +48,7 @@ uvicorn[standard]>=0.32
 pydantic>=2.9
 pytest>=8.3
 pytest-cov>=6.0
-httpx>=0.27
+httpx2>=2.9
 ruff>=0.7
 ```
 
@@ -69,10 +69,10 @@ jobs:
 
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configurar Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: "pip"
@@ -134,6 +134,12 @@ Automatizar o deploy não significa "publicar tudo de uma vez para todo mundo". 
 
 !!! tip "Deploy frequente reduz risco, não aumenta"
     É comum a intuição de que "fazer deploy com mais frequência é mais arriscado". A evidência de pesquisas como o *State of DevOps* aponta o contrário: deploys pequenos e frequentes são mais fáceis de testar, mais fáceis de reverter e mais fáceis de depurar (menos mudanças acumuladas por deploy) do que grandes lançamentos espaçados — que concentram risco em vez de distribuí-lo.
+
+## 🤖 Agentes de codificação e o pipeline
+
+Uma tendência recente é a de agentes de codificação que não apenas sugerem trechos de código, mas abrem *pull requests* completos de forma autônoma — recebendo uma tarefa (ex: uma *issue* do GitHub), explorando o repositório, implementando a mudança, e submetendo-a para revisão. Do ponto de vista do pipeline de CI/CD, isso não muda a arquitetura discutida neste capítulo: um *pull request* aberto por um agente passa pelos mesmos portões de qualidade — lint, testes, cobertura mínima — que um *pull request* aberto por uma pessoa.
+
+O que muda é a importância desses portões automatizados como linha de defesa: se o volume de *pull requests* aumenta porque parte deles é gerada por agentes (Capítulo 5), o pipeline de CI se torna a garantia consistente de que nenhuma mudança — humana ou não — chega à branch principal sem passar pelos mesmos critérios mínimos de qualidade.
 
 ---
 
