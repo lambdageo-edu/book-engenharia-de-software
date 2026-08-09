@@ -657,6 +657,23 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testes-gerados-por-ia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🤖 Testes gerados por IA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🤖 Testes gerados por IA">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#praticando-tdd-nesta-api" class="md-nav__link">
     <span class="md-ellipsis">
@@ -904,6 +921,23 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testes-gerados-por-ia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🤖 Testes gerados por IA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🤖 Testes gerados por IA">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#praticando-tdd-nesta-api" class="md-nav__link">
     <span class="md-ellipsis">
@@ -1019,11 +1053,11 @@
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w">   </span><span class="c1"># no Windows: .venv\Scripts\activate</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>pip<span class="w"> </span>install<span class="w"> </span>fastapi<span class="w"> </span><span class="s2">&quot;uvicorn[standard]&quot;</span><span class="w"> </span>pytest<span class="w"> </span>httpx<span class="w"> </span>pytest-cov
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>pip<span class="w"> </span>install<span class="w"> </span>fastapi<span class="w"> </span><span class="s2">&quot;uvicorn[standard]&quot;</span><span class="w"> </span>pytest<span class="w"> </span>httpx2<span class="w"> </span>pytest-cov
 </code></pre></div>
 <div class="admonition note">
-<p class="admonition-title">Por que <code>httpx</code>?</p>
-<p>O <code>TestClient</code> do FastAPI (usado nos testes abaixo) é construído sobre o <code>httpx</code>, uma biblioteca de cliente HTTP moderna — é ela que permite simular requisições à API sem precisar de um servidor rodando de verdade durante os testes.</p>
+<p class="admonition-title">Por que <code>httpx2</code>?</p>
+<p>O <code>TestClient</code> do FastAPI (usado nos testes abaixo) é construído sobre o <code>httpx2</code> — a continuação, sob nova manutenção, do projeto <code>httpx</code>, que hoje está com atividade limitada. É essa biblioteca que permite simular requisições à API sem precisar de um servidor rodando de verdade durante os testes. Instalar apenas o <code>httpx</code> (sem o <code>httpx2</code>) ainda funciona, mas gera um aviso de depreciação a cada execução da suíte de testes.</p>
 </div>
 <h3 id="a-aplicacao-appmainpy">A aplicação: <code>app/main.py</code><a class="headerlink" href="#a-aplicacao-appmainpy" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span>
@@ -1143,6 +1177,9 @@
 <p class="admonition-title">Cobertura alta não é sinônimo de bons testes</p>
 <p>100% de cobertura significa apenas que toda linha foi <strong>executada</strong> por algum teste — não que o comportamento foi <strong>verificado</strong> corretamente. É possível ter cobertura total com testes que não fazem nenhuma asserção significativa. Use cobertura para encontrar código não testado, nunca como meta isolada de qualidade.</p>
 </div>
+<h2 id="testes-gerados-por-ia">🤖 Testes gerados por IA<a class="headerlink" href="#testes-gerados-por-ia" title="Permanent link">&para;</a></h2>
+<p>Assistentes de codificação são cada vez mais usados para gerar testes automaticamente a partir do código de produção — uma forma rápida de aumentar cobertura numérica. O alerta acima vale com ainda mais força nesse caso: um teste gerado a partir do código existente tende a <strong>confirmar o que o código já faz</strong>, inclusive quando o código tem um defeito, em vez de verificar o que o código <strong>deveria</strong> fazer segundo o requisito. É o oposto do espírito do TDD (próxima seção), em que o teste nasce do requisito, antes do código existir.</p>
+<p>Isso não invalida o uso de IA para gerar testes — apenas desloca a responsabilidade do desenvolvedor: ler e validar cada teste gerado contra o comportamento esperado (não contra o comportamento atual do código) continua sendo indispensável antes de aceitar a mudança na suíte.</p>
 <h3 id="praticando-tdd-nesta-api">Praticando TDD nesta API<a class="headerlink" href="#praticando-tdd-nesta-api" title="Permanent link">&para;</a></h3>
 <p>Como exercício de TDD, tente adicionar um endpoint <code>DELETE /tarefas/{tarefa_id}</code> seguindo o ciclo Red-Green-Refactor:</p>
 <ol>
