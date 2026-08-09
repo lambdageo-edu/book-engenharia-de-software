@@ -71,11 +71,11 @@ mkdir api-tarefas && cd api-tarefas
 python -m venv .venv
 source .venv/bin/activate   # no Windows: .venv\Scripts\activate
 
-pip install fastapi "uvicorn[standard]" pytest httpx pytest-cov
+pip install fastapi "uvicorn[standard]" pytest httpx2 pytest-cov
 ```
 
-!!! note "Por que `httpx`?"
-    O `TestClient` do FastAPI (usado nos testes abaixo) é construído sobre o `httpx`, uma biblioteca de cliente HTTP moderna — é ela que permite simular requisições à API sem precisar de um servidor rodando de verdade durante os testes.
+!!! note "Por que `httpx2`?"
+    O `TestClient` do FastAPI (usado nos testes abaixo) é construído sobre o `httpx2` — a continuação, sob nova manutenção, do projeto `httpx`, que hoje está com atividade limitada. É essa biblioteca que permite simular requisições à API sem precisar de um servidor rodando de verdade durante os testes. Instalar apenas o `httpx` (sem o `httpx2`) ainda funciona, mas gera um aviso de depreciação a cada execução da suíte de testes.
 
 ### A aplicação: `app/main.py`
 
@@ -208,6 +208,12 @@ TOTAL                34      2    94%
 
 !!! danger "Cobertura alta não é sinônimo de bons testes"
     100% de cobertura significa apenas que toda linha foi **executada** por algum teste — não que o comportamento foi **verificado** corretamente. É possível ter cobertura total com testes que não fazem nenhuma asserção significativa. Use cobertura para encontrar código não testado, nunca como meta isolada de qualidade.
+
+## 🤖 Testes gerados por IA
+
+Assistentes de codificação são cada vez mais usados para gerar testes automaticamente a partir do código de produção — uma forma rápida de aumentar cobertura numérica. O alerta acima vale com ainda mais força nesse caso: um teste gerado a partir do código existente tende a **confirmar o que o código já faz**, inclusive quando o código tem um defeito, em vez de verificar o que o código **deveria** fazer segundo o requisito. É o oposto do espírito do TDD (próxima seção), em que o teste nasce do requisito, antes do código existir.
+
+Isso não invalida o uso de IA para gerar testes — apenas desloca a responsabilidade do desenvolvedor: ler e validar cada teste gerado contra o comportamento esperado (não contra o comportamento atual do código) continua sendo indispensável antes de aceitar a mudança na suíte.
 
 ### Praticando TDD nesta API
 
