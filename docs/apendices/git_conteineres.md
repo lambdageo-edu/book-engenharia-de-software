@@ -118,6 +118,35 @@ O `127.0.0.1` publica a porta só para a sua máquina: a API deste livro, sozinh
 
 O que é gravado dentro do contêiner se perde quando ele é removido; dados que precisam sobreviver vão para um *volume*.
 
+### Compose no desenvolvimento
+
+O **Docker Compose** descreve em um arquivo os contêineres de um projeto, e a equipe inteira sobe o mesmo ambiente com um comando. Para desenvolver, com o `Dockerfile` e a estrutura de pastas do [Capítulo 7](../capitulos/07_integracao_entrega_continua.md), crie na raiz o `compose.dev.yaml`:
+
+```yaml
+services:
+  api:
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir app
+    volumes:
+      - ./app:/app/app:ro
+    ports:
+      - "127.0.0.1:8000:8000"
+```
+
+```bash
+docker compose -f compose.dev.yaml up --build   # sobe e mostra os logs; Ctrl+C para
+docker compose -f compose.dev.yaml down         # remove os contêineres
+```
+
+* `volumes` monta a pasta `app` da sua máquina dentro do contêiner, só para leitura: o que você salva no editor aparece lá sem reconstruir a imagem;
+* `--reload` reinicia o servidor quando um arquivo muda. O que estava só na memória se perde;
+* `command` substitui o `CMD` do `Dockerfile` apenas neste ambiente;
+* mudou o `requirements.txt`? Rode de novo com `--build`.
+
+Se o servidor não reiniciar ao salvar, o que pode acontecer quando o sistema de arquivos não avisa o contêiner das mudanças, acrescente ao serviço `environment: ["WATCHFILES_FORCE_POLLING=true"]`.
+
+Este arquivo é para a sua máquina. Para implantar, o [Capítulo 7](../capitulos/07_integracao_entrega_continua.md) usa outro, sem recarga automática e com HTTPS.
+
 Para praticar passo a passo (rede, volumes, Docker Compose e otimização de imagens), siga os [tutoriais de Docker da coleção LambdaGeo](https://lambdageo-edu.github.io/lambdageo-tutorials/docker/).
 
 ## 🎯 Atividades
@@ -125,6 +154,7 @@ Para praticar passo a passo (rede, volumes, Docker Compose e otimização de ima
 1. Reproduza o conflito acima e resolva-o com o editor.
 2. Abra um *pull request* em um repositório seu e peça a um colega para revisar.
 3. Grave um token **falso** em um arquivo, faça commit, apague o arquivo em outro commit e encontre o token com `git log -p`.
+4. Suba um projeto com o `compose.dev.yaml`, altere uma mensagem no código e confira a mudança sem reconstruir a imagem.
 
 ## 📚 Para saber mais
 
@@ -132,3 +162,5 @@ Para praticar passo a passo (rede, volumes, Docker Compose e otimização de ima
 * GitHub. *About pull requests* — [docs.github.com](https://docs.github.com/en/pull-requests/get-started/about-pull-requests)
 * GitHub. *Removing sensitive data from a repository* — [docs.github.com](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository)
 * Documentação oficial do Docker — [docs.docker.com](https://docs.docker.com/)
+* Docker. *Docker Compose* — [docs.docker.com/compose](https://docs.docker.com/compose/)
+* Uvicorn. *Settings* (recarga automática) — [uvicorn.org/settings](https://www.uvicorn.org/settings/)
