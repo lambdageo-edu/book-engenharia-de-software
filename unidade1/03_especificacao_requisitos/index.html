@@ -950,7 +950,7 @@
 <tbody>
 <tr>
 <td><strong>Requisitos de produto</strong></td>
-<td>Desempenho, usabilidade, confiabilidade, portabilidade</td>
+<td>Desempenho, usabilidade, confiabilidade, segurança, portabilidade</td>
 </tr>
 <tr>
 <td><strong>Requisitos organizacionais</strong></td>
@@ -968,12 +968,17 @@
 <p>É comum um projeto ter uma lista extensa de requisitos funcionais e apenas uma frase vaga sobre desempenho ou segurança. Na prática, requisitos não funcionais mal especificados são uma das causas mais comuns de retrabalho tardio e caro — descobrir que o sistema não escala, ou que não atende a uma exigência de conformidade, depois de já estar em produção.</p>
 </div>
 <h2 id="a-engenharia-de-requisitos">🔎 A engenharia de requisitos<a class="headerlink" href="#a-engenharia-de-requisitos" title="Permanent link">&para;</a></h2>
-<p>A engenharia de requisitos é o processo estruturado de descobrir, analisar, documentar e verificar esses serviços e restrições. Ela se organiza, tradicionalmente, em quatro grandes atividades:</p>
+<p>A engenharia de requisitos é o processo estruturado de descobrir, analisar, documentar e verificar esses serviços e restrições. Ela se organiza em três atividades principais, que se repetem ao longo do projeto em vez de acontecer uma única vez:</p>
 <ol>
-<li><strong>Elicitação de requisitos</strong> — descoberta dos requisitos através da interação com stakeholders, documentos existentes e análise do domínio.</li>
-<li><strong>Classificação e organização</strong> — agrupar requisitos relacionados e estruturá-los de forma coerente.</li>
-<li><strong>Priorização e negociação</strong> — resolver conflitos entre requisitos e stakeholders, decidindo o que entra em cada versão.</li>
+<li><strong>Elicitação e análise</strong> — descobrir os requisitos pela interação com stakeholders, documentos e análise do domínio. Inclui:<ul>
+<li>descoberta dos requisitos;</li>
+<li>classificação e organização, agrupando requisitos relacionados;</li>
+<li>priorização e negociação, para resolver conflitos e decidir o que entra em cada versão;</li>
+<li>registro do que foi levantado, para alimentar a próxima rodada.</li>
+</ul>
+</li>
 <li><strong>Especificação</strong> — documentar os requisitos de forma clara, verificável e (idealmente) testável.</li>
+<li><strong>Validação</strong> — checar se os requisitos representam o que o cliente de fato precisa.</li>
 </ol>
 <h3 id="elicitacao-como-descobrir-requisitos">Elicitação: como descobrir requisitos<a class="headerlink" href="#elicitacao-como-descobrir-requisitos" title="Permanent link">&para;</a></h3>
 <p>A elicitação de requisitos combina várias técnicas, cada uma com pontos fortes e limitações:</p>

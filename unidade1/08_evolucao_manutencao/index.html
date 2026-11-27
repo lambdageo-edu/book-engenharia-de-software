@@ -882,13 +882,30 @@
 <p>O termo <strong>débito técnico</strong>, cunhado por Ward Cunningham, é uma metáfora poderosa: assim como uma dívida financeira, tomar um atalho técnico (pular testes, copiar e colar código em vez de abstrair, adiar uma refatoração necessária) pode ser uma decisão racional de curto prazo — mas, como qualquer dívida, acumula "juros": cada mudança futura naquele código fica mais lenta e mais arriscada até que a dívida seja paga (refatorada) ou o custo dos juros se torne insustentável.</p>
 <p>Débito técnico não é, por si só, um mal absoluto — times de alto desempenho tomam débito técnico deliberadamente o tempo todo, como uma escolha de compromisso consciente (ex: lançar rápido uma funcionalidade experimental, aceitando que uma versão mais robusta virá depois se a experiência validar a ideia de negócio). O problema não é a dívida em si; é a dívida <strong>não intencional e não rastreada</strong> — código que acumula complexidade silenciosamente, sem que ninguém decida conscientemente aceitar esse custo.</p>
 <div class="admonition tip">
-<p class="admonition-title">Débito técnico consciente vs. inconsciente</p>
-<p>Vale distinguir dois tipos, numa matriz popularizada por Martin Fowler:</p>
-<ul>
-<li><strong>Deliberado e prudente</strong>: "sabemos que essa solução não é ideal, mas o prazo justifica, e vamos revisitar depois" — uma decisão de engenharia legítima, desde que o "depois" realmente aconteça.</li>
-<li><strong>Inadvertido</strong>: descoberto só depois, quando o time percebe que uma abordagem antiga já não é mais adequada à luz do que se aprendeu — parte natural do aprendizado em qualquer projeto.</li>
-</ul>
-<p>O problema recorrente na prática é a dívida <strong>deliberada mas imprudente</strong>: atalhos tomados sem qualquer intenção de revisitá-los, que se acumulam até o sistema se tornar difícil de evoluir com segurança.</p>
+<p class="admonition-title">O quadrante do débito técnico</p>
+<p>Martin Fowler cruza duas perguntas: a dívida foi assumida de propósito (<strong>deliberada</strong> ou <strong>inadvertida</strong>)? E houve cuidado na decisão (<strong>prudente</strong> ou <strong>imprudente</strong>)? O resultado são quatro situações:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Prudente</th>
+<th>Imprudente</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deliberada</strong></td>
+<td>"Sabemos que não é o ideal, mas o prazo justifica, e vamos revisitar."</td>
+<td>"Não há tempo para pensar em projeto."</td>
+</tr>
+<tr>
+<td><strong>Inadvertida</strong></td>
+<td>"Só agora entendemos como deveríamos ter feito."</td>
+<td>"O que é separação em camadas?"</td>
+</tr>
+</tbody>
+</table>
+<p>A dívida deliberada e prudente é uma decisão de engenharia legítima, desde que o "revisitar" aconteça. A inadvertida e prudente é parte natural do aprendizado, mesmo em boas equipes. As duas imprudentes são as que mais acumulam juros: uma por descuido assumido, outra por desconhecimento.</p>
 </div>
 <h2 id="refatoracao">🔨 Refatoração<a class="headerlink" href="#refatoracao" title="Permanent link">&para;</a></h2>
 <p><strong>Refatoração</strong> (<em>refactoring</em>), no sentido formalizado por Martin Fowler, é o processo de melhorar a estrutura interna do código <strong>sem alterar seu comportamento externo observável</strong> — uma distinção importante em relação a simplesmente "reescrever" um componente, que costuma envolver risco muito maior.</p>
