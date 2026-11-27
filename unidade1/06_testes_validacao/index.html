@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Livro didático da disciplina de Engenharia de Software: processos, requisitos, arquitetura, qualidade e práticas modernas de DevOps.
+        <meta name="description" content="Livro aberto sobre desenvolvimento de software: processos, requisitos, arquitetura, qualidade, testes, CI/CD e evolução.
 ">
       
       
@@ -24,18 +24,18 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
-        <title>Cap 6: Testes e Validação - Engenharia de Software</title>
+        <title>Cap 6: Testes e Validação - Desenvolvimento de Software</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -91,7 +91,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
-    <a href="../.." title="Engenharia de Software" class="md-header__button md-logo" aria-label="Engenharia de Software" data-md-component="logo">
+    <a href="../.." title="Desenvolvimento de Software" class="md-header__button md-logo" aria-label="Desenvolvimento de Software" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -105,7 +105,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Engenharia de Software
+            Desenvolvimento de Software
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -220,13 +220,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Engenharia de Software" class="md-nav__button md-logo" aria-label="Engenharia de Software" data-md-component="logo">
+    <a href="../.." title="Desenvolvimento de Software" class="md-nav__button md-logo" aria-label="Desenvolvimento de Software" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Engenharia de Software
+    Desenvolvimento de Software
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -317,7 +317,7 @@
   <span class="md-ellipsis">
     
   
-    Engenharia de Software
+    Desenvolvimento de Software
   
 
     
@@ -333,39 +333,11 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Engenharia de Software
+    Desenvolvimento de Software
   
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../00_plano_unidade1/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Plano da Disciplina
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -1080,7 +1052,7 @@
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w">   </span><span class="c1"># no Windows: .venv\Scripts\activate</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>pip<span class="w"> </span>install<span class="w"> </span>fastapi<span class="w"> </span><span class="s2">&quot;uvicorn[standard]&quot;</span><span class="w"> </span>pytest<span class="w"> </span>httpx2<span class="w"> </span>pytest-cov
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>pip<span class="w"> </span>install<span class="w"> </span>fastapi<span class="w"> </span><span class="s2">"uvicorn[standard]"</span><span class="w"> </span>pytest<span class="w"> </span>httpx2<span class="w"> </span>pytest-cov
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Por que <code>httpx2</code>?</p>
@@ -1090,7 +1062,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;API de Tarefas&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"API de Tarefas"</span><span class="p">)</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">TarefaEntrada</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
@@ -1106,35 +1078,35 @@
 <a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="n">_proximo_id</span> <span class="o">=</span> <span class="mi">1</span>
 <a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
 <a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
-<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/tarefas&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">Tarefa</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/tarefas"</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">Tarefa</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
 <a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="k">def</span><span class="w"> </span><span class="nf">criar_tarefa</span><span class="p">(</span><span class="n">dados</span><span class="p">:</span> <span class="n">TarefaEntrada</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tarefa</span><span class="p">:</span>
 <a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>    <span class="k">global</span> <span class="n">_proximo_id</span>
 <a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">dados</span><span class="o">.</span><span class="n">titulo</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
-<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">422</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Título não pode ser vazio&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">422</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">"Título não pode ser vazio"</span><span class="p">)</span>
 <a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>    <span class="n">tarefa</span> <span class="o">=</span> <span class="n">Tarefa</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">_proximo_id</span><span class="p">,</span> <span class="o">**</span><span class="n">dados</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
 <a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>    <span class="n">_tarefas</span><span class="p">[</span><span class="n">tarefa</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">tarefa</span>
 <a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>    <span class="n">_proximo_id</span> <span class="o">+=</span> <span class="mi">1</span>
 <a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>    <span class="k">return</span> <span class="n">tarefa</span>
 <a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>
 <a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>
-<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/tarefas&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="nb">list</span><span class="p">[</span><span class="n">Tarefa</span><span class="p">])</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/tarefas"</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="nb">list</span><span class="p">[</span><span class="n">Tarefa</span><span class="p">])</span>
 <a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="k">def</span><span class="w"> </span><span class="nf">listar_tarefas</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Tarefa</span><span class="p">]:</span>
 <a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">_tarefas</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 <a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>
 <a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>
-<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/tarefas/</span><span class="si">{tarefa_id}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">Tarefa</span><span class="p">)</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/tarefas/</span><span class="si">{tarefa_id}</span><span class="s2">"</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">Tarefa</span><span class="p">)</span>
 <a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="k">def</span><span class="w"> </span><span class="nf">obter_tarefa</span><span class="p">(</span><span class="n">tarefa_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tarefa</span><span class="p">:</span>
 <a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>    <span class="n">tarefa</span> <span class="o">=</span> <span class="n">_tarefas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tarefa_id</span><span class="p">)</span>
 <a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>    <span class="k">if</span> <span class="n">tarefa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Tarefa não encontrada&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">"Tarefa não encontrada"</span><span class="p">)</span>
 <a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>    <span class="k">return</span> <span class="n">tarefa</span>
 <a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>
 <a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>
-<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="nd">@app</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;/tarefas/</span><span class="si">{tarefa_id}</span><span class="s2">/concluir&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">Tarefa</span><span class="p">)</span>
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="nd">@app</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">"/tarefas/</span><span class="si">{tarefa_id}</span><span class="s2">/concluir"</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">Tarefa</span><span class="p">)</span>
 <a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a><span class="k">def</span><span class="w"> </span><span class="nf">concluir_tarefa</span><span class="p">(</span><span class="n">tarefa_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tarefa</span><span class="p">:</span>
 <a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a>    <span class="n">tarefa</span> <span class="o">=</span> <span class="n">_tarefas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tarefa_id</span><span class="p">)</span>
 <a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a>    <span class="k">if</span> <span class="n">tarefa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Tarefa não encontrada&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">"Tarefa não encontrada"</span><span class="p">)</span>
 <a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a>    <span class="n">tarefa</span><span class="o">.</span><span class="n">concluida</span> <span class="o">=</span> <span class="kc">True</span>
 <a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a>    <span class="k">return</span> <span class="n">tarefa</span>
 </code></pre></div>
@@ -1148,37 +1120,37 @@
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_criar_tarefa_retorna_201_e_id</span><span class="p">():</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">resposta</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/tarefas&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;titulo&quot;</span><span class="p">:</span> <span class="s2">&quot;Estudar pytest&quot;</span><span class="p">})</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">resposta</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/tarefas"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"titulo"</span><span class="p">:</span> <span class="s2">"Estudar pytest"</span><span class="p">})</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="k">assert</span> <span class="n">resposta</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">201</span>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="n">corpo</span> <span class="o">=</span> <span class="n">resposta</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="k">assert</span> <span class="n">corpo</span><span class="p">[</span><span class="s2">&quot;titulo&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Estudar pytest&quot;</span>
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="k">assert</span> <span class="n">corpo</span><span class="p">[</span><span class="s2">&quot;concluida&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span>
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    <span class="k">assert</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">corpo</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="k">assert</span> <span class="n">corpo</span><span class="p">[</span><span class="s2">"titulo"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Estudar pytest"</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="k">assert</span> <span class="n">corpo</span><span class="p">[</span><span class="s2">"concluida"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    <span class="k">assert</span> <span class="s2">"id"</span> <span class="ow">in</span> <span class="n">corpo</span>
 <a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
 <a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_criar_tarefa_com_titulo_vazio_retorna_422</span><span class="p">():</span>
-<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>    <span class="n">resposta</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/tarefas&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;titulo&quot;</span><span class="p">:</span> <span class="s2">&quot;   &quot;</span><span class="p">})</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>    <span class="n">resposta</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/tarefas"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"titulo"</span><span class="p">:</span> <span class="s2">"   "</span><span class="p">})</span>
 <a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>    <span class="k">assert</span> <span class="n">resposta</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">422</span>
 <a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
 <a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>
 <a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_listar_tarefas_inclui_tarefa_criada</span><span class="p">():</span>
-<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>    <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/tarefas&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;titulo&quot;</span><span class="p">:</span> <span class="s2">&quot;Ler capítulo 6&quot;</span><span class="p">})</span>
-<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>    <span class="n">resposta</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/tarefas&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>    <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/tarefas"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"titulo"</span><span class="p">:</span> <span class="s2">"Ler capítulo 6"</span><span class="p">})</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>    <span class="n">resposta</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/tarefas"</span><span class="p">)</span>
 <a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>    <span class="k">assert</span> <span class="n">resposta</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
-<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>    <span class="n">titulos</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="s2">&quot;titulo&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">resposta</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
-<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>    <span class="k">assert</span> <span class="s2">&quot;Ler capítulo 6&quot;</span> <span class="ow">in</span> <span class="n">titulos</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>    <span class="n">titulos</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="s2">"titulo"</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">resposta</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>    <span class="k">assert</span> <span class="s2">"Ler capítulo 6"</span> <span class="ow">in</span> <span class="n">titulos</span>
 <a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>
 <a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>
 <a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_obter_tarefa_inexistente_retorna_404</span><span class="p">():</span>
-<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>    <span class="n">resposta</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/tarefas/9999&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>    <span class="n">resposta</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/tarefas/9999"</span><span class="p">)</span>
 <a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>    <span class="k">assert</span> <span class="n">resposta</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
 <a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>
 <a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>
 <a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_concluir_tarefa_muda_status</span><span class="p">():</span>
-<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>    <span class="n">criada</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/tarefas&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;titulo&quot;</span><span class="p">:</span> <span class="s2">&quot;Testar conclusão&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>    <span class="n">resposta</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/tarefas/</span><span class="si">{</span><span class="n">criada</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/concluir&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>    <span class="n">criada</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/tarefas"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"titulo"</span><span class="p">:</span> <span class="s2">"Testar conclusão"</span><span class="p">})</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>    <span class="n">resposta</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/tarefas/</span><span class="si">{</span><span class="n">criada</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">/concluir"</span><span class="p">)</span>
 <a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>    <span class="k">assert</span> <span class="n">resposta</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
-<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>    <span class="k">assert</span> <span class="n">resposta</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;concluida&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span>
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>    <span class="k">assert</span> <span class="n">resposta</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"concluida"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span>
 </code></pre></div>
 <p>Repare que cada teste segue implicitamente o padrão <strong>Arrange-Act-Assert</strong>: prepara os dados de entrada, executa a ação sob teste, e verifica o resultado — uma estrutura que vale a pena manter explícita mesmo quando o código não a nomeia.</p>
 <h3 id="executando-e-medindo-cobertura">Executando e medindo cobertura<a class="headerlink" href="#executando-e-medindo-cobertura" title="Permanent link">&para;</a></h3>
@@ -1286,10 +1258,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.share", "content.code.annotate", "content.code.copy", "content.tabs.link", "content.tooltips", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.share", "content.code.annotate", "content.code.copy", "content.tabs.link", "content.tooltips", "toc.follow"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
