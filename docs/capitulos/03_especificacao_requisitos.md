@@ -2,7 +2,7 @@
 
 ## 📋 O que são requisitos
 
-Requisitos descrevem **o que** um sistema deve fazer e **sob quais restrições** ele deve operar. Eles são, em geral, o produto mais difícil de acertar em um projeto de software: requisitos errados ou incompletos custam caro para corrigir quanto mais tarde forem descobertos, e a maioria dos problemas de projetos de software tem raiz em requisitos mal-entendidos, não em código malfeito.
+Requisitos descrevem **o que** um sistema deve fazer e **sob quais restrições** ele deve operar. Eles são, em geral, o produto mais difícil de acertar em um projeto de software: requisitos errados ou incompletos custam caro para corrigir quanto mais tarde forem descobertos, e um requisito mal-entendido pode comprometer um projeto mesmo quando o código é bem feito.
 
 Requisitos costumam existir em diferentes níveis de abstração, e diferentes públicos leem diferentes níveis:
 
@@ -84,11 +84,11 @@ Em processos dirigidos a planos, cada requisito costuma ser registrado em um doc
 | Campo | Conteúdo |
 |---|---|
 | **Identificador** | RF-012 |
-| **Descrição** | O sistema deve exibir ao assinante do plano gratuito o número de créditos restantes no mês corrente. |
-| **Origem** | Equipe de atendimento |
+| **Descrição** | O sistema deve permitir que um membro filtre as tarefas de um projeto pelo responsável. |
+| **Origem** | Equipe que vai usar o sistema |
 | **Prioridade** | Média |
-| **Pré-condição** | O assinante está autenticado. |
-| **Critério de verificação** | O valor exibido no painel é igual ao saldo registrado para o assinante. |
+| **Pré-condição** | O membro está autenticado e participa do projeto. |
+| **Critério de verificação** | A lista filtrada traz todas as tarefas daquele responsável, e nenhuma outra. |
 
 O mesmo requisito aparece a seguir no formato ágil, o que permite comparar os dois.
 
@@ -102,7 +102,7 @@ quero <realizar uma ação>,
 para que <benefício/objetivo>.
 ```
 
-*Exemplo:* "Como assinante do plano gratuito, quero ver quantos créditos me restam no mês, para que eu possa planejar meu uso sem ser surpreendido."
+*Exemplo:* "Como membro de um projeto, quero filtrar as tarefas pelo responsável, para ver o que está comigo sem percorrer a lista inteira."
 
 Ron Jeffries resumiu a ideia em [três Cs](https://ronjeffries.com/xprog/articles/expcardconversationconfirmation):
 
@@ -115,9 +115,9 @@ O texto no cartão é a menor parte: a história é uma promessa de conversar.
 Uma história de usuário sozinha costuma ser incompleta demais para guiar o desenvolvimento — por isso ela é normalmente acompanhada de **critérios de aceitação**, que funcionam como uma especificação mínima e testável:
 
 ```
-Dado que o assinante está logado no plano gratuito,
-quando ele acessa o painel principal,
-então o sistema exibe o número de créditos restantes no mês corrente.
+Dado que Bia e Caio têm tarefas no mesmo projeto,
+quando Bia filtra a lista pelo próprio nome,
+então aparecem apenas as tarefas de Bia.
 ```
 
 Esse formato *Dado/Quando/Então* (Gherkin) tem a vantagem de já nascer no formato usado por ferramentas de teste de aceitação automatizado (como Cucumber ou Behave) — aproximando requisito e teste, um tema que retomaremos no Capítulo 6.
@@ -155,17 +155,27 @@ flowchart LR
     subgraph api[API de tarefas]
         criar([Criar tarefa])
         listar([Listar tarefas])
+        assumir([Assumir tarefa])
+        iniciar([Iniciar tarefa])
         concluir([Concluir tarefa])
         convidar([Adicionar membro])
+        atribuir([Atribuir responsável])
     end
     membro --- criar
     membro --- listar
+    membro --- assumir
+    membro --- iniciar
     membro --- concluir
     dono --- convidar
+    dono --- atribuir
     dono -- é um --> membro
 ```
 
 As linhas ligam cada ator aos seus objetivos. A seta "é um" representa a **generalização**: o dono do projeto faz tudo o que o membro faz e mais. O desenho acima é um fluxograma que imita a notação: na UML, os atores são bonecos e a generalização é uma linha com triângulo vazado.
+
+*Assumir* é o membro tomar para si uma tarefa sem responsável; *atribuir*, o dono escolher quem responde por ela. Só se conclui uma tarefa que foi iniciada. Devolver e reabrir ficaram de fora para não carregar o desenho.
+
+Os números das alternativas abaixo, como 404 e 409, são códigos de resposta do HTTP, explicados no [apêndice](../apendices/http_api.md).
 
 O diagrama é um índice. O conteúdo está na descrição textual de cada caso (COCKBURN, 2000):
 
@@ -199,6 +209,11 @@ flowchart TD
     marca --> ok([Devolve a tarefa])
 ```
 
+!!! tip "Quando vale a pena"
+    Casos de uso ajudam a delimitar o escopo e a conversar com quem não programa. Um diagrama de atividades compensa quando há várias decisões ou vários participantes. Para um cadastro simples, uma história de usuário com critérios de aceitação basta.
+
+## 🧱 Modelando os conceitos
+
 ### Classes de análise
 
 Antes de projetar o código, vale identificar os **conceitos do problema**: de que coisas os requisitos falam, o que cada uma precisa saber e como se relacionam. O resultado é um modelo de **classes de análise**, sem tipos de dados, métodos ou decisões de tecnologia.
@@ -226,6 +241,7 @@ classDiagram
         titulo
         situação
     }
+    Usuario "1" -- "0..*" Projeto : é dono de
     Usuario "1..*" -- "0..*" Projeto : participa
     Projeto "1" -- "0..*" Tarefa : reúne
     Usuario "0..1" -- "0..*" Tarefa : responde por
@@ -238,9 +254,6 @@ Para distribuir as responsabilidades, uma classificação conhecida, de Ivar Jac
 * **Entidade**: guarda a informação e as regras do domínio (usuário, projeto, tarefa).
 
 Os substantivos são só um começo: nem todos viram classes, e alguns conceitos não aparecem no texto. Os **cartões CRC** (classe, responsabilidades, colaboradores) ajudam a testar o modelo em equipe: cada pessoa representa uma classe, e o grupo encena um caso de uso. O [Capítulo 4](04_projeto_arquitetura.md) transforma este modelo em um diagrama de projeto.
-
-!!! tip "Quando vale a pena"
-    Casos de uso ajudam a delimitar o escopo e a conversar com quem não programa. Um diagrama de atividades compensa quando há várias decisões ou vários participantes. Para um cadastro simples, uma história de usuário com critérios de aceitação basta.
 
 ## ✅ Boas práticas de especificação
 

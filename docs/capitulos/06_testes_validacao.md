@@ -1,5 +1,16 @@
 # Testes e Validação
 
+## ⚖️ Verificação e validação
+
+Testar é parte de algo maior. Barry Boehm resumiu a diferença em duas perguntas:
+
+| | Pergunta | Compara o software com | Exemplos |
+|---|---|---|---|
+| **Verificação** | Estamos construindo o produto **da maneira certa**? | A especificação | Revisão, análise estática, testes automatizados |
+| **Validação** | Estamos construindo o **produto certo**? | A necessidade de quem vai usar | Protótipos, demonstrações, testes de aceitação e beta |
+
+As duas podem discordar. Se o requisito diz que qualquer membro conclui qualquer tarefa, um sistema que faz exatamente isso passa na verificação. Se a equipe queria que só o responsável pudesse concluir, ele falha na validação: o erro está no requisito. Por isso a validação começa antes do código ([Capítulo 3](03_especificacao_requisitos.md)).
+
 ## 🧭 Defeito, erro e falha
 
 Antes de falar em testes, vale distinguir três termos que costumam ser usados de forma intercambiável, mas que têm significados técnicos distintos (a distinção é detalhada por Avizienis e coautores, 2004):
@@ -72,14 +83,6 @@ TDD é uma prática (não apenas uma técnica de teste) em que o teste é escrit
 3. **🔵 Refactor**: com o teste passando como rede de segurança, melhore o código (Capítulo 5) sem mudar seu comportamento externo.
 
 A promessa do TDD não é "ter mais testes" — é que escrever o teste primeiro força a pensar na interface e no comportamento esperado antes dos detalhes de implementação, e garante que todo código de produção tenha, desde o nascimento, um teste que o cubra.
-
-### Praticando TDD nesta API
-
-Depois de montar a API no *hands-on* a seguir, volte aqui: como exercício de TDD, tente adicionar um endpoint `DELETE /tarefas/{tarefa_id}` seguindo o ciclo Red-Green-Refactor:
-
-1. **Red**: escreva `test_deletar_tarefa_remove_da_lista`, chamando um endpoint que ainda não existe.
-2. **Green**: implemente o `DELETE /tarefas/{tarefa_id}` da forma mais simples possível para o teste passar.
-3. **Refactor**: revise o código à luz das práticas de clean code do Capítulo 5.
 
 ---
 
@@ -156,6 +159,24 @@ def concluir_tarefa(tarefa_id: int) -> Tarefa:
 ```
 
 Não deixe de criar um `app/__init__.py` vazio para que `app` seja reconhecido como um pacote Python.
+
+### Executando a API
+
+Com o ambiente virtual ativo, na pasta `api-tarefas`:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+`app.main:app` significa o objeto `app` do módulo `app/main.py`. A opção `--reload` reinicia o servidor quando o código muda, e serve só para desenvolvimento. Em outro terminal, crie e liste tarefas:
+
+```bash
+curl -i -X POST http://localhost:8000/tarefas \
+  -H "Content-Type: application/json" -d '{"titulo": "Estudar HTTP"}'
+curl http://localhost:8000/tarefas
+```
+
+O `-i` mostra o código e os cabeçalhos da resposta. Em `http://localhost:8000/docs` há uma página para experimentar a API pelo navegador. `Ctrl+C` encerra o servidor, e as tarefas, que estavam na memória, se perdem. Se os termos forem novos, veja o [apêndice sobre HTTP](../apendices/http_api.md).
 
 ### Os testes: `test_main.py`
 
@@ -244,9 +265,17 @@ TOTAL                32      2    94%
 !!! danger "Cobertura alta não é sinônimo de bons testes"
     100% de cobertura significa apenas que toda linha foi **executada** por algum teste — não que o comportamento foi **verificado** corretamente. É possível ter cobertura total com testes que não fazem nenhuma asserção significativa. Use cobertura para encontrar código não testado, nunca como meta isolada de qualidade.
 
+### Praticando TDD nesta API
+
+Com a API montada, como exercício de TDD, tente adicionar um endpoint `DELETE /tarefas/{tarefa_id}` seguindo o ciclo Red-Green-Refactor:
+
+1. **Red**: escreva `test_deletar_tarefa_remove_da_lista`, chamando um endpoint que ainda não existe.
+2. **Green**: implemente o `DELETE /tarefas/{tarefa_id}` da forma mais simples possível para o teste passar.
+3. **Refactor**: revise o código à luz das práticas de clean code do Capítulo 5.
+
 ## 🤖 Testes gerados por IA
 
-Assistentes de codificação são cada vez mais usados para gerar testes automaticamente a partir do código de produção — uma forma rápida de aumentar cobertura numérica. O alerta acima vale com ainda mais força nesse caso: um teste gerado a partir do código existente tende a **confirmar o que o código já faz**, inclusive quando o código tem um defeito, em vez de verificar o que o código **deveria** fazer segundo o requisito. É o oposto do espírito do TDD (seção anterior), em que o teste nasce do requisito, antes do código existir.
+Assistentes de codificação são cada vez mais usados para gerar testes automaticamente a partir do código de produção — uma forma rápida de aumentar cobertura numérica. O alerta acima vale com ainda mais força nesse caso: um teste gerado a partir do código existente tende a **confirmar o que o código já faz**, inclusive quando o código tem um defeito, em vez de verificar o que o código **deveria** fazer segundo o requisito. É o oposto do espírito do TDD (visto acima), em que o teste nasce do requisito, antes do código existir.
 
 Isso não invalida o uso de IA para gerar testes — apenas desloca a responsabilidade do desenvolvedor: ler e validar cada teste gerado contra o comportamento esperado (não contra o comportamento atual do código) continua sendo indispensável antes de aceitar a mudança na suíte.
 
@@ -286,6 +315,67 @@ class TarefaEntrada(BaseModel):
 Em `criar_tarefa`, as duas linhas do `if not dados.titulo.strip()` podem ser removidas, porque o modelo já recusa título vazio ou só com espaços. Os testes confirmam: os anteriores continuam passando e os dois novos também.
 
 O limite impede que um título enorme seja **armazenado**, mas o servidor ainda lê a requisição inteira antes de validá-la. Limitar o tamanho do corpo e a quantidade de requisições é tarefa do servidor ou do *proxy* à frente dele, e essa parte do risco continua aberta.
+
+## 🎲 Como escolher os casos de teste
+
+Não é possível testar todas as entradas. Projetar casos de teste é escolher poucos que tenham boa chance de revelar defeitos. Há dois pontos de partida, que se completam:
+
+* **Caixa-preta**: os casos vêm do requisito, sem olhar o código;
+* **Caixa-branca**: os casos vêm da estrutura do código, para exercitar linhas e desvios ainda não percorridos. A cobertura, vista acima, ajuda aqui (a opção `--cov-branch` mede também os desvios).
+
+### Partição de equivalência e valores-limite
+
+A **partição de equivalência** divide as entradas em classes que o sistema deve tratar do mesmo jeito: basta um representante de cada uma. A **análise de valores-limite** acrescenta as bordas entre as classes, onde se concentram erros como trocar `<` por `<=` (MYERS; SANDLER; BADGETT, 2011). Para o título, contado sem os espaços das pontas:
+
+| Classe | Esperado | Valores escolhidos |
+|---|---|---|
+| Vazio | 422 | `""` e só espaços |
+| De 1 a 200 caracteres | 201 | 1 e 200 |
+| Mais de 200 | 422 | 201 |
+
+```python
+@pytest.mark.parametrize(
+    "titulo, status",
+    [("", 422), ("   ", 422), ("a", 201), ("a" * 200, 201), ("a" * 201, 422)],
+)
+def test_classes_e_limites_do_titulo(titulo, status):
+    resposta = client.post("/tarefas", json={"titulo": titulo})
+    assert resposta.status_code == status
+```
+
+Quando o comportamento depende do estado, as combinações vêm do diagrama de estados ([Capítulo 4](04_projeto_arquitetura.md)). No TaskFlow há três estados e quatro ações: doze combinações, das quais só quatro são permitidas. Testar as recusadas é tão importante quanto testar as aceitas.
+
+### Dublês de teste
+
+Às vezes uma dependência é lenta, cara ou tem efeitos que não se quer no teste, como enviar uma mensagem. Um **dublê de teste** ocupa o lugar dela. O termo, de Gerard Meszaros, cobre variações: um *stub* devolve respostas prontas; um *fake* funciona de forma simplificada, como um banco em memória; um *spy* registra como foi chamado; um *mock* é programado com as chamadas que espera receber. No exemplo abaixo, que não faz parte do TaskFlow, um *spy* substitui o `Notificador` do [Capítulo 4](04_projeto_arquitetura.md):
+
+```python
+class NotificadorEspiao:
+    def __init__(self):
+        self.avisos = []
+
+    def avisar(self, login, mensagem):
+        self.avisos.append((login, mensagem))
+
+
+def atribuir(tarefa, login, notificador):
+    tarefa["responsavel"] = login
+    notificador.avisar(login, f"Você agora responde por: {tarefa['titulo']}")
+
+
+def test_atribuir_avisa_o_responsavel():
+    espiao = NotificadorEspiao()
+    atribuir({"titulo": "Publicar"}, "bia", espiao)
+    assert espiao.avisos == [("bia", "Você agora responde por: Publicar")]
+```
+
+Isso é possível porque `atribuir` recebe o notificador em vez de criá-lo (inversão de dependência). Use dublês com parcimônia: um teste cheio deles pode passar enquanto as peças reais não se entendem, e por isso os testes de integração continuam necessários.
+
+### Regressão e desempenho
+
+Uma **regressão** é algo que funcionava e deixou de funcionar depois de uma mudança. **Testar a regressão** é repetir os testes a cada mudança, o que a suíte automatizada faz no pipeline ([Capítulo 7](07_integracao_entrega_continua.md)). Ao corrigir um defeito, escreva primeiro um teste que o reproduza: ele ajuda a impedir que volte.
+
+Os testes deste capítulo verificam o que a API responde, não a rapidez. Um requisito como "95% das respostas em menos de 300 ms sob certa carga" ([Capítulo 3](03_especificacao_requisitos.md)) pede **teste de carga**, com ferramentas como [Locust](https://locust.io/) ou [k6](https://grafana.com/docs/k6/latest/), em um ambiente parecido com o de produção.
 
 ## 🧱 Testes com banco e permissões: o TaskFlow
 
@@ -336,11 +426,18 @@ Vale procurar também o caminho indireto: `test_nao_alcanca_tarefa_por_outro_pro
 2. Complete o exercício de TDD acima (endpoint `DELETE`) e verifique se a cobertura de `app/main.py` sobe.
 3. Escreva os dois testes que faltam, um para buscar uma tarefa existente (linha 41) e outro para concluir uma tarefa inexistente (linha 48), e confirme que a cobertura chega a 100%.
 4. Classifique um bug real que você já enfrentou (em qualquer projeto) em termos de defeito, erro e falha, conforme a distinção do início deste capítulo.
+5. Um cadastro exige senha de 15 a 128 caracteres. Liste as classes de equivalência e os valores-limite e escreva o teste parametrizado.
+6. Escreva um teste para as doze combinações de estado e ação do TaskFlow. Quantas devem responder 409?
+7. Dê um exemplo, de um sistema que você conhece, que passaria na verificação e falharia na validação.
 
 ## 📚 Para saber mais
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 8.
 * COHN, Mike. *Succeeding with Agile*. Addison-Wesley, 2009 (origem da pirâmide de testes).
 * BECK, Kent. *Test-Driven Development: By Example*. Addison-Wesley, 2002.
+* BOEHM, Barry W. *Verifying and Validating Software Requirements and Design Specifications*. IEEE Software, 1(1), 1984.
+* MYERS, Glenford J.; SANDLER, Corey; BADGETT, Tom. *The Art of Software Testing*. 3. ed. Wiley, 2011.
+* FOWLER, Martin. *Test Double* — [martinfowler.com](https://martinfowler.com/bliki/TestDouble.html)
+* MESZAROS, Gerard. *xUnit Test Patterns*. Addison-Wesley, 2007.
 * Documentação oficial: [pytest](https://docs.pytest.org/), [FastAPI Testing](https://fastapi.tiangolo.com/tutorial/testing/)
 * AVIZIENIS, Algirdas; LAPRIE, Jean-Claude; RANDELL, Brian; LANDWEHR, Carl. *Basic Concepts and Taxonomy of Dependable and Secure Computing*. IEEE Transactions on Dependable and Secure Computing, 1(1), 2004.

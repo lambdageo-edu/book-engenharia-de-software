@@ -14,7 +14,7 @@ Toda mudança em um sistema em produção começa, formal ou informalmente, como
 
 ## 🔧 Tipos de manutenção
 
-A classificação clássica de tipos de manutenção de software, ainda amplamente usada, distingue quatro categorias pela **motivação** da mudança. Ela tem raízes nos estudos de Lientz e Swanson (1980) e é tratada pela norma ISO/IEC/IEEE 14764:
+A classificação clássica de tipos de manutenção de software, ainda amplamente usada, distingue quatro categorias pela **motivação** da mudança. Ela tem raízes nos estudos de Lientz e Swanson (1980):
 
 | Tipo | Motivação | Exemplo |
 |---|---|---|
@@ -23,13 +23,16 @@ A classificação clássica de tipos de manutenção de software, ainda amplamen
 | **Evolutiva (perfectiva)** | Atender a novos requisitos do negócio | Adicionar um novo método de pagamento |
 | **Preventiva** | Melhorar a manutenibilidade futura, sem mudar comportamento externo | Refatorar um módulo antigo, atualizar uma dependência desatualizada |
 
+!!! note "O que diz a norma"
+    A [ISO/IEC/IEEE 14764:2022](https://standards.iteh.ai/catalog/standards/iso/70aa2449-ac83-46d7-84c2-fe73a5a2efcc/iso-iec-ieee-14764-2022) usa seis tipos e recorta alguns de outro modo. Acrescentar funcionalidade é manutenção **aditiva**; a **perfectiva** trata de melhorias para o usuário, de desempenho e de manutenibilidade; a **preventiva** corrige falhas latentes antes que apareçam; e a **emergencial** é a modificação não planejada que mantém o sistema funcionando até a correção definitiva. Corretiva e adaptativa completam a lista. Ao usar esses nomes em um contrato ou relatório, diga qual classificação adotou.
+
 Historicamente, a manutenção corretiva costumava ser tratada como prioridade única — "primeiro apagamos incêndio, depois pensamos em melhorar". A prática moderna, especialmente em times que seguem princípios de DevOps (Capítulo 2), tende a dar peso deliberado também à manutenção preventiva: tratá-la como investimento contínuo, e não como um projeto especial que só acontece quando o sistema já está insustentável.
 
 ## 💳 Débito técnico
 
 O termo **débito técnico**, cunhado por Ward Cunningham, é uma metáfora poderosa: assim como uma dívida financeira, tomar um atalho técnico (pular testes, copiar e colar código em vez de abstrair, adiar uma refatoração necessária) pode ser uma decisão racional de curto prazo — mas, como qualquer dívida, acumula "juros": cada mudança futura naquele código fica mais lenta e mais arriscada até que a dívida seja paga (refatorada) ou o custo dos juros se torne insustentável.
 
-Débito técnico não é, por si só, um mal absoluto — times de alto desempenho tomam débito técnico deliberadamente o tempo todo, como uma escolha de compromisso consciente (ex: lançar rápido uma funcionalidade experimental, aceitando que uma versão mais robusta virá depois se a experiência validar a ideia de negócio). O problema não é a dívida em si; é a dívida **não intencional e não rastreada** — código que acumula complexidade silenciosamente, sem que ninguém decida conscientemente aceitar esse custo.
+Débito técnico não é, por si só, um mal absoluto — boas equipes também o assumem deliberadamente, como uma escolha de compromisso consciente (ex: lançar rápido uma funcionalidade experimental, aceitando que uma versão mais robusta virá depois se a experiência validar a ideia de negócio). O problema não é a dívida em si; é a dívida **não intencional e não rastreada** — código que acumula complexidade silenciosamente, sem que ninguém decida conscientemente aceitar esse custo.
 
 !!! tip "O quadrante do débito técnico"
     Martin Fowler cruza duas perguntas: a dívida foi assumida de propósito (**deliberada** ou **inadvertida**)? E houve cuidado na decisão (**prudente** ou **imprudente**)? O resultado são quatro situações:
@@ -54,6 +57,12 @@ Sinais comuns de que um trecho de código pede refatoração (os chamados *code 
 * **Nomes que não revelam intenção** (Capítulo 5);
 * **Acoplamento excessivo** entre módulos que deveriam ser independentes;
 * **Comentários que compensam código confuso**, em vez de explicar decisões não óbvias.
+
+## 🤖 Débito técnico em código gerado por IA
+
+Gerar código ficou rápido; entendê-lo e mantê-lo, não necessariamente. Quando um trecho entra no sistema sem que ninguém do time consiga explicá-lo, nasce uma dívida que não aparece em nenhum quadro. Alguns sinais: soluções diferentes para o mesmo problema em pontos diferentes, abstrações que ninguém pediu e testes que apenas repetem a implementação.
+
+O relatório DORA de 2025 descreve a IA como um [amplificador do que a organização já tem](https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report): associa seu uso a mais vazão de entregas, mas também a menos estabilidade, e aponta testes automatizados, controle de versão maduro e retorno rápido como proteção. Na prática: mudanças pequenas, revisão por quem vai manter, e refatoração como parte do trabalho, não como promessa.
 
 ## 🩹 Dependências e vulnerabilidades
 
@@ -144,12 +153,6 @@ def migrar(con):
 ```
 
 A função supõe uma conexão aberta com `isolation_level=None`, como a do TaskFlow. Migrações já aplicadas não se editam: corrige-se com uma nova. Faça cópia de segurança antes e teste a migração sobre um banco com dados. Ferramentas como o [Alembic](https://alembic.sqlalchemy.org/) assumem esse controle em projetos que usam SQLAlchemy.
-
-## 🤖 Débito técnico em código gerado por IA
-
-Gerar código ficou rápido; entendê-lo e mantê-lo, não necessariamente. Quando um trecho entra no sistema sem que ninguém do time consiga explicá-lo, nasce uma dívida que não aparece em nenhum quadro. Alguns sinais: soluções diferentes para o mesmo problema em pontos diferentes, abstrações que ninguém pediu e testes que apenas repetem a implementação.
-
-O relatório DORA de 2025 descreve a IA como um [amplificador do que a organização já tem](https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report): associa seu uso a mais vazão de entregas, mas também a menos estabilidade, e aponta testes automatizados, controle de versão maduro e retorno rápido como proteção. Na prática: mudanças pequenas, revisão por quem vai manter, e refatoração como parte do trabalho, não como promessa.
 
 ## 📖 Documentação de software
 

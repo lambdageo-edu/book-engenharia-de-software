@@ -92,4 +92,5 @@ nav:
     - "Cap 8: Evolução, Manutenção e Débito Técnico":     capitulos/08_evolucao_manutencao.md
 
   - Apêndices:
+    - "HTTP e APIs em poucas linhas": apendices/http_api.md
     - "Git e contêineres na prática": apendices/git_conteineres.md

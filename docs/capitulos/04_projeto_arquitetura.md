@@ -11,7 +11,7 @@ Alguns princípios atravessam décadas de engenharia de software e continuam ori
 * **Separação de responsabilidades (*separation of concerns*)**: cada componente deve ter uma responsabilidade bem definida, minimizando sobreposição.
 * **Baixo acoplamento, alta coesão**: componentes devem depender pouco uns dos outros (acoplamento) e cada componente deve agrupar responsabilidades fortemente relacionadas entre si (coesão).
 * **Abstração**: expor apenas o necessário através de interfaces, escondendo detalhes de implementação.
-* **Princípio da responsabilidade única (*Single Responsibility Principle*)**: um módulo deve ter apenas um motivo para mudar — o primeiro dos princípios **SOLID**, um conjunto de cinco diretrizes de projeto orientado a objetos (SRP, Open/Closed, Liskov, Interface Segregation, Dependency Inversion) amplamente usado como referência de projeto até hoje (veja adiante).
+* **Responsabilidade única**: um módulo deve ter apenas um motivo para mudar. É o primeiro dos cinco princípios **SOLID**, apresentados adiante.
 * **[YAGNI](https://www.martinfowler.com/bliki/Yagni.html) (*You Aren't Gonna Need It*)**: não projete flexibilidade para requisitos hipotéticos que ainda não existem — complexidade antecipada tem custo real e nem sempre paga o benefício esperado.
 
 !!! warning "Arquitetura não é só sobre tecnologia"
@@ -233,6 +233,71 @@ O que **não** está desenhado também é regra: uma tarefa pendente não pode s
 !!! warning "Diagramas gerados por IA"
     Um assistente produz diagramas com boa aparência a partir de uma descrição curta. Confira cada multiplicidade e cada transição: o que a descrição não disse foi inventado.
 
+## 🗄️ Modelando os dados
+
+Código se reescreve; dados gravados ficam. Por isso o modelo de dados merece decisão própria. No modelo **relacional**, proposto por Codd (1970), os dados ficam em tabelas ligadas por valores. Partindo do diagrama de classes, o TaskFlow chegou a estas tabelas (a de sessões ficou de fora do desenho):
+
+```mermaid
+erDiagram
+    usuarios ||--o{ projetos : "é dono de"
+    usuarios ||--o{ membros : "participa como"
+    projetos ||--o{ membros : tem
+    projetos ||--o{ tarefas : "contém"
+    membros |o--o{ tarefas : "responde por"
+    usuarios {
+        int id PK
+        text login UK
+        text nome
+        text senha_hash
+    }
+    projetos {
+        int id PK
+        text nome
+        int dono_id FK
+    }
+    membros {
+        int projeto_id PK, FK
+        int usuario_id PK, FK
+    }
+    tarefas {
+        int id PK
+        int projeto_id FK
+        text titulo
+        text status
+        int responsavel_id FK
+    }
+```
+
+Algumas regras de passagem:
+
+* cada classe vira, em geral, uma **tabela**, e cada atributo, uma coluna;
+* a **chave primária** identifica cada linha (`id`);
+* uma relação "um para muitos" vira uma **chave estrangeira** no lado "muitos" (`tarefas.projeto_id`);
+* uma relação "muitos para muitos", como a participação em projetos, vira uma **tabela associativa** (`membros`);
+* o que é opcional vira coluna que aceita nulo (`responsavel_id`).
+
+Guarde cada fato em um só lugar. Se o nome do dono fosse copiado em cada projeto, uma correção teria de alterar várias linhas, e esquecer uma criaria duas versões. Organizar as tabelas para evitar esse tipo de redundância chama-se **normalização**.
+
+O banco também pode garantir regras, mesmo que o código tenha um defeito (trecho de `app/db.py`):
+
+```sql
+CREATE TABLE IF NOT EXISTS tarefas (
+    id             INTEGER PRIMARY KEY,
+    projeto_id     INTEGER NOT NULL REFERENCES projetos(id) ON DELETE CASCADE,
+    titulo         TEXT NOT NULL CHECK (length(titulo) BETWEEN 1 AND 200),
+    status         TEXT NOT NULL DEFAULT 'pendente'
+                   CHECK (status IN ('pendente', 'em_andamento', 'concluida')),
+    responsavel_id INTEGER,
+    FOREIGN KEY (projeto_id, responsavel_id) REFERENCES membros(projeto_id, usuario_id)
+);
+```
+
+A última restrição impede atribuir uma tarefa a quem não é membro do projeto. No SQLite, as chaves estrangeiras só são verificadas se a conexão executar [`PRAGMA foreign_keys = ON`](https://www.sqlite.org/foreignkeys.html), o que o TaskFlow faz ao conectar.
+
+Quando uma operação grava em mais de um lugar, use uma **transação**: ou tudo é gravado, ou nada. Ao criar um projeto, o TaskFlow insere o projeto e o primeiro membro juntos. Mudar o esquema depois que há dados exige migração ([Capítulo 8](08_evolucao_manutencao.md)).
+
+O modelo relacional é uma boa escolha inicial quando os dados têm relações e regras. Bancos de documentos, de chave e valor ou de grafos atendem a outras formas de acesso: decida pelas consultas e garantias de que o sistema precisa, e registre o porquê em um ADR.
+
 ## 🛡️ Segurança desde o projeto
 
 Uma falha de código se corrige com um *commit*. Uma falha de projeto, como não prever quem pode acessar o quê, costuma exigir mudar modelo de dados, interfaces e código já escrito. Por isso a segurança entra nas decisões de arquitetura. Alguns princípios antigos continuam válidos, vários deles formulados por Saltzer e Schroeder em 1975:
@@ -314,8 +379,8 @@ A decisão continua sendo do time. Um bom teste: quem aprovou consegue explicar,
 
 Arquitetura só é útil se for compreendida por quem constrói o sistema. Algumas ferramentas práticas:
 
-* **Diagramas C4** (Contexto, Contêineres, Componentes, Código): um modelo proposto por Simon Brown, de diagramação em quatro níveis de zoom, do mais abstrato (como o sistema se encaixa no mundo) ao mais detalhado (classes de um componente específico) — mais leve e mais usado atualmente do que notações formais completas como UML.
-* **Registros de Decisão de Arquitetura (*Architecture Decision Records* — ADRs)**, [popularizados por Michael Nygard](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions): pequenos documentos versionados junto ao código, registrando uma decisão de arquitetura, o contexto que levou a ela, e as alternativas consideradas — úteis para que decisões antigas não pareçam arbitrárias para quem chega depois no time.
+* **Diagramas C4** (Contexto, Contêineres, Componentes, Código): um modelo proposto por Simon Brown, de diagramação em quatro níveis de zoom, do mais abstrato (como o sistema se encaixa no mundo) ao mais detalhado (classes de um componente específico) — uma alternativa mais leve do que modelar o sistema inteiro em UML.
+* **Registros de Decisão de Arquitetura (*Architecture Decision Records* — ADRs)**, [popularizados por Michael Nygard](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions): pequenos documentos versionados junto ao código, cada um registrando uma decisão de arquitetura. O modelo de Nygard tem cinco partes: título, contexto, decisão, situação (*status*) e consequências. Muitas equipes acrescentam as alternativas consideradas. São úteis para que decisões antigas não pareçam arbitrárias para quem chega depois no time.
 * **UML**, ainda útil para diagramas específicos (classes, sequência) quando o nível de detalhe compensa o custo de mantê-los atualizados — mas raramente usado hoje como especificação completa e exaustiva de um sistema, como se popularizou nos anos 1990/2000.
 
 ---
@@ -323,12 +388,13 @@ Arquitetura só é útil se for compreendida por quem constrói o sistema. Algum
 ## 🎯 Atividades
 
 1. Para um sistema de e-commerce de pequeno porte, você optaria por um monólito modularizado ou por microsserviços? Justifique com base nos trade-offs discutidos.
-2. Escreva um ADR curto (contexto, decisão, alternativas consideradas, consequências) para a escolha de arquitetura do item anterior.
+2. Escreva um ADR curto (título, contexto, decisão, situação, consequências e alternativas consideradas) para a escolha de arquitetura do item anterior.
 3. Identifique um padrão de projeto (dos criacionais, estruturais ou comportamentais) que você já usou, mesmo sem saber o nome, em algum código que escreveu. Descreva o problema que ele resolveu.
 4. Faça a modelagem de ameaças de uma funcionalidade pequena (por exemplo, atribuir uma tarefa a outra pessoa): diagrama com a fronteira de confiança, ao menos quatro ameaças do STRIDE e a resposta escolhida para cada uma.
 5. Peça a um assistente de IA ameaças para a mesma funcionalidade. Separe as que acrescentam algo, as genéricas e as erradas.
 6. Inclua no diagrama de estados uma tarefa cancelada. De quais estados se chega a ela? É possível reativá-la? Escreva os testes que essas respostas sugerem.
 7. Acrescente o formato CSV ao exemplo de exportação, primeiro na versão com `if` e depois na versão com Strategy. Em cada uma, o que precisou mudar? Escreva um teste que valha para todos os formatos.
+8. Acrescente etiquetas às tarefas: uma tarefa pode ter várias, e uma etiqueta serve a várias tarefas. Que tabelas surgem, com quais chaves e restrições?
 
 ## 📚 Para saber mais
 
@@ -336,6 +402,8 @@ Arquitetura só é útil se for compreendida por quem constrói o sistema. Algum
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 5 (modelagem de sistemas).
 * OMG. *Unified Modeling Language*, versão 2.5.1, 2017 — [omg.org/spec/UML](https://www.omg.org/spec/UML/About-UML/)
 * FOWLER, Martin. *UML Distilled*. 3. ed. Addison-Wesley, 2003.
+* CODD, E. F. *A Relational Model of Data for Large Shared Data Banks*. Communications of the ACM, 13(6), 1970.
+* SQLite, *Foreign Key Support* — [sqlite.org](https://www.sqlite.org/foreignkeys.html)
 * GAMMA, Erich et al. *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley, 1994.
 * FOWLER, Martin. *Patterns of Enterprise Application Architecture*. Addison-Wesley, 2002.
 * OWASP *Threat Modeling Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html)
