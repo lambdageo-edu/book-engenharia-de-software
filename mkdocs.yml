@@ -3,6 +3,9 @@ site_description: >
   Livro aberto sobre desenvolvimento de software: processos, requisitos,
   arquitetura, qualidade, testes, CI/CD e evolução.
 site_author: "Sergio Souza Costa"
+copyright: >
+  © Sergio Souza Costa ·
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br">CC BY-NC-SA 4.0</a>
 
 docs_dir: docs
 site_dir: site

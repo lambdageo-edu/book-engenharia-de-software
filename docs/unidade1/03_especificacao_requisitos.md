@@ -122,7 +122,7 @@ Um critério útil e amplamente usado para avaliar requisitos, especialmente em 
 * uma matriz de rastreabilidade ligando requisitos a componentes de código e casos de teste;
 * versionamento do documento (ou backlog) de requisitos.
 
-Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de documentação viva (Notion, Confluence) cumprem hoje boa parte desse papel de forma mais leve do que os documentos de especificação formal (como o padrão IEEE 830) usados historicamente — mas o problema que resolvem é o mesmo: manter requisitos rastreáveis, atualizados e visíveis para todo o time.
+Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de documentação viva (Notion, Confluence) cumprem hoje boa parte desse papel de forma mais leve do que os documentos de especificação formal (como o padrão IEEE 830, hoje substituído pela ISO/IEC/IEEE 29148, cuja edição de 2018 é a referência atual) usados historicamente — mas o problema que resolvem é o mesmo: manter requisitos rastreáveis, atualizados e visíveis para todo o time.
 
 ---
 

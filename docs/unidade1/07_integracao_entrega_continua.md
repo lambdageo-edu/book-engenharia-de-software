@@ -49,21 +49,23 @@ Separe o que a aplicação precisa para **rodar** do que só é necessário para
 `requirements.txt`:
 
 ```
-fastapi>=0.115
-uvicorn[standard]>=0.32
-pydantic>=2.9
+fastapi==0.165.0
+uvicorn[standard]==0.54.0
+pydantic==2.14.4
 ```
 
 `requirements-dev.txt`:
 
 ```
 -r requirements.txt
-pytest>=8.3
-pytest-cov>=6.0
-httpx2>=2.9
-ruff>=0.7
-mypy>=1.10
+pytest==9.2.0
+pytest-cov==7.1.0
+httpx2==2.16.2
+ruff==0.17.6
+mypy==2.4.1
 ```
+
+As versões estão fixadas (`==`) para que o pipeline instale hoje o mesmo que instalará amanhã. São as versões testadas em novembro de 2026. Fixar não significa congelar: atualize de propósito, com os testes rodando, por exemplo a partir dos *pull requests* do Dependabot. Para fixar também as dependências indiretas, use um arquivo de *lock*, gerado por ferramentas como `uv` ou `pip-tools`.
 
 ### O workflow: `.github/workflows/ci.yml`
 
@@ -87,7 +89,7 @@ jobs:
       - name: Configurar Python
         uses: actions/setup-python@v7
         with:
-          python-version: "3.12"
+          python-version: "3.14"
           cache: "pip"
           cache-dependency-path: requirements*.txt
 
@@ -125,7 +127,7 @@ O parâmetro `--cov-fail-under=80` faz o próprio comando de teste **falhar** se
 ### Empacotando em um contêiner: `Dockerfile`
 
 ```dockerfile
-FROM python:3.12-slim
+FROM python:3.14-slim
 
 WORKDIR /app
 
@@ -178,7 +180,7 @@ Automatizar o deploy não significa "publicar tudo de uma vez para todo mundo". 
 * **Feature Flags**: o código de uma nova funcionalidade já está em produção, mas desligado por uma configuração — permitindo separar o **deploy** do código (uma operação técnica) do **lançamento** da funcionalidade (uma decisão de produto), e habilitar a funcionalidade gradualmente ou apenas para usuários específicos.
 
 !!! tip "Deploy frequente reduz risco, não aumenta"
-    É comum a intuição de que "fazer deploy com mais frequência é mais arriscado". A evidência de pesquisas como o *State of DevOps* aponta o contrário: deploys pequenos e frequentes são mais fáceis de testar, mais fáceis de reverter e mais fáceis de depurar (menos mudanças acumuladas por deploy) do que grandes lançamentos espaçados — que concentram risco em vez de distribuí-lo.
+    É comum a intuição de que "fazer deploy com mais frequência é mais arriscado". A evidência das pesquisas da DORA (relatórios *State of DevOps*, até 2024) aponta o contrário: deploys pequenos e frequentes são mais fáceis de testar, mais fáceis de reverter e mais fáceis de depurar (menos mudanças acumuladas por deploy) do que grandes lançamentos espaçados — que concentram risco em vez de distribuí-lo.
 
 ## 🤖 Agentes de codificação e o pipeline
 
@@ -200,4 +202,4 @@ O que muda é a importância desses portões automatizados como linha de defesa:
 * FOWLER, Martin. *Continuous Integration* — [martinfowler.com/articles/continuousIntegration.html](https://martinfowler.com/articles/continuousIntegration.html)
 * HUMBLE, Jez; FARLEY, David. *Continuous Delivery*. Addison-Wesley, 2010.
 * Documentação oficial: [GitHub Actions](https://docs.github.com/actions), [Docker](https://docs.docker.com/)
-* Relatório *State of DevOps* (DORA/Google Cloud), publicado anualmente.
+* Relatórios anuais da DORA (Google Cloud): *State of DevOps* até 2024 e *State of AI-assisted Software Development* em 2025 — [dora.dev](https://dora.dev/).
