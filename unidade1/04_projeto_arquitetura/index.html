@@ -1064,14 +1064,15 @@
 <li>O que vamos fazer a respeito?</li>
 <li>Fizemos um trabalho bom o suficiente?</li>
 </ol>
-<p>Para a primeira, basta um diagrama de por onde os dados passam, marcando as <strong>fronteiras de confiança</strong>: os pontos em que um dado vem de alguém em quem o sistema não deve confiar. Na API de tarefas:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a> Cliente (navegador, script)
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>        |
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        |  HTTP: título, identificador da tarefa
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a> - - - -|- - - - - - - - - - - -  fronteira de confiança
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        v
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a> API (FastAPI)  -----&gt;  Armazenamento (hoje, um dicionário em memória)
-</code></pre></div>
+<p>Para a primeira, basta um diagrama de por onde os dados passam, marcando as <strong>fronteiras de confiança</strong>: os pontos em que um dado vem de alguém em quem o sistema não deve confiar. Na API de tarefas, a fronteira é a linha tracejada:</p>
+<pre class="mermaid"><code>flowchart TB
+    cliente["Cliente (navegador, script)"]
+    subgraph confiavel["Dentro da fronteira de confiança"]
+        direction LR
+        api["API (FastAPI)"] --&gt; dados[("Armazenamento&lt;br/&gt;(hoje, um dicionário em memória)")]
+    end
+    cliente -- "HTTP: título, identificador da tarefa" --&gt; api
+    style confiavel stroke-dasharray: 6 4</code></pre>
 <p>Para a segunda, o acrônimo <strong>STRIDE</strong>, proposto na Microsoft por Kohnfelder e Garg em 1999, serve de lista de conferência. Aplicado à primeira versão da API:</p>
 <table>
 <thead>
