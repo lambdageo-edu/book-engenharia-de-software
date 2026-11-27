@@ -287,6 +287,47 @@ Em `criar_tarefa`, as duas linhas do `if not dados.titulo.strip()` podem ser rem
 
 O limite impede que um título enorme seja **armazenado**, mas o servidor ainda lê a requisição inteira antes de validá-la. Limitar o tamanho do corpo e a quantidade de requisições é tarefa do servidor ou do *proxy* à frente dele, e essa parte do risco continua aberta.
 
+## 🧱 Testes com banco e permissões: o TaskFlow
+
+Quando a API ganha persistência e usuários, os testes mudam em dois pontos. O código abaixo é do [TaskFlow](https://github.com/lambdageo-edu/taskflow).
+
+**Cada teste precisa do seu próprio banco.** Se todos escrevem no mesmo arquivo, o resultado de um depende da ordem dos outros. A *fixture* de `tests/conftest.py` usa a pasta temporária do pytest (`tmp_path`) e já deixa o cliente autenticado:
+
+```python
+@pytest.fixture
+def client(tmp_path, monkeypatch):
+    # Cada teste usa um banco novo, em uma pasta temporária.
+    monkeypatch.setenv("TAREFAS_DB", str(tmp_path / "teste.db"))
+    with TestClient(app) as cliente:
+        autenticar(cliente)
+        yield cliente
+```
+
+O `with` executa o código de inicialização da aplicação, que cria as tabelas.
+
+**O que é proibido precisa de teste.** Um teste só com o dono do projeto passaria mesmo que a API não conferisse permissão alguma. Por isso a *fixture* `equipe` cria quatro pessoas: Ana é dona de um projeto, Bia e Caio são membros e Davi está fora.
+
+```python
+def test_quem_esta_fora_nao_ve_nem_altera(equipe):
+    como, _, url, tarefa = equipe
+    assert como("davi").get(url).status_code == 404
+    assert como("davi").get(tarefa).status_code == 404
+    assert como("davi").post(url, json={"titulo": "invadir"}).status_code == 404
+    assert como("davi").post(f"{tarefa}/iniciar").status_code == 404
+    assert como("davi").get("/projetos").json() == []
+```
+
+Cada código de erro responde a uma pergunta diferente, e cada um tem os seus testes:
+
+| Resposta | Situação |
+|---|---|
+| 401 | Não se sabe quem está pedindo: sem token, com token inválido ou expirado |
+| 404 | O recurso não existe **para quem pede** |
+| 403 | A pessoa é membro, mas não pode fazer isso |
+| 409 | O pedido é permitido, mas não cabe no estado atual |
+
+Vale procurar também o caminho indireto: `test_nao_alcanca_tarefa_por_outro_projeto` confere que Davi, dono do próprio projeto, não alcança a tarefa de Ana trocando o número na URL.
+
 ---
 
 ## 🎯 Atividades

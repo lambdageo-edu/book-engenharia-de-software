@@ -80,6 +80,9 @@ updates:
 
 Esse arquivo configura atualizações de versão. Os alertas e as correções de segurança do Dependabot são ativados nas configurações do repositório. Imagens citadas dentro de comandos `run`, como as do Gitleaks e do Trivy no exemplo, não são atualizadas por ele: revise-as à mão.
 
+!!! warning "Pipeline verde não prova tudo"
+    No TaskFlow, um dos primeiros *pull requests* do Dependabot propôs uma versão mais nova do Python na imagem base. Os testes do pipeline, porém, continuavam rodando na versão anterior: o resultado verde mostrava que a imagem era construída, não que a aplicação funcionava nela. Antes de aceitar, atualize a versão do Python nos dois lugares e confira se o pipeline testa o que será publicado.
+
 ### Quando uma vulnerabilidade aparece
 
 1. **Confirmar**: o alerta se aplica à versão que você usa?
@@ -89,6 +92,29 @@ Esse arquivo configura atualizações de versão. Os alertas e as correções de
 5. **Aprender**: registrar o ocorrido e o que evitaria a repetição.
 
 Decida antes quem recebe o aviso e em quanto tempo responde. Em projetos abertos, um arquivo `SECURITY.md` diz como relatar uma falha sem expô-la numa *issue* pública. O [SSDF, do NIST](https://csrc.nist.gov/pubs/sp/800/218/final), reúne práticas de desenvolvimento seguro que incluem identificar e responder a vulnerabilidades.
+
+## 🗃️ Evoluindo o banco de dados
+
+Código antigo se substitui; dados antigos precisam continuar valendo. O [TaskFlow](https://github.com/lambdageo-edu/taskflow) cria as tabelas na inicialização com [`CREATE TABLE IF NOT EXISTS`](https://www.sqlite.org/lang_createtable.html). Isso funciona em um banco vazio, mas, se uma versão nova acrescentar uma coluna ao comando, um banco que já tem a tabela **não muda**, e a aplicação falha quando tentar usar a coluna.
+
+A solução é uma **migração**: um passo versionado que transforma o esquema existente. No SQLite, um começo simples usa o número guardado em [`PRAGMA user_version`](https://www.sqlite.org/pragma.html#pragma_user_version). O exemplo abaixo, que ainda não faz parte do TaskFlow, acrescenta um prazo às tarefas:
+
+```python
+MIGRACOES = [
+    "ALTER TABLE tarefas ADD COLUMN prazo TEXT",  # versão 1
+]
+
+
+def migrar(con):
+    versao = con.execute("PRAGMA user_version").fetchone()[0]
+    for numero, comando in enumerate(MIGRACOES[versao:], start=versao + 1):
+        con.execute("BEGIN")
+        with con:  # grava tudo ou desfaz tudo
+            con.execute(comando)
+            con.execute(f"PRAGMA user_version = {numero}")
+```
+
+A função supõe uma conexão aberta com `isolation_level=None`, como a do TaskFlow. Migrações já aplicadas não se editam: corrige-se com uma nova. Faça cópia de segurança antes e teste a migração sobre um banco com dados. Ferramentas como o [Alembic](https://alembic.sqlalchemy.org/) assumem esse controle em projetos que usam SQLAlchemy.
 
 ## 🤖 Débito técnico em código gerado por IA
 
@@ -134,7 +160,8 @@ Sem observabilidade adequada, manutenção corretiva vira um exercício de tenta
 2. Descreva um exemplo de débito técnico "deliberado e prudente" que você tomaria conscientemente em um projeto real, explicando a troca de curto prazo por longo prazo envolvida.
 3. Escolha um trecho de código com pelo menos um *code smell* (duplicação, método longo, nome ruim) e refatore-o, garantindo que os testes existentes (ou novos testes que você escreva antes) continuem passando depois da mudança.
 4. Configure o Dependabot em um repositório seu e analise o primeiro *pull request* que ele abrir: o que mudou na dependência e como você sabe que é seguro aceitar?
-5. Peça a um colega que execute um projeto seu seguindo apenas o `README.md`. Anote onde ele travou e corrija o texto.
+5. No TaskFlow, acrescente o prazo às tarefas: escreva antes um teste que parta de um banco no esquema antigo, com uma tarefa, e confira que ela continua lá depois da migração.
+6. Peça a um colega que execute um projeto seu seguindo apenas o `README.md`. Anote onde ele travou e corrija o texto.
 
 ## 📚 Para saber mais
 

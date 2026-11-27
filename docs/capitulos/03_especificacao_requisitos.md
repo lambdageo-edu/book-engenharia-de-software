@@ -117,7 +117,7 @@ A última linha é tão importante quanto a primeira: registra o que foi **recus
 
 ## 🧭 Modelando o comportamento
 
-Um modelo é uma visão simplificada, feita para responder a uma pergunta. Aqui, a pergunta é o que o sistema faz e para quem. Os diagramas seguem a notação da UML (OMG, 2017) e imaginam a evolução da API de tarefas para uma **equipe**, com projetos, membros e donos. O código dos Capítulos 6 e 7 ainda não tem usuários: este é um modelo do que se quer construir.
+Um modelo é uma visão simplificada, feita para responder a uma pergunta. Aqui, a pergunta é o que o sistema faz e para quem. Os diagramas seguem a notação da UML (OMG, 2017) e imaginam a evolução da API de tarefas para uma **equipe**, com projetos, membros e donos. A API dos Capítulos 6 e 7 ainda não tem usuários; quem implementa este modelo é o [TaskFlow](https://github.com/lambdageo-edu/taskflow), o [projeto condutor](../index.md) do livro.
 
 ### Casos de uso
 
@@ -147,10 +147,11 @@ O diagrama é um índice. O conteúdo está na descrição textual de cada caso 
 | Campo | Concluir tarefa |
 |---|---|
 | **Ator principal** | Membro |
-| **Pré-condição** | O membro está autenticado e participa do projeto. |
-| **Fluxo principal** | 1. O membro pede a conclusão de uma tarefa. 2. O sistema verifica a permissão. 3. O sistema marca a tarefa como concluída e a devolve. |
-| **Alternativa: tarefa inexistente** | No passo 1, o sistema responde 404. |
-| **Alternativa: sem permissão** | No passo 2, quem não é o responsável nem o dono recebe 403, e nada muda. |
+| **Pré-condição** | O membro está autenticado. |
+| **Fluxo principal** | 1. O membro pede a conclusão de uma tarefa de um projeto. 2. O sistema verifica a participação no projeto, a existência da tarefa e a permissão. 3. O sistema marca a tarefa, que estava em andamento, como concluída e a devolve. |
+| **Alternativa: fora do projeto ou tarefa inexistente** | No passo 2, o sistema responde 404, sem revelar se o projeto existe. |
+| **Alternativa: sem permissão** | No passo 2, o membro que não é o responsável nem o dono recebe 403, e nada muda. |
+| **Alternativa: estado inválido** | No passo 3, se a tarefa não está em andamento, o sistema responde 409, e nada muda. |
 | **Pós-condição** | A tarefa está concluída. |
 
 Repare que as alternativas vêm das perguntas que o fluxo principal não responde, e que uma delas é o requisito de segurança da seção anterior.
@@ -161,11 +162,15 @@ O **diagrama de atividades** mostra a ordem dos passos e as decisões de um proc
 
 ```mermaid
 flowchart TD
-    inicio([Pedido de conclusão]) --> existe{Tarefa existe?}
-    existe -- não --> e404([Responde 404])
+    inicio([Pedido de conclusão]) --> membro{Participa do projeto?}
+    membro -- não --> e404([Responde 404])
+    membro -- sim --> existe{Tarefa existe no projeto?}
+    existe -- não --> e404
     existe -- sim --> pode{É o responsável ou o dono?}
     pode -- não --> e403([Responde 403])
-    pode -- sim --> marca[Marca como concluída]
+    pode -- sim --> estado{Está em andamento?}
+    estado -- não --> e409([Responde 409])
+    estado -- sim --> marca[Marca como concluída]
     marca --> ok([Devolve a tarefa])
 ```
 
