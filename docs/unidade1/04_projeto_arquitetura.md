@@ -68,6 +68,86 @@ Enquanto estilos de arquitetura organizam o sistema em larga escala, **padrões 
 
 Esses padrões seguem relevantes, mas vale um alerta prático: padrões de projeto resolvem problemas de um contexto específico (sistemas orientados a objetos, em linguagens com certas limitações dos anos 1990). Aplicá-los de forma automática, sem que o problema realmente exista, é uma forma comum de complexidade desnecessária — o oposto do princípio YAGNI mencionado acima.
 
+## 📐 Modelando a estrutura e as interações
+
+O Capítulo 3 modelou o que o sistema faz. Três diagramas da UML (OMG, 2017) ajudam a decidir como (FOWLER, 2003). Os exemplos de classes e estados descrevem a versão em equipe da API de tarefas, que ainda não está no código.
+
+### Classes: o que existe e como se relaciona
+
+```mermaid
+classDiagram
+    direction TB
+    class Usuario {
+        +int id
+        +str nome
+    }
+    class Projeto {
+        +int id
+        +str nome
+    }
+    class Tarefa {
+        +int id
+        +str titulo
+        +Status status
+        +concluir()
+    }
+    Usuario "1" --> "0..*" Projeto : é dono de
+    Usuario "1..*" -- "0..*" Projeto : participa de
+    Projeto "1" *-- "0..*" Tarefa : contém
+    Usuario "0..1" --> "0..*" Tarefa : é responsável por
+```
+
+Os números são as **multiplicidades**: um projeto tem zero ou mais tarefas, e uma tarefa pode ainda não ter responsável (`0..1`). O losango preenchido indica **composição**: a tarefa não existe fora do seu projeto. Cada uma dessas marcas é uma decisão que precisa ser confirmada com quem pediu o sistema.
+
+### Sequência: quem chama quem, e em que ordem
+
+Este descreve o `POST /tarefas` com a validação do [Capítulo 6](06_testes_validacao.md):
+
+```mermaid
+sequenceDiagram
+    actor C as Cliente
+    participant A as FastAPI
+    participant V as TarefaEntrada
+    participant R as criar_tarefa
+    C->>A: POST /tarefas
+    A->>V: valida o corpo
+    alt título válido
+        V-->>A: dados validados
+        A->>R: criar_tarefa(dados)
+        R-->>A: Tarefa com id
+        A-->>C: 201 Created
+    else vazio ou acima de 200 caracteres
+        V-->>A: erro de validação
+        A-->>C: 422
+    end
+```
+
+No caminho de erro, a função `criar_tarefa` nem chega a ser chamada. É o tipo de informação que o diagrama mostra melhor do que o código lido isoladamente.
+
+### Estados: o ciclo de vida de um objeto
+
+Hoje a tarefa tem apenas o campo `concluida`. Na versão em equipe, uma decisão possível é:
+
+```mermaid
+stateDiagram-v2
+    direction TB
+    [*] --> Pendente : criar
+    Pendente --> EmAndamento : iniciar
+    EmAndamento --> Pendente : devolver
+    EmAndamento --> Concluida : concluir
+    Concluida --> EmAndamento : reabrir
+    state "Em andamento" as EmAndamento
+    state "Concluída" as Concluida
+```
+
+O que **não** está desenhado também é regra: neste modelo, uma tarefa pendente não pode ser concluída direto. Cada transição ausente pode virar um teste.
+
+!!! tip "Quando vale a pena"
+    Classes ajudam a discutir o domínio antes de criar o banco de dados. Sequência, quando vários componentes colaboram ou o tratamento de erro não é óbvio. Estados, quando um objeto muda de situação e nem toda mudança é permitida. Diagrama desatualizado engana: mantenha poucos, junto do código.
+
+!!! warning "Diagramas gerados por IA"
+    Um assistente produz diagramas com boa aparência a partir de uma descrição curta. Confira cada multiplicidade e cada transição: o que a descrição não disse foi inventado.
+
 ## 🛡️ Segurança desde o projeto
 
 Uma falha de código se corrige com um *commit*. Uma falha de projeto, como não prever quem pode acessar o quê, costuma exigir mudar modelo de dados, interfaces e código já escrito. Por isso a segurança entra nas decisões de arquitetura. Alguns princípios antigos continuam válidos, vários deles formulados por Saltzer e Schroeder em 1975:
@@ -147,10 +227,14 @@ Arquitetura só é útil se for compreendida por quem constrói o sistema. Algum
 3. Identifique um padrão de projeto (dos criacionais, estruturais ou comportamentais) que você já usou, mesmo sem saber o nome, em algum código que escreveu. Descreva o problema que ele resolveu.
 4. Faça a modelagem de ameaças de uma funcionalidade pequena (por exemplo, atribuir uma tarefa a outra pessoa): diagrama com a fronteira de confiança, ao menos quatro ameaças do STRIDE e a resposta escolhida para cada uma.
 5. Peça a um assistente de IA ameaças para a mesma funcionalidade. Separe as que acrescentam algo, as genéricas e as erradas.
+6. Inclua no diagrama de estados uma tarefa cancelada. De quais estados se chega a ela? É possível reativá-la? Escreva os testes que essas respostas sugerem.
 
 ## 📚 Para saber mais
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 6.
+* SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 5 (modelagem de sistemas).
+* OMG. *Unified Modeling Language*, versão 2.5.1, 2017 — [omg.org/spec/UML](https://www.omg.org/spec/UML/About-UML/)
+* FOWLER, Martin. *UML Distilled*. 3. ed. Addison-Wesley, 2003.
 * GAMMA, Erich et al. *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley, 1994.
 * FOWLER, Martin. *Patterns of Enterprise Application Architecture*. Addison-Wesley, 2002.
 * OWASP *Threat Modeling Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html)
