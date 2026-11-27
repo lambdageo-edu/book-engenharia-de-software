@@ -78,7 +78,7 @@ Scrum é o framework ágil mais adotado no mercado. Organiza o trabalho em **spr
 
 ### Kanban
 
-Kanban tem origem no sistema de produção da Toyota e foi adaptado ao desenvolvimento de software por David J. Anderson. Em vez de iterações de tempo fixo, o trabalho flui continuamente por colunas em um quadro (ex: *A Fazer → Em Progresso → Em Revisão → Concluído*), com **limites explícitos de trabalho em progresso (WIP)** para evitar sobrecarga e destacar gargalos.
+Kanban tem origem no sistema de produção da Toyota e foi adaptado ao desenvolvimento de software por David J. Anderson (2010). Em vez de iterações de tempo fixo, o trabalho flui continuamente por colunas em um quadro (ex: *A Fazer → Em Progresso → Em Revisão → Concluído*), com **limites explícitos de trabalho em progresso (WIP)** para evitar sobrecarga e destacar gargalos.
 
 === "Scrum"
     * Trabalho organizado em sprints de duração fixa
@@ -95,7 +95,7 @@ Kanban tem origem no sistema de produção da Toyota e foi adaptado ao desenvolv
 Na prática, muitas equipes usam híbridos (às vezes chamados *Scrumban*): sprints para planejamento e alinhamento, com um quadro Kanban e limites de WIP para gerenciar o fluxo do dia a dia.
 
 !!! note "Scrum não é a única resposta a processos ágeis"
-    Scrum continua sendo o framework ágil mais adotado no mercado, mas não é unânime: é comum times relatarem "fadiga de cerimônias" quando o ritmo de sprints, *dailies* e retrospectivas vira ritual repetitivo em vez de ferramenta útil — o que alguns autores chamam de "Scrum de fachada" (todas as cerimônias, nenhuma agilidade real). Como resposta, abordagens mais leves como o **Shape Up** (criado na Basecamp) vêm ganhando adoção real em alguns times e empresas: substituem sprints curtos e cerimônias diárias por ciclos mais longos (tipicamente 6 semanas) de trabalho focado, com um período de "resfriamento" entre ciclos. Isso não torna Scrum obsoleto — continua sendo uma escolha sólida, especialmente com múltiplos times que precisam de sincronização — mas reforça o ponto já feito neste capítulo: não existe processo universalmente superior, e vale conhecer alternativas ao framework mais popular.
+    Scrum continua sendo o framework ágil mais adotado no mercado, mas não é unânime: é comum times relatarem "fadiga de cerimônias" quando o ritmo de sprints, *dailies* e retrospectivas vira ritual repetitivo em vez de ferramenta útil — o que alguns autores chamam de "Scrum de fachada" (todas as cerimônias, nenhuma agilidade real). Como resposta, abordagens mais leves como o [**Shape Up**](https://basecamp.com/shapeup) (criado na Basecamp e descrito por Ryan Singer) vêm ganhando adoção real em alguns times e empresas: substituem sprints curtos e cerimônias diárias por ciclos mais longos (tipicamente 6 semanas) de trabalho focado, com um período de "resfriamento" entre ciclos. Isso não torna Scrum obsoleto — continua sendo uma escolha sólida, especialmente com múltiplos times que precisam de sincronização — mas reforça o ponto já feito neste capítulo: não existe processo universalmente superior, e vale conhecer alternativas ao framework mais popular.
 
 ## 🛠️ DevOps: além do processo de desenvolvimento
 
@@ -103,9 +103,9 @@ Enquanto o Ágil trata principalmente de como uma equipe planeja e executa o tra
 
 DevOps propõe tratar essa fronteira como uma responsabilidade compartilhada, apoiada por automação e cultura, não apenas por ferramentas. Três ideias centrais:
 
-* **"Você constrói, você opera" (*you build it, you run it*)**: o mesmo time responsável por escrever o software é responsável por operá-lo em produção, o que cria incentivo direto para escrever software fácil de operar (bom logging, boas métricas, *rollback* simples).
+* **"Você constrói, você opera" (*you build it, you run it*)**, expressão de Werner Vogels, da Amazon, em [entrevista de 2006](https://queue.acm.org/detail.cfm?id=1142065): o mesmo time responsável por escrever o software é responsável por operá-lo em produção, o que cria incentivo direto para escrever software fácil de operar (bom logging, boas métricas, *rollback* simples).
 * **Automação de ponta a ponta**: infraestrutura como código, pipelines de integração e entrega contínua (Capítulo 7), testes automatizados (Capítulo 6) — tudo para reduzir trabalho manual e erro humano em processos repetitivos.
-* **Cultura de aprendizado sem culpa (*blameless postmortems*)**: falhas em produção são tratadas como oportunidades de melhorar o sistema e o processo, não como motivo para punir indivíduos — o que incentiva as pessoas a reportar problemas cedo, em vez de escondê-los.
+* **Cultura de aprendizado sem culpa (*blameless postmortems*)**, prática [descrita por John Allspaw](https://www.etsy.com/codeascraft/blameless-postmortems): falhas em produção são tratadas como oportunidades de melhorar o sistema e o processo, não como motivo para punir indivíduos — o que incentiva as pessoas a reportar problemas cedo, em vez de escondê-los.
 
 Um instrumento prático do DevOps são as [métricas de entrega de software da DORA](https://dora.dev/guides/dora-metrics/history/) (*DevOps Research and Assessment*). Desde 2024 são cinco, em dois grupos:
 
@@ -150,3 +150,8 @@ A maioria das organizações de produto digital hoje adota variantes ágeis com 
 * Scrum Guide (oficial) — [scrumguides.org](https://scrumguides.org/)
 * FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. *Accelerate: The Science of Lean Software and DevOps*. IT Revolution, 2018.
 * Relatórios anuais da DORA (Google Cloud): *State of DevOps* até 2024 e *State of AI-assisted Software Development* em 2025 — [dora.dev](https://dora.dev/).
+* ROYCE, Winston W. *Managing the Development of Large Software Systems*. Proceedings of IEEE WESCON, 1970.
+* ANDERSON, David J. *Kanban: Successful Evolutionary Change for Your Technology Business*. Blue Hole Press, 2010.
+* SINGER, Ryan. *Shape Up: Stop Running in Circles and Ship Work that Matters*. Basecamp, 2019 — [basecamp.com/shapeup](https://basecamp.com/shapeup)
+* VOGELS, Werner. *A Conversation with Werner Vogels* (entrevista a Jim Gray). ACM Queue, 4(4), 2006 — [queue.acm.org](https://queue.acm.org/detail.cfm?id=1142065)
+* ALLSPAW, John. *Blameless PostMortems and a Just Culture*. Etsy, 2012 — [etsy.com/codeascraft](https://www.etsy.com/codeascraft/blameless-postmortems)

@@ -2,7 +2,7 @@
 
 ## 🏗️ Do requisito à estrutura do sistema
 
-Depois de especificados os requisitos, é preciso decidir **como** o sistema será construído: quais componentes existirão, como se comunicam, onde os dados residem, e quais tecnologias sustentam cada peça. Essa é a atividade de **projeto de software**, cujo produto de mais alto nível é a **arquitetura**: a organização fundamental de um sistema, expressa em seus componentes, nas relações entre eles e entre eles e o ambiente, e nos princípios que orientam seu projeto e evolução.
+Depois de especificados os requisitos, é preciso decidir **como** o sistema será construído: quais componentes existirão, como se comunicam, onde os dados residem, e quais tecnologias sustentam cada peça. Essa é a atividade de **projeto de software**, cujo produto de mais alto nível é a **arquitetura**: a organização fundamental de um sistema, expressa em seus componentes, nas relações entre eles e entre eles e o ambiente, e nos princípios que orientam seu projeto e evolução (definição do padrão IEEE 1471-2000, depois incorporado à ISO/IEC/IEEE 42010).
 
 ## 🎯 Princípios de projeto
 
@@ -12,7 +12,7 @@ Alguns princípios atravessam décadas de engenharia de software e continuam ori
 * **Baixo acoplamento, alta coesão**: componentes devem depender pouco uns dos outros (acoplamento) e cada componente deve agrupar responsabilidades fortemente relacionadas entre si (coesão).
 * **Abstração**: expor apenas o necessário através de interfaces, escondendo detalhes de implementação.
 * **Princípio da responsabilidade única (*Single Responsibility Principle*)**: um módulo deve ter apenas um motivo para mudar — o primeiro dos princípios **SOLID**, um conjunto de cinco diretrizes de projeto orientado a objetos (SRP, Open/Closed, Liskov, Interface Segregation, Dependency Inversion) amplamente usado como referência de projeto até hoje.
-* **YAGNI (*You Aren't Gonna Need It*)**: não projete flexibilidade para requisitos hipotéticos que ainda não existem — complexidade antecipada tem custo real e nem sempre paga o benefício esperado.
+* **[YAGNI](https://www.martinfowler.com/bliki/Yagni.html) (*You Aren't Gonna Need It*)**: não projete flexibilidade para requisitos hipotéticos que ainda não existem — complexidade antecipada tem custo real e nem sempre paga o benefício esperado.
 
 !!! warning "Arquitetura não é só sobre tecnologia"
     Decisões de arquitetura são, no fundo, decisões sobre **onde colocar a complexidade** e **quais mudanças futuras você quer que sejam baratas**. Trocar de banco de dados, adicionar um novo canal de acesso (app mobile), escalar um componente específico — uma boa arquitetura torna algumas dessas mudanças fáceis, ao custo de tornar outras mais difíceis. Não existe arquitetura sem trade-off.
@@ -50,7 +50,7 @@ Decompõe o sistema em serviços pequenos, independentes, cada um responsável p
     * Risco real de criar um "monólito distribuído" se as fronteiras entre serviços forem mal desenhadas
 
 !!! tip "Uma regra prática comum na indústria"
-    "Comece com um monólito bem modularizado; extraia microsserviços quando (e apenas quando) houver uma razão concreta de escala ou organização de times para justificar o custo operacional extra." Essa recomendação — associada a autores como Martin Fowler — reconhece que a decomposição em microsserviços é mais fácil de fazer a partir de um monólito bem estruturado do que de projetar corretamente desde o primeiro dia.
+    "Comece com um monólito bem modularizado; extraia microsserviços quando (e apenas quando) houver uma razão concreta de escala ou organização de times para justificar o custo operacional extra." Essa recomendação — associada a autores como [Martin Fowler](https://www.martinfowler.com/bliki/MonolithFirst.html) — reconhece que a decomposição em microsserviços é mais fácil de fazer a partir de um monólito bem estruturado do que de projetar corretamente desde o primeiro dia.
 
 ### Arquitetura orientada a eventos
 
@@ -132,8 +132,8 @@ A decisão continua sendo do time. Um bom teste: quem aprovou consegue explicar,
 
 Arquitetura só é útil se for compreendida por quem constrói o sistema. Algumas ferramentas práticas:
 
-* **Diagramas C4** (Contexto, Contêineres, Componentes, Código): um modelo de diagramação em quatro níveis de zoom, do mais abstrato (como o sistema se encaixa no mundo) ao mais detalhado (classes de um componente específico) — mais leve e mais usado atualmente do que notações formais completas como UML.
-* **Registros de Decisão de Arquitetura (*Architecture Decision Records* — ADRs)**: pequenos documentos versionados junto ao código, registrando uma decisão de arquitetura, o contexto que levou a ela, e as alternativas consideradas — úteis para que decisões antigas não pareçam arbitrárias para quem chega depois no time.
+* **Diagramas C4** (Contexto, Contêineres, Componentes, Código): um modelo proposto por Simon Brown, de diagramação em quatro níveis de zoom, do mais abstrato (como o sistema se encaixa no mundo) ao mais detalhado (classes de um componente específico) — mais leve e mais usado atualmente do que notações formais completas como UML.
+* **Registros de Decisão de Arquitetura (*Architecture Decision Records* — ADRs)**, [popularizados por Michael Nygard](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions): pequenos documentos versionados junto ao código, registrando uma decisão de arquitetura, o contexto que levou a ela, e as alternativas consideradas — úteis para que decisões antigas não pareçam arbitrárias para quem chega depois no time.
 * **UML**, ainda útil para diagramas específicos (classes, sequência) quando o nível de detalhe compensa o custo de mantê-los atualizados — mas raramente usado hoje como especificação completa e exaustiva de um sistema, como se popularizou nos anos 1990/2000.
 
 ---
@@ -158,3 +158,7 @@ Arquitetura só é útil se for compreendida por quem constrói o sistema. Algum
 * SALTZER, Jerome H.; SCHROEDER, Michael D. *The Protection of Information in Computer Systems*. Proceedings of the IEEE, 63(9), 1975.
 * Modelo C4 — [c4model.com](https://c4model.com/)
 * NEWMAN, Sam. *Building Microservices*. 2. ed. O'Reilly, 2021.
+* IEEE Std 1471-2000. *Recommended Practice for Architectural Description of Software-Intensive Systems* (substituído pela ISO/IEC/IEEE 42010).
+* MARTIN, Robert C. *Agile Software Development: Principles, Patterns, and Practices*. Prentice Hall, 2002 (princípios SOLID).
+* FOWLER, Martin. *Yagni* — [martinfowler.com](https://www.martinfowler.com/bliki/Yagni.html); *Monolith First*, 2015 — [martinfowler.com](https://www.martinfowler.com/bliki/MonolithFirst.html)
+* NYGARD, Michael. *Documenting Architecture Decisions*, 2011 — [cognitect.com](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)

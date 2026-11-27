@@ -55,7 +55,7 @@ A elicitação de requisitos combina várias técnicas, cada uma com pontos fort
     Observar usuários realizando seu trabalho real revela necessidades que eles não saberiam verbalizar — hábitos, atalhos informais, exceções ao processo "oficial".
 
 === "Workshops e dinâmicas colaborativas"
-    Sessões com múltiplos stakeholders (ex: *Event Storming*, *Story Mapping*) ajudam a alinhar visões divergentes e descobrir requisitos nas lacunas entre departamentos.
+    Sessões com múltiplos stakeholders (ex: *Event Storming*, de Alberto Brandolini; *Story Mapping*, de Jeff Patton) ajudam a alinhar visões divergentes e descobrir requisitos nas lacunas entre departamentos.
 
 === "Protótipos"
     Mostrar algo tangível — mesmo que simples — costuma gerar feedback muito mais preciso do que discutir requisitos de forma puramente verbal ou textual.
@@ -109,7 +109,7 @@ Independente do formato (documento formal ou história de usuário), um bom requ
 * **Rastreável** — deve ser possível ligar o requisito à sua origem (stakeholder, regra de negócio) e ao código/teste que o implementa.
 * **Consistente** — não pode contradizer outro requisito do mesmo sistema.
 
-Um critério útil e amplamente usado para avaliar requisitos, especialmente em contexto ágil, é o acrônimo **INVEST**: Independente, Negociável, Valioso, Estimável, Pequeno (*Small*) e Testável.
+Um critério útil e amplamente usado para avaliar requisitos, especialmente em contexto ágil, é o acrônimo **INVEST**, [proposto por Bill Wake](https://xp123.com/invest-in-good-stories-and-smart-tasks/): Independente, Negociável, Valioso, Estimável, Pequeno (*Small*) e Testável.
 
 ## 🔐 Requisitos de segurança
 
@@ -205,3 +205,7 @@ Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de doc
 * GitHub *Spec Kit* — [github.github.com/spec-kit](https://github.github.com/spec-kit/)
 * Lei Geral de Proteção de Dados (Lei 13.709/2018) — [texto atualizado](https://www2.camara.leg.br/legin/fed/lei/2018/lei-13709-14-agosto-2018-787077-normaatualizada-pl.html)
 * Formato Gherkin (Cucumber) — [cucumber.io/docs/gherkin](https://cucumber.io/docs/gherkin/)
+* WAKE, Bill. *INVEST in Good Stories, and SMART Tasks*, 2003 — [xp123.com](https://xp123.com/invest-in-good-stories-and-smart-tasks/)
+* PATTON, Jeff. *User Story Mapping*. O'Reilly, 2014.
+* BRANDOLINI, Alberto. *Introducing EventStorming* — [leanpub.com](https://leanpub.com/introducing_eventstorming)
+* ISO/IEC/IEEE 29148:2018. *Systems and software engineering: Life cycle processes, Requirements engineering*.
