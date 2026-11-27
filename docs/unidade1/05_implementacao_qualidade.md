@@ -35,6 +35,82 @@ Boas práticas de revisão:
 * Comentários devem ser específicos e, idealmente, sugerir uma alternativa — não apenas apontar um problema.
 * Separar comentários bloqueantes ("isso precisa mudar antes de aprovar") de sugestões ("isso é uma ideia, mas não bloqueio por causa disso") evita fricção desnecessária.
 
+## 🔐 Código seguro
+
+Boa parte das vulnerabilidades nasce de decisões comuns de programação. O [OWASP Top 10](https://owasp.org/Top10/2025/0x00_2025-Introduction/), levantamento dos riscos mais importantes em aplicações web, tem estas categorias na edição de 2025:
+
+| Código | Categoria | Em poucas palavras |
+|---|---|---|
+| A01 | *Broken Access Control* | Alguém acessa ou altera o que não deveria |
+| A02 | *Security Misconfiguration* | Configuração padrão, aberta ou esquecida |
+| A03 | *Software Supply Chain Failures* | Dependência, ferramenta ou processo de build comprometido |
+| A04 | *Cryptographic Failures* | Criptografia ausente, fraca ou mal usada |
+| A05 | *Injection* | Dado do usuário interpretado como comando |
+| A06 | *Insecure Design* | A falha está no projeto, não só no código ([Capítulo 4](04_projeto_arquitetura.md)) |
+| A07 | *Authentication Failures* | Identificação de usuários que pode ser enganada |
+| A08 | *Software or Data Integrity Failures* | Código ou dados aceitos sem verificar a origem |
+| A09 | *Security Logging and Alerting Failures* | O ataque acontece e ninguém percebe |
+| A10 | *Mishandling of Exceptional Conditions* | Erros e situações anormais tratados de forma insegura |
+
+É uma lista para conscientização, não uma lista completa: para requisitos verificáveis, use o ASVS ([Capítulo 3](03_especificacao_requisitos.md)).
+
+### Validar a entrada na fronteira
+
+Tudo o que vem de fora deve ser conferido quando entra no sistema: tipo, tamanho e formato. Com Pydantic, a regra fica no próprio modelo:
+
+=== "Sem limite"
+    ```python
+    class TarefaEntrada(BaseModel):
+        titulo: str
+    ```
+
+=== "Com limite"
+    ```python
+    from typing import Annotated
+
+    from pydantic import BaseModel, StringConstraints
+
+    Titulo = Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, min_length=1, max_length=200),
+    ]
+
+
+    class TarefaEntrada(BaseModel):
+        titulo: Titulo
+    ```
+
+O [Capítulo 6](06_testes_validacao.md) aplica essa correção na API de tarefas, escrevendo o teste primeiro.
+
+### Separar comando de dado
+
+A injeção acontece quando um texto vindo do usuário é concatenado a um comando. Em SQL, a defesa é usar parâmetros:
+
+```python
+# Vulnerável: o título passa a fazer parte do comando SQL
+cursor.execute(f"SELECT * FROM tarefas WHERE titulo = '{titulo}'")
+
+# Seguro: o driver trata o título apenas como dado
+cursor.execute("SELECT * FROM tarefas WHERE titulo = ?", (titulo,))
+```
+
+O marcador (`?` no `sqlite3`) varia conforme a biblioteca. A mesma ideia vale para comandos do sistema operacional e para HTML gerado a partir de dados.
+
+### Segredos fora do código
+
+Senhas, tokens e chaves não pertencem ao repositório, nem à imagem de contêiner. A aplicação os recebe do ambiente, por exemplo por variáveis de ambiente ou por um cofre de segredos:
+
+```python
+import os
+
+chave_api = os.environ["CHAVE_API"]  # falha logo se não estiver definida
+```
+
+Para desenvolvimento, um arquivo `.env` local funciona, desde que esteja no `.gitignore` e no `.dockerignore`.
+
+!!! warning "Vazou um segredo? Apagar o arquivo não resolve"
+    O histórico do Git guarda as versões anteriores, e cópias do repositório podem já ter o segredo. A ordem recomendada pela [OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html) é: **revogar** o segredo exposto, **substituí-lo** por um novo, **removê-lo** de onde apareceu e **registrar** o que aconteceu e quem teve acesso.
+
 ## 🤖 Revisando código gerado por IA
 
 Assistentes e agentes de codificação (GitHub Copilot, Claude Code, Cursor e equivalentes) já fazem parte do dia a dia de boa parte dos times de desenvolvimento, gerando desde trechos pontuais até *pull requests* inteiros. Isso não elimina a necessidade de revisão de código — pelo contrário, muda o que a revisão precisa verificar:
@@ -46,6 +122,19 @@ Assistentes e agentes de codificação (GitHub Copilot, Claude Code, Cursor e eq
 
 !!! tip "IA muda o \"como\", não o \"porquê\" da revisão"
     Os benefícios de revisão de código listados no início desta seção — detecção de defeitos, disseminação de conhecimento, consistência, aprendizado — continuam os mesmos independentemente de quem (ou o quê) escreveu o código. O que muda é o volume e o tipo de atenção que o revisor precisa dedicar a cada mudança.
+
+### O que a pesquisa já mostrou
+
+* Num experimento de 2023 com 47 participantes, a maioria estudantes, quem usou um assistente de IA escreveu código **menos seguro** em quatro de cinco tarefas e, ao mesmo tempo, tendeu a **confiar mais** na segurança do que escreveu ([Perry et al., 2023](https://arxiv.org/abs/2211.03622)). O modelo usado é antigo, e os números não valem automaticamente para as ferramentas atuais, mas o alerta sobre excesso de confiança continua útil.
+* Modelos que geram código às vezes recomendam **pacotes que não existem**. Um estudo com 16 modelos mediu, em média, ao menos 5,2% de pacotes inventados nos modelos comerciais e 21,7% nos abertos ([Spracklen et al., 2025](https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen)). Alguém pode publicar um pacote malicioso com um desses nomes. Antes de instalar uma dependência sugerida, confirme que ela existe, é a que você pretendia e tem manutenção.
+
+### O que não entregar à ferramenta
+
+Antes de colar algo num assistente, ou de dar a um agente acesso a uma pasta, verifique as regras da organização e deixe de fora:
+
+* senhas, tokens, chaves e arquivos `.env`;
+* dados pessoais reais, inclusive em *logs* e cópias de banco de dados usadas para depuração;
+* código ou documentos sigilosos sem autorização para esse uso.
 
 ## 🔍 Análise estática de código
 
@@ -88,10 +177,16 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 1. Pegue uma função de um projeto seu com mais de 30 linhas. Reescreva-a aplicando pelo menos dois princípios de clean code discutidos aqui (nomes melhores, quebra em funções menores, remoção de duplicação).
 2. Configure um linter (`ruff` ou similar) em um projeto Python pequeno e corrija os três primeiros avisos que ele reportar.
 3. Escreva um checklist de code review com pelo menos 6 itens que você usaria como revisor em um projeto real.
+4. Acrescente ao checklist três itens de segurança, cada um ligado a uma categoria do OWASP Top 10.
+5. Peça a um assistente de IA o código de um *login* simples e revise-o: como a senha é armazenada? Há segredo no código? As dependências sugeridas existem?
 
 ## 📚 Para saber mais
 
 * MARTIN, Robert C. *Clean Code: A Handbook of Agile Software Craftsmanship*. Prentice Hall, 2008.
 * FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. *Accelerate: The Science of Lean Software and DevOps*. IT Revolution, 2018.
 * Documentação do `ruff` (linter/formatador Python) — [docs.astral.sh/ruff](https://docs.astral.sh/ruff/)
+* *OWASP Top 10:2025* — [owasp.org/Top10/2025](https://owasp.org/Top10/2025/0x00_2025-Introduction/)
+* OWASP *Secrets Management Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html)
+* PERRY, Neil; SRIVASTAVA, Megha; KUMAR, Deepak; BONEH, Dan. *Do Users Write More Insecure Code with AI Assistants?* ACM CCS, 2023 — [arxiv.org/abs/2211.03622](https://arxiv.org/abs/2211.03622)
+* SPRACKLEN, Joseph et al. *We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by Code Generating LLMs*. USENIX Security, 2025 — [usenix.org](https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen)
 * Guia de código semântico de commits — [conventionalcommits.org](https://www.conventionalcommits.org/pt-br/)

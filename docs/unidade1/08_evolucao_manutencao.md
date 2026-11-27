@@ -55,6 +55,47 @@ Sinais comuns de que um trecho de código pede refatoração (os chamados *code 
 * **Acoplamento excessivo** entre módulos que deveriam ser independentes;
 * **Comentários que compensam código confuso**, em vez de explicar decisões não óbvias.
 
+## 🩹 Dependências e vulnerabilidades
+
+Um sistema que não muda fica mais vulnerável com o tempo, porque falhas continuam sendo descobertas nas bibliotecas que ele usa. Atualizar dependências é manutenção preventiva, e funciona melhor em passos pequenos e frequentes do que num salto anual.
+
+O [Dependabot](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference), do GitHub, abre *pull requests* com as versões novas, e o pipeline do [Capítulo 7](07_integracao_entrega_continua.md) diz se algo quebrou. Para a API de tarefas, o arquivo `.github/dependabot.yml` seria:
+
+```yaml
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+```
+
+Esse arquivo configura atualizações de versão. Os alertas e as correções de segurança do Dependabot são ativados nas configurações do repositório. Imagens citadas dentro de comandos `run`, como as do Gitleaks e do Trivy no exemplo, não são atualizadas por ele: revise-as à mão.
+
+### Quando uma vulnerabilidade aparece
+
+1. **Confirmar**: o alerta se aplica à versão que você usa?
+2. **Avaliar**: o trecho vulnerável é alcançado? Está exposto? Que dados estão em risco?
+3. **Corrigir ou mitigar**: atualizar, desativar a funcionalidade ou restringir o acesso.
+4. **Verificar e publicar**: testes, pipeline e implantação.
+5. **Aprender**: registrar o ocorrido e o que evitaria a repetição.
+
+Decida antes quem recebe o aviso e em quanto tempo responde. Em projetos abertos, um arquivo `SECURITY.md` diz como relatar uma falha sem expô-la numa *issue* pública. O [SSDF, do NIST](https://csrc.nist.gov/pubs/sp/800/218/final), reúne práticas de desenvolvimento seguro que incluem identificar e responder a vulnerabilidades.
+
+## 🤖 Débito técnico em código gerado por IA
+
+Gerar código ficou rápido; entendê-lo e mantê-lo, não necessariamente. Quando um trecho entra no sistema sem que ninguém do time consiga explicá-lo, nasce uma dívida que não aparece em nenhum quadro. Alguns sinais: soluções diferentes para o mesmo problema em pontos diferentes, abstrações que ninguém pediu e testes que apenas repetem a implementação.
+
+O relatório DORA de 2025 descreve a IA como um [amplificador do que a organização já tem](https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report): associa seu uso a mais vazão de entregas, mas também a menos estabilidade, e aponta testes automatizados, controle de versão maduro e retorno rápido como proteção. Na prática: mudanças pequenas, revisão por quem vai manter, e refatoração como parte do trabalho, não como promessa.
+
 ## 🔭 Observabilidade: entendendo um sistema vivo
 
 Manter e evoluir um sistema em produção com segurança depende de conseguir **observar** seu comportamento real — não apenas assumir que ele funciona como planejado. Três pilares, hoje tratados como parte essencial da manutenção de qualquer sistema relevante:
@@ -72,10 +113,14 @@ Sem observabilidade adequada, manutenção corretiva vira um exercício de tenta
 1. Classifique três mudanças recentes em um projeto seu (ou de algum software que você usa e acompanha) segundo os quatro tipos de manutenção (corretiva, adaptativa, evolutiva, preventiva).
 2. Descreva um exemplo de débito técnico "deliberado e prudente" que você tomaria conscientemente em um projeto real, explicando a troca de curto prazo por longo prazo envolvida.
 3. Escolha um trecho de código com pelo menos um *code smell* (duplicação, método longo, nome ruim) e refatore-o, garantindo que os testes existentes (ou novos testes que você escreva antes) continuem passando depois da mudança.
+4. Configure o Dependabot em um repositório seu e analise o primeiro *pull request* que ele abrir: o que mudou na dependência e como você sabe que é seguro aceitar?
 
 ## 📚 Para saber mais
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 9.
+* NIST SP 800-218. *Secure Software Development Framework (SSDF)*, versão 1.1, 2022 — [csrc.nist.gov](https://csrc.nist.gov/pubs/sp/800/218/final)
+* GitHub, referência de opções do Dependabot — [docs.github.com](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference)
+* Google Cloud. *Announcing the 2025 DORA Report* — [cloud.google.com](https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report)
 * FOWLER, Martin. *Refactoring: Improving the Design of Existing Code*. 2. ed. Addison-Wesley, 2018.
 * CUNNINGHAM, Ward. *The WyCash Portfolio Management System* (artigo original sobre débito técnico, 1992).
 * Artigo *TechnicalDebtQuadrant* — [martinfowler.com/bliki/TechnicalDebtQuadrant.html](https://martinfowler.com/bliki/TechnicalDebtQuadrant.html)

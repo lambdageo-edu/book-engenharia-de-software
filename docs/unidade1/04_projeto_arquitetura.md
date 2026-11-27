@@ -99,7 +99,7 @@ Para a primeira, basta um diagrama de por onde os dados passam, marcando as **fr
  API (FastAPI)  ----->  Armazenamento (hoje, um dicionário em memória)
 ```
 
-Para a segunda, o acrônimo **STRIDE**, proposto na Microsoft por Kohnfelder e Garg em 1999, serve de lista de conferência. Aplicado à versão atual da API:
+Para a segunda, o acrônimo **STRIDE**, proposto na Microsoft por Kohnfelder e Garg em 1999, serve de lista de conferência. Aplicado à primeira versão da API:
 
 | Ameaça | Propriedade violada | Na API de tarefas |
 |---|---|---|

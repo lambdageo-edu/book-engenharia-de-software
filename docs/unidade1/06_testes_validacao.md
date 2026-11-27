@@ -254,6 +254,43 @@ Assistentes de codificação são cada vez mais usados para gerar testes automat
 
 Isso não invalida o uso de IA para gerar testes — apenas desloca a responsabilidade do desenvolvedor: ler e validar cada teste gerado contra o comportamento esperado (não contra o comportamento atual do código) continua sendo indispensável antes de aceitar a mudança na suíte.
 
+## 🔐 Da história de abuso ao teste
+
+O [Capítulo 3](03_especificacao_requisitos.md) registrou uma história de abuso: títulos enormes esgotando a memória do servidor. Vamos tratá-la com o ciclo do TDD. Primeiro, o teste, acrescentado a `test_main.py`:
+
+```python
+@pytest.mark.parametrize("tamanho, status", [(200, 201), (201, 422)])
+def test_limite_do_titulo(tamanho, status):
+    resposta = client.post("/tarefas", json={"titulo": "a" * tamanho})
+    assert resposta.status_code == status
+    assert len(client.get("/tarefas").json()) == (1 if status == 201 else 0)
+```
+
+Ao rodar `pytest`, o caso de 201 caracteres falha: a API ainda o aceita. Agora a correção em `app/main.py`, que substitui a classe `TarefaEntrada` pela versão com limite ([Capítulo 5](05_implementacao_qualidade.md)):
+
+```python
+from typing import Annotated
+
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, StringConstraints
+
+app = FastAPI(title="API de Tarefas")
+
+Titulo = Annotated[
+    str,
+    StringConstraints(strip_whitespace=True, min_length=1, max_length=200),
+]
+
+
+class TarefaEntrada(BaseModel):
+    titulo: Titulo
+    concluida: bool = False
+```
+
+Em `criar_tarefa`, as duas linhas do `if not dados.titulo.strip()` podem ser removidas, porque o modelo já recusa título vazio ou só com espaços. Os testes confirmam: os anteriores continuam passando e os dois novos também.
+
+O limite impede que um título enorme seja **armazenado**, mas o servidor ainda lê a requisição inteira antes de validá-la. Limitar o tamanho do corpo e a quantidade de requisições é tarefa do servidor ou do *proxy* à frente dele, e essa parte do risco continua aberta.
+
 ---
 
 ## 🎯 Atividades
