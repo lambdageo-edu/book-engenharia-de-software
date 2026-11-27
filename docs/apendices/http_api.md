@@ -50,6 +50,7 @@ O primeiro dígito indica a família: `2xx`, deu certo; `3xx`, redirecionamento;
 | 409 | *Conflict* | O pedido não cabe no estado atual do recurso |
 | 422 | *Unprocessable Content* | O formato é compreendido, mas o conteúdo é inválido |
 | 500 | *Internal Server Error* | Erro não previsto no servidor |
+| 502 | *Bad Gateway* | Um intermediário, como um *proxy*, não obteve resposta válida do servidor à sua frente |
 
 ## 🧱 REST
 
