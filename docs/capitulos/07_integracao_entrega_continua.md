@@ -380,7 +380,7 @@ curl -k https://localhost/docs
 
 Repare que a API não publica porta: só o *proxy* é alcançável de fora. Em `localhost`, o certificado é emitido por uma autoridade local, e por isso o `curl` precisa do `-k`. Com um domínio real, o DNS deve apontar para o servidor e as portas 80 e 443 devem estar abertas à internet. Logo depois de subir, o *proxy* pode responder 502 por alguns segundos, enquanto a API inicia. A imagem `caddy:2` é uma *tag*, pelo mesmo motivo da imagem base do `Dockerfile`.
 
-Voltar atrás (*rollback*) é implantar a imagem anterior, o que só funciona se o banco continuar compatível com ela ([Capítulo 8](08_evolucao_manutencao.md)). E o HTTPS não resolve tudo: continuam faltando cópias de segurança, limite de requisições e monitoramento.
+Voltar atrás (*rollback*) é implantar a imagem anterior, o que só funciona se o banco continuar compatível com ela ([Capítulo 8](08_evolucao_manutencao.md)). E o HTTPS não resolve tudo: continuam faltando [cópias de segurança](08_evolucao_manutencao.md), limite de requisições e monitoramento.
 
 ### Infraestrutura como código
 

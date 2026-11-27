@@ -105,6 +105,33 @@ A **definição de pronto** (*Definition of Done*) descreve o estado que um incr
 
 Não confunda com os **critérios de aceitação** (Capítulo 3): eles mudam a cada história e dizem o que *aquela* funcionalidade deve fazer; a definição de pronto vale para *todas*. A ideia é útil mesmo fora do Scrum.
 
+### Estimar o trabalho
+
+O Scrum pede que o time dimensione o que vai fazer, mas [não prescreve como](https://www.scrum.org/resources/blog/myth-9-story-points-are-required-scrum). Uma técnica comum é a **estimativa relativa** em **pontos**: em vez de perguntar quantas horas leva, compara-se um item com outro já conhecido. "Filtrar tarefas por responsável" vale 2; "convidar membros por e-mail", com mais incertezas, talvez 8.
+
+No [***planning poker***](https://mountaingoatsoftware.com/agile/planning-poker):
+
+1. alguém apresenta o item, e o time tira dúvidas;
+2. cada pessoa escolhe em segredo uma carta (por exemplo 1, 2, 3, 5, 8, 13);
+3. todas são reveladas ao mesmo tempo, para que a primeira opinião não puxe as demais;
+4. quem deu o maior e o menor valor explica, e vota-se de novo.
+
+A conversa vale mais que o número: uma diferença grande costuma revelar que as pessoas entenderam coisas diferentes. Item grande demais para estimar deve ser dividido.
+
+A **velocidade** é a soma dos pontos dos itens concluídos por *sprint*. Depois de algumas *sprints*, ela ajuda a prever: com 60 pontos pela frente e uma velocidade entre 10 e 15, faltam de 4 a 6 *sprints*. Informe o intervalo, não uma data exata. Pontos são de cada time: não servem para comparar equipes nem para cobrar produtividade.
+
+### Acompanhar os riscos
+
+**Risco** é algo que pode acontecer e prejudicar o projeto. Para uma equipe pequena, basta uma lista curta, revista a cada *sprint*:
+
+| Risco | Chance | Impacto | O que fazer | Quem acompanha |
+|---|---|---|---|---|
+| Só uma pessoa sabe fazer a implantação | alta | alto | Documentar e alternar quem implanta | Ana |
+| O serviço de e-mail muda o plano gratuito | baixa | médio | Isolar o envio atrás de uma interface | Bruno |
+| O servidor perde o banco | baixa | alto | Cópias de segurança e restauração ensaiada ([Capítulo 8](08_evolucao_manutencao.md)) | Ana |
+
+Para cada risco relevante, decide-se como **evitar**, **reduzir** a chance ou o dano, ou preparar um **plano de contingência**. Aceitar um risco também é uma decisão, desde que registrada. Cronograma, custo e gestão de pessoas ficam fora do escopo deste livro (SOMMERVILLE, 2019, trata deles).
+
 ### Kanban
 
 Kanban tem origem no sistema de produção da Toyota e foi adaptado ao desenvolvimento de software por David J. Anderson (2010). Em vez de iterações de tempo fixo, o trabalho flui continuamente por colunas em um quadro (ex: *A Fazer → Em Progresso → Em Revisão → Concluído*), com **limites explícitos de trabalho em progresso (WIP)** para evitar sobrecarga e destacar gargalos.
@@ -189,6 +216,8 @@ A maioria das organizações de produto digital hoje adota variantes ágeis com 
 3. Explique, com suas palavras, a diferença entre "ser ágil" e "fazer DevOps". Dê um exemplo de time que seria um, mas não o outro.
 4. Escreva a definição de pronto de um projeto em que você participa. Quais itens podem ser verificados automaticamente?
 5. Faça em par uma pequena mudança, alternando quem escreve a cada 15 minutos. O que a segunda pessoa percebeu que passaria despercebido? Quanto custou?
+6. Em grupo, estimem cinco histórias com *planning poker*. Onde houve a maior diferença, o que ela revelou?
+7. Liste três riscos de um projeto seu, com chance, impacto, o que fazer e quem acompanha.
 
 ## 📚 Para saber mais
 
@@ -196,6 +225,9 @@ A maioria das organizações de produto digital hoje adota variantes ágeis com 
 * Manifesto para Desenvolvimento Ágil de Software — [agilemanifesto.org/iso/ptbr/manifesto.html](https://agilemanifesto.org/iso/ptbr/manifesto.html)
 * Scrum Guide (oficial) — [scrumguides.org](https://scrumguides.org/)
 * SCHWABER, Ken; SUTHERLAND, Jeff. *The Scrum Guide*, 2020 — [scrumguides.org](https://www.scrumguides.org/scrum-guide.html)
+* Mountain Goat Software, *Planning Poker* — [mountaingoatsoftware.com](https://mountaingoatsoftware.com/agile/planning-poker)
+* Scrum.org, *Myth: Story Points are Required in Scrum* — [scrum.org](https://www.scrum.org/resources/blog/myth-9-story-points-are-required-scrum)
+* COHN, Mike. *Agile Estimating and Planning*. Prentice Hall, 2005.
 * BECK, Kent; ANDRES, Cynthia. *Extreme Programming Explained: Embrace Change*. 2. ed. Addison-Wesley, 2004.
 * Agile Alliance, glossário: *Extreme Programming* — [agilealliance.org](https://agilealliance.org/?p=8031229)
 * FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. *Accelerate: The Science of Lean Software and DevOps*. IT Revolution, 2018.
