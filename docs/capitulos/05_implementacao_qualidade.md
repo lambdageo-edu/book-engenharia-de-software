@@ -15,6 +15,24 @@ Algumas práticas amplamente aceitas de código limpo:
 * **Evitar duplicação (princípio DRY — *Don't Repeat Yourself*, de Hunt e Thomas)**: lógica duplicada em vários lugares significa que uma correção precisa ser lembrada e replicada em todos eles.
 * **Comentários que explicam o "porquê", não o "o quê"**: se o código precisa de um comentário para explicar o que ele faz, muitas vezes é sinal de que ele poderia ser reescrito de forma mais clara. Comentários são mais valiosos quando explicam uma decisão não óbvia ("usamos X em vez de Y por causa da limitação Z da API externa").
 
+### Efeitos colaterais
+
+Uma função surpreende quando faz mais do que o nome promete:
+
+```python
+def senha_confere(usuario, senha):
+    if usuario.senha_correta(senha):
+        usuario.iniciar_sessao()  # quem só queria conferir também fez login
+        return True
+    return False
+```
+
+Quem chama `senha_confere` para confirmar uma operação não espera abrir uma sessão. Separe a pergunta da ação, deixando uma função que apenas responde e outra, chamada de forma explícita, que inicia a sessão. Bertrand Meyer chamou essa regra de **separação entre comandos e consultas**: um método muda o estado ou devolve uma informação, não os dois. É uma orientação, com exceções conhecidas, como retirar um item de uma fila.
+
+### A regra do escoteiro
+
+Robert C. Martin propõe deixar o código um pouco mais limpo do que o encontrou: um nome melhor, uma duplicação removida, um comentário desatualizado apagado. Assim a limpeza não fica para um grande dia que não chega. Mantenha o passo pequeno e coberto por testes, e separe-o em um *commit* próprio: misturar limpeza ampla com mudança de comportamento dificulta a revisão. O [Capítulo 8](08_evolucao_manutencao.md) trata de refatoração e débito técnico.
+
 !!! warning "Clean code não é dogma"
     Regras de estilo (como "funções devem ter no máximo N linhas") são heurísticas úteis, não leis absolutas. O objetivo final é sempre a legibilidade e a manutenibilidade — se seguir uma regra à risca torna o código pior, a regra perde.
 
@@ -206,6 +224,7 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 ## 📚 Para saber mais
 
 * MARTIN, Robert C. *Clean Code: A Handbook of Agile Software Craftsmanship*. Prentice Hall, 2008.
+* MEYER, Bertrand. *Object-Oriented Software Construction*. 2. ed. Prentice Hall, 1997.
 * FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. *Accelerate: The Science of Lean Software and DevOps*. IT Revolution, 2018.
 * Documentação do `ruff` (linter/formatador Python) — [docs.astral.sh/ruff](https://docs.astral.sh/ruff/)
 * *OWASP Top 10:2025* — [owasp.org/Top10/2025](https://owasp.org/Top10/2025/0x00_2025-Introduction/)

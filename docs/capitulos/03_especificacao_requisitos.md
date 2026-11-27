@@ -60,6 +60,23 @@ A elicitação de requisitos combina várias técnicas, cada uma com pontos fort
 === "Protótipos"
     Mostrar algo tangível — mesmo que simples — costuma gerar feedback muito mais preciso do que discutir requisitos de forma puramente verbal ou textual.
 
+### Prototipação
+
+Um **protótipo** é uma versão parcial e barata do sistema, feita para responder a uma dúvida antes de construí-lo. Ele varia em três aspectos:
+
+| Aspecto | De um lado | Do outro |
+|---|---|---|
+| **Fidelidade** | *Baixa*: rascunho no papel ou *wireframe*, sem cores nem dados reais | *Alta*: aparência e navegação próximas das finais |
+| **Alcance** | *Horizontal*: muitas telas ou funções, todas rasas | *Vertical*: uma função completa, atravessando todas as camadas |
+| **Destino** | *Descartável*: serve para aprender e é jogado fora | *Evolutivo*: é construído para crescer até virar o produto |
+
+O ciclo é curto: definir a dúvida, decidir o que o protótipo precisa mostrar (e o que não precisa), construir, avaliar com quem vai usar e registrar o que mudou nos requisitos. Para um gerenciador de tarefas, o rascunho de um quadro com três colunas já provoca perguntas: um membro vê as tarefas dos outros? Pode arrastar uma tarefa pendente direto para "concluída"? Uma API também pode ser prototipada, por exemplo com exemplos de requisição e resposta.
+
+Comece pela menor fidelidade que responda à dúvida: diante de um desenho com aparência de pronto, as pessoas tendem a discutir cores em vez de regras.
+
+!!! warning "Protótipo descartável não vai para produção"
+    Ele foi feito sem testes, tratamento de erros nem segurança. Se há intenção de aproveitá-lo, trate-o como código de verdade desde o início. Vale o mesmo para a aplicação que um assistente de IA monta em minutos.
+
 ### Requisito em formato clássico
 
 Em processos dirigidos a planos, cada requisito costuma ser registrado em um documento, com identificador e campos definidos. Um exemplo:
@@ -86,6 +103,14 @@ para que <benefício/objetivo>.
 ```
 
 *Exemplo:* "Como assinante do plano gratuito, quero ver quantos créditos me restam no mês, para que eu possa planejar meu uso sem ser surpreendido."
+
+Ron Jeffries resumiu a ideia em [três Cs](https://ronjeffries.com/xprog/articles/expcardconversationconfirmation):
+
+* **Cartão**: a frase curta, que serve de lembrete e permite priorizar;
+* **Conversa**: o diálogo entre quem pede e quem constrói, onde os detalhes aparecem;
+* **Confirmação**: os critérios que mostram que a história foi atendida.
+
+O texto no cartão é a menor parte: a história é uma promessa de conversar.
 
 Uma história de usuário sozinha costuma ser incompleta demais para guiar o desenvolvimento — por isso ela é normalmente acompanhada de **critérios de aceitação**, que funcionam como uma especificação mínima e testável:
 
@@ -173,6 +198,46 @@ flowchart TD
     estado -- sim --> marca[Marca como concluída]
     marca --> ok([Devolve a tarefa])
 ```
+
+### Classes de análise
+
+Antes de projetar o código, vale identificar os **conceitos do problema**: de que coisas os requisitos falam, o que cada uma precisa saber e como se relacionam. O resultado é um modelo de **classes de análise**, sem tipos de dados, métodos ou decisões de tecnologia.
+
+Um ponto de partida é sublinhar os substantivos das histórias e casos de uso, e então filtrar. Para a frase "o dono do projeto atribui a um membro uma tarefa com título":
+
+| Candidato | Decisão | Por quê |
+|---|---|---|
+| Projeto | Classe | Tem identidade, dados próprios e reúne tarefas e pessoas |
+| Tarefa | Classe | Tem identidade e muda de situação |
+| Usuário | Classe | É a pessoa que participa dos projetos |
+| Dono, membro, responsável | Papéis | São relações de um usuário com um projeto ou uma tarefa |
+| Título | Atributo | Só descreve uma tarefa |
+
+```mermaid
+classDiagram
+    direction TB
+    class Usuario {
+        nome
+    }
+    class Projeto {
+        nome
+    }
+    class Tarefa {
+        titulo
+        situação
+    }
+    Usuario "1..*" -- "0..*" Projeto : participa
+    Projeto "1" -- "0..*" Tarefa : reúne
+    Usuario "0..1" -- "0..*" Tarefa : responde por
+```
+
+Para distribuir as responsabilidades, uma classificação conhecida, de Ivar Jacobson, separa três tipos:
+
+* **Fronteira**: conversa com os atores (uma tela, um *endpoint*);
+* **Controle**: conduz o caso de uso (conferir a permissão e concluir a tarefa);
+* **Entidade**: guarda a informação e as regras do domínio (usuário, projeto, tarefa).
+
+Os substantivos são só um começo: nem todos viram classes, e alguns conceitos não aparecem no texto. Os **cartões CRC** (classe, responsabilidades, colaboradores) ajudam a testar o modelo em equipe: cada pessoa representa uma classe, e o grupo encena um caso de uso. O [Capítulo 4](04_projeto_arquitetura.md) transforma este modelo em um diagrama de projeto.
 
 !!! tip "Quando vale a pena"
     Casos de uso ajudam a delimitar o escopo e a conversar com quem não programa. Um diagrama de atividades compensa quando há várias decisões ou vários participantes. Para um cadastro simples, uma história de usuário com critérios de aceitação basta.
@@ -274,11 +339,15 @@ Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de doc
 5. Escreva a especificação de uma pequena mudança antes de pedi-la a um assistente de IA. Compare o resultado com o de um pedido de uma linha: o que foi suposto em cada caso?
 6. Para o aplicativo de biblioteca do item 1, desenhe o diagrama de casos de uso e descreva um dos casos, com pelo menos duas alternativas.
 7. Defina a dúvida que um MVP do aplicativo de biblioteca deveria responder e classifique os requisitos com MoSCoW.
+8. Desenhe no papel um protótipo de baixa fidelidade da devolução de um livro, mostre a um colega e registre o que mudou nos requisitos.
+9. Para o mesmo aplicativo, identifique as classes de análise e justifique dois candidatos que você rejeitou.
 
 ## 📚 Para saber mais
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 4.
 * COHN, Mike. *User Stories Applied: For Agile Software Development*. Addison-Wesley, 2004.
+* SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 2 (prototipação).
+* NIELSEN, Jakob. *Usability Engineering*. Academic Press, 1993 (protótipos horizontais e verticais).
 * OWASP *Application Security Verification Standard* — [owasp.org/ASVS](https://owasp.org/ASVS/)
 * OWASP *Abuse Case Cheat Sheet* (material histórico) — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Abuse_Case_Cheat_Sheet.html)
 * GitHub *Spec Kit* — [github.github.com/spec-kit](https://github.github.com/spec-kit/)
@@ -287,6 +356,10 @@ Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de doc
 * WAKE, Bill. *INVEST in Good Stories, and SMART Tasks*, 2003 — [xp123.com](https://xp123.com/invest-in-good-stories-and-smart-tasks/)
 * PATTON, Jeff. *User Story Mapping*. O'Reilly, 2014.
 * RIES, Eric. *The Lean Startup*. Crown Business, 2011.
+* JEFFRIES, Ron. *Essential XP: Card, Conversation, Confirmation*, 2001 — [ronjeffries.com](https://ronjeffries.com/xprog/articles/expcardconversationconfirmation)
+* JACOBSON, Ivar et al. *Object-Oriented Software Engineering: A Use Case Driven Approach*. Addison-Wesley, 1992.
+* BECK, Kent; CUNNINGHAM, Ward. *A Laboratory for Teaching Object-Oriented Thinking*. OOPSLA, 1989 (cartões CRC).
+* BEZERRA, Eduardo. *Princípios de Análise e Projeto de Sistemas com UML*. 3. ed. Elsevier, 2015.
 * Agile Alliance, glossário: *Minimum Viable Product* — [agilealliance.org](https://agilealliance.org/?p=8031702)
 * Agile Business Consortium. *MoSCoW Prioritization Template and Poster*, 2026 — [agilebusiness.org](https://www.agilebusiness.org/resource/moscow-prioritization-template/)
 * BRANDOLINI, Alberto. *Introducing EventStorming* — [leanpub.com](https://leanpub.com/introducing_eventstorming)
