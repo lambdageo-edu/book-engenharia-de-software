@@ -271,6 +271,30 @@ permissions:
   contents: read
 ```
 
+## 🎯 Testar a aplicação em execução: DAST e teste de invasão
+
+As verificações acima examinam arquivos: código, dependências, histórico e imagem. O **DAST** (*Dynamic Application Security Testing*) faz o contrário: envia requisições à aplicação **em execução**, como alguém de fora, e observa as respostas. Pode encontrar problemas que só aparecem com tudo montado, como cabeçalhos de segurança ausentes ou erros que expõem detalhes internos.
+
+Uma ferramenta livre é o [ZAP](https://www.zaproxy.org/docs/docker/api-scan). Para uma API que publica a descrição OpenAPI, como as feitas com FastAPI, com a aplicação rodando na porta 8000 (comando para Linux):
+
+```bash
+docker run --rm --network host zaproxy/zap-stable \
+  zap-api-scan.py -t http://localhost:8000/openapi.json -f openapi
+```
+
+!!! danger "Só em ambiente seu"
+    Essa varredura é **ativa**: envia ataques de verdade e pode criar ou alterar dados. Rode-a em um ambiente de teste, com banco descartável. Varrer um sistema alheio sem autorização por escrito pode ser crime.
+
+Ler o resultado exige cuidado. Em um teste com o TaskFlow, em novembro de 2026, o ZAP não apontou falha, apenas um aviso sobre o cabeçalho `X-Content-Type-Options`. Mas cerca de metade das requisições foi recusada com 401: sem um *token*, a varredura não passou da porta nas rotas protegidas. "Nenhum alerta" não quer dizer "sem vulnerabilidades". Para ir além, é preciso configurar a autenticação na ferramenta, e a autorização entre usuários continua dependendo de testes escritos por quem conhece as regras ([Capítulo 6](06_testes_validacao.md)).
+
+| | Examina | Quando é mais útil | Limite |
+|---|---|---|---|
+| **SAST** | O código | A cada *commit* | Falsos alarmes; não vê o sistema montado |
+| **DAST** | A aplicação rodando | Em um ambiente de teste | Só alcança o que consegue acessar |
+| **Teste de invasão** | O sistema, com uma pessoa especializada | Antes de lançamentos e mudanças importantes | Caro, e retrata um momento |
+
+O **teste de invasão** (*pentest*) é feito por pessoas autorizadas que combinam falhas e exploram a lógica do negócio, o que ferramentas automáticas fazem mal. O escopo, o período e o que é proibido são acertados antes, por escrito.
+
 ## 🤖 Agentes de codificação e o pipeline
 
 Uma tendência recente é a de agentes de codificação que não apenas sugerem trechos de código, mas abrem *pull requests* completos de forma autônoma — recebendo uma tarefa (ex: uma *issue* do GitHub), explorando o repositório, implementando a mudança, e submetendo-a para revisão. Do ponto de vista do pipeline de CI/CD, isso não muda a arquitetura discutida neste capítulo: um *pull request* aberto por um agente passa pelos mesmos portões de qualidade — lint, testes, cobertura mínima — que um *pull request* aberto por uma pessoa.
@@ -293,12 +317,14 @@ Um agente com acesso ao repositório traz um risco novo. Ele lê *issues*, comen
 3. Construa a imagem Docker localmente (`docker build -t api-tarefas .`) e rode um contêiner a partir dela (`docker run -p 8000:8000 api-tarefas`), acessando `http://localhost:8000/docs` para ver a documentação interativa gerada automaticamente pelo FastAPI.
 4. Descreva, para um sistema hipotético que você conheça, qual estratégia de deploy (blue-green, canary, feature flags) você usaria para lançar uma mudança arriscada, e por quê.
 5. Acrescente o job `seguranca` ao seu repositório. Depois, em uma branch de teste, grave um token **falso** em um arquivo e confira se o pipeline o aponta.
+6. Rode o ZAP contra a sua API, em um ambiente de teste. Quantas rotas ele realmente exercitou? O que mudaria se ele tivesse um *token*?
 
 ## 📚 Para saber mais
 
 * FOWLER, Martin. *Continuous Integration* — [martinfowler.com/articles/continuousIntegration.html](https://martinfowler.com/articles/continuousIntegration.html)
 * HUMBLE, Jez; FARLEY, David. *Continuous Delivery*. Addison-Wesley, 2010.
 * GitHub, *Secure use reference* (Actions) — [docs.github.com](https://docs.github.com/en/actions/reference/security/secure-use)
+* ZAP, *API Scan* — [zaproxy.org](https://www.zaproxy.org/docs/docker/api-scan)
 * Aqua Security. *Trivy supply chain attack: what you need to know*, 2026 — [aquasec.com](https://www.aquasec.com/blog/trivy-supply-chain-attack-what-you-need-to-know/)
 * *OWASP GenAI Top 10 for LLM Applications*, 2026 — [genai.owasp.org](https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/)
 * Documentação oficial: [GitHub Actions](https://docs.github.com/actions), [Docker](https://docs.docker.com/)

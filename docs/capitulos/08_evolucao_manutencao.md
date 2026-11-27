@@ -85,6 +85,18 @@ Esse arquivo configura atualizações de versão. Os alertas e as correções de
 
 ### Quando uma vulnerabilidade aparece
 
+Vulnerabilidades divulgadas publicamente costumam receber um identificador [**CVE**](https://www.cve.org/about/overview), como `CVE-2024-3094`, que permite a ferramentas e pessoas falarem da mesma falha. A gravidade costuma ser expressa pelo [**CVSS**](https://www.first.org/cvss/v4.0/user-guide), uma nota de 0 a 10.
+
+A nota básica mede **gravidade, e não risco** para o seu sistema, e o próprio guia do CVSS recomenda não usá-la sozinha. Para decidir a ordem das correções, combine-a com outras perguntas:
+
+* a falha está sendo explorada? O catálogo [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog), da agência americana CISA, lista as que já foram;
+* o trecho vulnerável é usado e está exposto no seu caso?
+* que dados ou funções seriam atingidos?
+
+Uma nota 9 em uma função que o seu sistema nunca chama pode esperar mais do que uma nota 6 exposta na internet e em exploração. Registre a decisão, inclusive a de não corrigir agora, e quando revê-la.
+
+Um roteiro para cada alerta:
+
 1. **Confirmar**: o alerta se aplica à versão que você usa?
 2. **Avaliar**: o trecho vulnerável é alcançado? Está exposto? Que dados estão em risco?
 3. **Corrigir ou mitigar**: atualizar, desativar a funcionalidade ou restringir o acesso.
@@ -92,6 +104,23 @@ Esse arquivo configura atualizações de versão. Os alertas e as correções de
 5. **Aprender**: registrar o ocorrido e o que evitaria a repetição.
 
 Decida antes quem recebe o aviso e em quanto tempo responde. Em projetos abertos, um arquivo `SECURITY.md` diz como relatar uma falha sem expô-la numa *issue* pública. O [SSDF, do NIST](https://csrc.nist.gov/pubs/sp/800/218/final), reúne práticas de desenvolvimento seguro que incluem identificar e responder a vulnerabilidades.
+
+## 🚨 Resposta a incidentes
+
+Uma vulnerabilidade é uma porta que pode ser aberta. Um **incidente** é quando algo de fato acontece ou há forte suspeita: um *token* publicado por engano, um acesso indevido, dados apagados. Nessa hora há pressa e pouca informação, e por isso o roteiro se escreve antes.
+
+| Momento | O que fazer | Exemplo: um *token* de sessão vazou |
+|---|---|---|
+| **Preparar** | Definir quem decide, contatos, acessos e cópias de segurança | Saber como encerrar sessões |
+| **Detectar e avaliar** | Confirmar o que houve, desde quando e o que foi atingido | Ver o que foi feito com aquela sessão |
+| **Conter** | Impedir que o dano aumente, preservando as evidências | Apagar a sessão (ou todas) |
+| **Corrigir e recuperar** | Eliminar a causa e restaurar o serviço | Retirar o *token* de onde apareceu e fechar a brecha |
+| **Aprender** | Registrar e mudar o que permitiu o incidente | *Postmortem* sem culpa ([Capítulo 2](02_processos_desenvolvimento.md)) |
+
+Durante o incidente, anote horários e ações: a memória falha, e o registro será necessário depois. Evite apagar a máquina ou os *logs* antes de entender o que houve. O [NIST SP 800-61](https://csrc.nist.gov/pubs/sp/800/61/r3/final) (revisão 3, 2025) trata a resposta a incidentes como parte da gestão de riscos, e não como um evento isolado.
+
+!!! warning "Dados pessoais trazem obrigação legal"
+    Pela LGPD, um incidente com dados pessoais que possa causar risco ou dano relevante aos titulares deve ser comunicado à ANPD e a eles. O [regulamento da ANPD](https://www.gov.br/anpd/pt-br/canais_atendimento/agente-de-tratamento/comunicado-de-incidente-de-seguranca-cis) (Resolução CD/ANPD nº 15/2024) fixa, em regra, três dias úteis. Envolva quem responde pela proteção de dados desde o início.
 
 ## 🗃️ Evoluindo o banco de dados
 
@@ -152,6 +181,31 @@ Manter e evoluir um sistema em produção com segurança depende de conseguir **
 
 Sem observabilidade adequada, manutenção corretiva vira um exercício de tentativa e erro: descobrir o que está errado em produção depende de conseguir enxergar, com dados reais, o que o sistema está de fato fazendo.
 
+### Registrar e monitorar para a segurança
+
+Sem registro, não há como detectar um ataque nem responder, depois, quem fez o quê. O [guia de *logging* da OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html) recomenda registrar, entre outros:
+
+* *logins* bem-sucedidos e malsucedidos;
+* acessos negados e entradas recusadas;
+* mudanças de permissão e ações administrativas;
+* erros e a inicialização e parada da aplicação.
+
+Cada registro precisa dizer **quando, quem, o quê, sobre qual recurso e com que resultado**:
+
+```python
+import logging
+
+seguranca = logging.getLogger("seguranca")
+
+seguranca.warning("acesso negado usuario=%s projeto=%s", usuario_id, projeto_id)
+```
+
+**Nunca registre** senhas, *tokens*, chaves ou *strings* de conexão, e evite dados pessoais: o *log* costuma ter muito mais leitores que o banco. Cuidado também ao copiar texto do usuário para o registro, que pode conter quebras de linha e forjar entradas.
+
+Guardar não basta: alguém precisa ser avisado. Comece com poucos alertas que peçam ação, como muitas falhas de *login* seguidas. Proteja os registros contra alteração e defina por quanto tempo ficam.
+
+O [TaskFlow](https://github.com/lambdageo-edu/taskflow) ainda não faz esse registro: é a ameaça de repúdio que ficou em aberto no [Capítulo 4](04_projeto_arquitetura.md).
+
 ---
 
 ## 🎯 Atividades
@@ -162,10 +216,16 @@ Sem observabilidade adequada, manutenção corretiva vira um exercício de tenta
 4. Configure o Dependabot em um repositório seu e analise o primeiro *pull request* que ele abrir: o que mudou na dependência e como você sabe que é seguro aceitar?
 5. No TaskFlow, acrescente o prazo às tarefas: escreva antes um teste que parta de um banco no esquema antigo, com uma tarefa, e confira que ela continua lá depois da migração.
 6. Peça a um colega que execute um projeto seu seguindo apenas o `README.md`. Anote onde ele travou e corrija o texto.
+7. Escreva o roteiro de resposta para este caso: uma senha do banco de dados foi publicada em um repositório público. Quem age, em que ordem, e o que se registra?
+8. No TaskFlow, registre os acessos negados e escreva um teste que confira o registro e garanta que nenhum *token* aparece nele.
 
 ## 📚 Para saber mais
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 9.
+* NIST SP 800-61 Rev. 3. *Incident Response Recommendations and Considerations for Cybersecurity Risk Management*, 2025 — [csrc.nist.gov](https://csrc.nist.gov/pubs/sp/800/61/r3/final)
+* CVE Program — [cve.org](https://www.cve.org/about/overview); FIRST, *CVSS v4.0 User Guide* — [first.org](https://www.first.org/cvss/v4.0/user-guide); CISA, catálogo KEV — [cisa.gov](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)
+* OWASP *Logging Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html)
+* ANPD, comunicação de incidente de segurança — [gov.br/anpd](https://www.gov.br/anpd/pt-br/canais_atendimento/agente-de-tratamento/comunicado-de-incidente-de-seguranca-cis)
 * NIST SP 800-218. *Secure Software Development Framework (SSDF)*, versão 1.1, 2022 — [csrc.nist.gov](https://csrc.nist.gov/pubs/sp/800/218/final)
 * PROCIDA, Daniele. *Diátaxis* — [diataxis.fr](https://diataxis.fr/)
 * GitHub, referência de opções do Dependabot — [docs.github.com](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference)
