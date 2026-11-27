@@ -1,25 +1,18 @@
-# Engenharia de Software
+# Desenvolvimento de Software
 
-Bem-vindo ao material didático da disciplina de **Engenharia de Software**! Este livro reúne, em oito capítulos, os fundamentos clássicos da disciplina — consolidados por autores como Sommerville e Pressman — atualizados com as práticas, ferramentas e o vocabulário que o mercado usa hoje: metodologias ágeis, arquitetura de software moderna, testes automatizados e integração/entrega contínua (CI/CD).
-
----
-
-## 📋 Plano da Disciplina
-
-| | |
-|---|---|
-| **Carga horária** | 40 horas (8 capítulos, ~5h de estudo/prática cada) |
-| **Estrutura** | Unidade única, sequencial, com avaliações ao final de cada bloco |
-| **Stack de exemplo** | Python (pytest, FastAPI) e GitHub Actions |
-| **Pré-requisitos** | Lógica de programação e experiência com pelo menos uma linguagem de programação |
-
-**Ementa:** O que é engenharia de software e por que ela existe. Processos e modelos de desenvolvimento, do cascata ao ágil e ao DevOps. Especificação e gerência de requisitos. Projeto de arquitetura e padrões de projeto. Implementação, qualidade de código e revisão de código. Testes automatizados e a pirâmide de testes. Integração e entrega contínua (CI/CD). Evolução, manutenção e débito técnico.
-
-Consulte o [plano detalhado da disciplina](unidade1/00_plano_unidade1.md) para o cronograma aula a aula, metodologia e critérios de avaliação.
+Este é um livro aberto sobre como construir, entregar e manter software. Em oito capítulos, ele reúne fundamentos clássicos da engenharia de software, consolidados por autores como Sommerville e Pressman, e as práticas atuais: métodos ágeis, arquitetura, testes automatizados e integração e entrega contínuas (CI/CD).
 
 ---
 
-## 🎯 Estrutura do Curso
+## 🧭 Antes de começar
+
+O livro pressupõe lógica de programação e experiência com pelo menos uma linguagem. Os exemplos usam Python (pytest, FastAPI) e GitHub Actions.
+
+Os capítulos seguem uma ordem progressiva, mas também podem ser consultados separadamente.
+
+---
+
+## 🎯 Estrutura do Livro
 
 ### 📘 Fundamentos (Capítulos 1-2)
 O que diferencia software de outros produtos, por que a engenharia de software nasceu como disciplina, e como as organizações estruturam seu trabalho — do modelo em cascata, passando pelo desenvolvimento incremental, até o Manifesto Ágil, Scrum, Kanban e a cultura DevOps.
