@@ -846,6 +846,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#publicar-versionar-e-implantar" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        📦 Publicar, versionar e implantar
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Publicar, versionar e implantar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#publicar-a-imagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Publicar a imagem
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#versoes-e-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Versões e releases
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-conteiner-ao-servidor" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Do contêiner ao servidor
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infraestrutura-como-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Infraestrutura como código
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#agentes-de-codificacao-e-o-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1182,6 +1243,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#publicar-versionar-e-implantar" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        📦 Publicar, versionar e implantar
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Publicar, versionar e implantar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#publicar-a-imagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Publicar a imagem
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#versoes-e-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Versões e releases
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-conteiner-ao-servidor" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Do contêiner ao servidor
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infraestrutura-como-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Infraestrutura como código
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#agentes-de-codificacao-e-o-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1374,7 +1496,7 @@
 <li><strong>Remover o <code>pip</code></strong>: o que não é necessário para rodar também não precisa ser corrigido depois.</li>
 <li><strong><code>.dockerignore</code></strong>: evita enviar ao <em>build</em> o ambiente virtual, o histórico do Git e arquivos locais como <code>.env</code>, que podem conter segredos.</li>
 </ul>
-<p>O job <code>imagem</code> apenas constrói a imagem, para garantir que o <code>Dockerfile</code> continua funcionando. O passo seguinte seria usar <code>docker/build-push-action</code> para publicá-la em um registro (GitHub Container Registry, Docker Hub, ECR) a cada merge na branch principal — o primeiro passo em direção à entrega contínua. Com o job <code>seguranca</code>, apresentado adiante, o job que publica deve declarar <code>needs: [test, seguranca]</code>, para que nada seja publicado com uma verificação reprovada.</p>
+<p>O job <code>imagem</code> apenas constrói a imagem, para garantir que o <code>Dockerfile</code> continua funcionando. O passo seguinte é publicá-la em um registro a cada merge na branch principal, o que se faz <a href="#publicar-a-imagem">adiante</a>, depois das verificações de segurança.</p>
 <div class="admonition example">
 <p class="admonition-title">Quando há banco de dados</p>
 <p>O sistema de arquivos de um contêiner some junto com ele. O <a href="https://github.com/lambdageo-edu/taskflow/blob/main/Dockerfile"><code>Dockerfile</code> do TaskFlow</a> cria a pasta <code>/dados</code>, entrega-a ao usuário sem privilégios, declara um <code>VOLUME</code> e aponta o banco para lá com a variável <code>TAREFAS_DB</code>:</p>
@@ -1519,6 +1641,95 @@
 </tbody>
 </table>
 <p>O <strong>teste de invasão</strong> (<em>pentest</em>) é feito por pessoas autorizadas que combinam falhas e exploram a lógica do negócio, o que ferramentas automáticas fazem mal. O escopo, o período e o que é proibido são acertados antes, por escrito.</p>
+<h2 id="publicar-versionar-e-implantar">📦 Publicar, versionar e implantar<a class="headerlink" href="#publicar-versionar-e-implantar" title="Permanent link">&para;</a></h2>
+<p>Até aqui, o pipeline confere a imagem e a descarta. Falta colocá-la em uso.</p>
+<h3 id="publicar-a-imagem">Publicar a imagem<a class="headerlink" href="#publicar-a-imagem" title="Permanent link">&para;</a></h3>
+<p>Um <strong>registro</strong> guarda imagens para que outras máquinas as baixem. Para usar o do GitHub (GHCR), ajuste o início do job <code>imagem</code>, para que ele dependa também das verificações de segurança e possa gravar pacotes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="w">  </span><span class="nt">imagem</span><span class="p">:</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">test</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">seguranca</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="nt">permissions</span><span class="p">:</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">      </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">      </span><span class="nt">packages</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span>
+</code></pre></div>
+<p>E acrescente, depois do passo do Trivy:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Publicar a imagem</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">        </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.event_name == 'push'</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">        </span><span class="nt">env</span><span class="p">:</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">          </span><span class="nt">TOKEN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.GITHUB_TOKEN }}</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">          </span><span class="nt">IMAGEM</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/${{ github.repository }}:${{ github.sha }}</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">          </span><span class="no">echo "$TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">          </span><span class="no">docker tag api-tarefas "$IMAGEM"</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">          </span><span class="no">docker push "$IMAGEM"</span>
+</code></pre></div>
+<p>Assim, só é publicada a imagem que passou pelos testes e pela varredura, e apenas em <code>push</code> para a <code>main</code>. A etiqueta com o identificador do <em>commit</em> diz de que código ela saiu. O nome da imagem precisa estar em minúsculas.</p>
+<h3 id="versoes-e-releases">Versões e releases<a class="headerlink" href="#versoes-e-releases" title="Permanent link">&para;</a></h3>
+<p>Quem usa o sistema precisa saber o que mudou. O <a href="https://semver.org/lang/pt-BR/">versionamento semântico</a> usa três números, <code>MAIOR.MENOR.CORREÇÃO</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Mudança</th>
+<th>Número que sobe</th>
+<th>Exemplo em uma API</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Incompatível com o uso anterior</td>
+<td>MAIOR</td>
+<td>Remover um campo da resposta</td>
+</tr>
+<tr>
+<td>Funcionalidade nova, compatível</td>
+<td>MENOR</td>
+<td>Acrescentar um <em>endpoint</em></td>
+</tr>
+<tr>
+<td>Correção compatível</td>
+<td>CORREÇÃO</td>
+<td>Consertar um código de resposta errado</td>
+</tr>
+</tbody>
+</table>
+<p>Enquanto a versão começa com <code>0.</code>, tudo ainda pode mudar. Uma versão publicada não se altera: corrige-se com outra. No Git, uma etiqueta anotada marca o ponto:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>git<span class="w"> </span>tag<span class="w"> </span>-a<span class="w"> </span>v1.2.0<span class="w"> </span>-m<span class="w"> </span><span class="s2">"Filtro por responsável"</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v1.2.0
+</code></pre></div>
+<p>Registre as novidades em um <a href="https://keepachangelog.com/"><code>CHANGELOG.md</code></a> ou nas <em>releases</em> do GitHub, escrito para quem usa, não como cópia da lista de <em>commits</em>. (As etiquetas do TaskFlow marcam etapas didáticas, e não versões semânticas.)</p>
+<h3 id="do-conteiner-ao-servidor">Do contêiner ao servidor<a class="headerlink" href="#do-conteiner-ao-servidor" title="Permanent link">&para;</a></h3>
+<p>É comum ter ambientes separados: o de desenvolvimento, o de <strong>homologação</strong>, parecido com o real, para conferir antes, e o de <strong>produção</strong>. A imagem é a mesma em todos; o que muda é a configuração, recebida do ambiente.</p>
+<p>Para publicar uma API na rede falta o <strong>HTTPS</strong>. Um caminho simples é colocar à frente dela um <strong><em>proxy</em> reverso</strong>, que recebe as conexões, cifra o tráfego e repassa os pedidos. O <a href="https://caddyserver.com/docs/quick-starts/reverse-proxy">Caddy</a> obtém e renova os certificados sozinho. Com o Docker Compose, um arquivo <code>compose.yaml</code> na raiz do TaskFlow descreve os dois serviços:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="nt">api</span><span class="p">:</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dados:/dados</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">  </span><span class="nt">proxy</span><span class="p">:</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">caddy:2</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">caddy reverse-proxy --from ${DOMINIO:-localhost} --to api:8000</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"80:80"</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"443:443"</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">certificados:/data</span>
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a>
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="w">  </span><span class="nt">dados</span><span class="p">:</span>
+<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="w">  </span><span class="nt">certificados</span><span class="p">:</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--build<span class="w">   </span><span class="c1"># em um servidor: DOMINIO=tarefas.exemplo.org docker compose up -d --build</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>curl<span class="w"> </span>-k<span class="w"> </span>https://localhost/docs
+</code></pre></div>
+<p>Repare que a API não publica porta: só o <em>proxy</em> é alcançável de fora. Em <code>localhost</code>, o certificado é emitido por uma autoridade local, e por isso o <code>curl</code> precisa do <code>-k</code>. Com um domínio real, o DNS deve apontar para o servidor e as portas 80 e 443 devem estar abertas à internet. Logo depois de subir, o <em>proxy</em> pode responder 502 por alguns segundos, enquanto a API inicia. A imagem <code>caddy:2</code> é uma <em>tag</em>, pelo mesmo motivo da imagem base do <code>Dockerfile</code>.</p>
+<p>Voltar atrás (<em>rollback</em>) é implantar a imagem anterior, o que só funciona se o banco continuar compatível com ela (<a href="../08_evolucao_manutencao/">Capítulo 8</a>). E o HTTPS não resolve tudo: continuam faltando cópias de segurança, limite de requisições e monitoramento.</p>
+<h3 id="infraestrutura-como-codigo">Infraestrutura como código<a class="headerlink" href="#infraestrutura-como-codigo" title="Permanent link">&para;</a></h3>
+<p>O <code>compose.yaml</code> é um exemplo de <strong>infraestrutura como código</strong>: o ambiente é descrito em um arquivo versionado e revisado como o restante, em vez de montado à mão. Ferramentas como <a href="https://opentofu.org/">OpenTofu</a> ou Terraform descrevem também servidores, redes e bancos; Ansible configura as máquinas. O ganho é poder recriar o ambiente e saber quem mudou o quê. O cuidado: segredos não vão para esses arquivos.</p>
 <h2 id="agentes-de-codificacao-e-o-pipeline">🤖 Agentes de codificação e o pipeline<a class="headerlink" href="#agentes-de-codificacao-e-o-pipeline" title="Permanent link">&para;</a></h2>
 <p>Uma tendência recente é a de agentes de codificação que não apenas sugerem trechos de código, mas abrem <em>pull requests</em> completos de forma autônoma — recebendo uma tarefa (ex: uma <em>issue</em> do GitHub), explorando o repositório, implementando a mudança, e submetendo-a para revisão. Do ponto de vista do pipeline de CI/CD, isso não muda a arquitetura discutida neste capítulo: um <em>pull request</em> aberto por um agente passa pelos mesmos portões de qualidade — lint, testes, cobertura mínima — que um <em>pull request</em> aberto por uma pessoa.</p>
 <p>O que muda é a importância desses portões automatizados como linha de defesa: se o volume de <em>pull requests</em> aumenta porque parte deles é gerada por agentes (Capítulo 5), o pipeline de CI se torna a garantia consistente de que nenhuma mudança — humana ou não — chega à branch principal sem passar pelos mesmos critérios mínimos de qualidade.</p>
@@ -1538,6 +1749,8 @@
 <li>Descreva, para um sistema hipotético que você conheça, qual estratégia de deploy (blue-green, canary, feature flags) você usaria para lançar uma mudança arriscada, e por quê.</li>
 <li>Acrescente o job <code>seguranca</code> ao seu repositório. Depois, em uma branch de teste, grave um token <strong>falso</strong> em um arquivo e confira se o pipeline o aponta.</li>
 <li>Rode o ZAP contra a sua API, em um ambiente de teste. Quantas rotas ele realmente exercitou? O que mudaria se ele tivesse um <em>token</em>?</li>
+<li>Suba o TaskFlow com o <code>compose.yaml</code>. Confira que o HTTP redireciona para HTTPS e que a porta 8000 não responde fora do contêiner. Depois execute <code>docker compose down</code> e suba de novo: os dados continuam? (Cuidado: com <code>-v</code>, os volumes são apagados.)</li>
+<li>Para três mudanças no TaskFlow (uma correção, uma funcionalidade e uma quebra de compatibilidade), diga qual seria a próxima versão a partir de <code>1.4.2</code> e escreva a entrada do <em>changelog</em>.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1547,6 +1760,10 @@
 <li>ZAP, <em>API Scan</em> — <a href="https://www.zaproxy.org/docs/docker/api-scan">zaproxy.org</a></li>
 <li>Aqua Security. <em>Trivy supply chain attack: what you need to know</em>, 2026 — <a href="https://www.aquasec.com/blog/trivy-supply-chain-attack-what-you-need-to-know/">aquasec.com</a></li>
 <li><em>OWASP GenAI Top 10 for LLM Applications</em>, 2026 — <a href="https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/">genai.owasp.org</a></li>
+<li><em>Versionamento Semântico 2.0.0</em> — <a href="https://semver.org/lang/pt-BR/">semver.org</a></li>
+<li><em>Keep a Changelog</em> — <a href="https://keepachangelog.com/">keepachangelog.com</a></li>
+<li>Caddy, <em>Reverse proxy quick-start</em> — <a href="https://caddyserver.com/docs/quick-starts/reverse-proxy">caddyserver.com</a></li>
+<li>GitHub, <em>Publishing and installing a package with GitHub Actions</em> — <a href="https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions">docs.github.com</a></li>
 <li>Documentação oficial: <a href="https://docs.github.com/actions">GitHub Actions</a>, <a href="https://docs.docker.com/">Docker</a></li>
 <li>Relatórios anuais da DORA (Google Cloud): <em>State of DevOps</em> até 2024 e <em>State of AI-assisted Software Development</em> em 2025 — <a href="https://dora.dev/">dora.dev</a>.</li>
 <li>FOWLER, Martin. <em>Blue Green Deployment</em>, 2010 — <a href="https://www.martinfowler.com/bliki/BlueGreenDeployment.html">martinfowler.com</a></li>

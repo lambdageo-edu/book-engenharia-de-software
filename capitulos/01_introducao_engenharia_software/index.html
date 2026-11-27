@@ -440,6 +440,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#etica-profissional" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🤝 Ética profissional
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#licencas-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        📜 Licenças de software
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#atividades" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1049,6 +1071,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#etica-profissional" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🤝 Ética profissional
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#licencas-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        📜 Licenças de software
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#atividades" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1202,18 +1246,62 @@
 <p class="admonition-title">Um mito comum</p>
 <p>"Engenharia de software" não significa que exista uma única forma "certa" de desenvolver software, tampouco que processos rígidos sejam sempre superiores a processos ágeis. Como veremos no Capítulo 2, a escolha do processo é, ela própria, uma decisão de engenharia — depende do domínio, da criticidade do sistema e da estabilidade dos requisitos.</p>
 </div>
+<h2 id="etica-profissional">🤝 Ética profissional<a class="headerlink" href="#etica-profissional" title="Permanent link">&para;</a></h2>
+<p>Quem constrói software decide, muitas vezes sem perceber, quem consegue usá-lo, que dados são recolhidos e o que acontece quando algo falha. O <a href="https://www.sbc.org.br/wp-content/uploads/2024/07/C-digo-de-tica-e-Conduta-Profissional_Resolucao_002-2024.pdf">Código de Ética e Conduta Profissional da SBC</a> (Resolução nº 2/2024) tem entre os seus princípios gerais: contribuir para a sociedade e o bem-estar humano; evitar danos; ser honesto e confiável; ser justo e não discriminar; respeitar o trabalho intelectual; respeitar a privacidade; e honrar a confidencialidade.</p>
+<p>No dia a dia, isso aparece em perguntas concretas:</p>
+<ul>
+<li>o sistema recolhe só os dados de que precisa? (<a href="../03_especificacao_requisitos/">Capítulo 3</a>)</li>
+<li>as limitações e os riscos conhecidos foram ditos a quem decide, mesmo quando atrapalham o prazo?</li>
+<li>há quem fique de fora, por não enxergar, não ouvir ou ter uma conexão ruim?</li>
+<li>o crédito de código, texto e ideias alheios foi dado?</li>
+</ul>
+<h2 id="licencas-de-software">📜 Licenças de software<a class="headerlink" href="#licencas-de-software" title="Permanent link">&para;</a></h2>
+<p>No Brasil, programas de computador são protegidos por direitos autorais, sem necessidade de registro (<a href="https://planalto.gov.br/ccivil_03/Leis/L9609.htm">Lei 9.609/1998</a>). A mesma lei trata da titularidade: salvo acordo em contrário, o que se desenvolve como parte das atribuições de um emprego ou estágio pertence a quem contrata.</p>
+<p>Código público <strong>não é</strong> código livre. Sem licença, vale a proteção padrão, e outras pessoas, em geral, <a href="https://choosealicense.com/no-permission/">não têm permissão</a> para usar, modificar ou distribuir. Uma licença de código aberto concede essas permissões, sob condições:</p>
+<table>
+<thead>
+<tr>
+<th>Família</th>
+<th>Exemplos</th>
+<th>Condição principal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Permissivas</strong></td>
+<td>MIT, BSD, Apache 2.0</td>
+<td>Manter o aviso de autoria e a licença; o produto pode ser fechado (a Apache 2.0 também trata de patentes)</td>
+</tr>
+<tr>
+<td><strong>Recíprocas</strong> (<em>copyleft</em>)</td>
+<td>GPL</td>
+<td>Quem distribui uma versão derivada a distribui sob a mesma licença, com o código-fonte</td>
+</tr>
+<tr>
+<td><strong>Recíprocas para serviços em rede</strong></td>
+<td>AGPL</td>
+<td>Estende a obrigação a quem oferece a versão modificada pela rede</td>
+</tr>
+</tbody>
+</table>
+<p>Antes de adicionar uma dependência, confira a licença dela: ela passa a valer para o que você distribui. Trechos copiados de fóruns ou gerados por um assistente de IA também podem ter origem protegida. Esta seção é uma orientação inicial e não substitui assessoria jurídica.</p>
 <hr />
 <h2 id="atividades">🎯 Atividades<a class="headerlink" href="#atividades" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Escolha um software que você usa diariamente (aplicativo, site, jogo). Liste evidências de que ele foi projetado pensando em manutenibilidade, confiabilidade, eficiência e aceitabilidade — ou evidências do contrário.</li>
 <li>Explique, com suas palavras, por que a curva de falhas do software tende a aumentar com o tempo, mesmo o software não se desgastando fisicamente.</li>
 <li>Compare um "produto genérico" e um "produto sob encomenda" que você conheça. Identifique elementos de configuração que tornam essa fronteira menos nítida hoje.</li>
+<li>Liste as dependências diretas de um projeto seu e a licença de cada uma. Alguma impõe condição que você não conhecia?</li>
+<li>Um gerente pede para publicar o sistema mesmo com uma falha conhecida que expõe dados de usuários. O que o código de ética da SBC sugere fazer?</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
 <li>SOMMERVILLE, Ian. <em>Engenharia de Software</em>. 10. ed. — Capítulo 1.</li>
 <li>PRESSMAN, Roger S.; MAXIM, Bruce R. <em>Engenharia de Software: Uma Abordagem Profissional</em>. 9. ed. AMGH, 2021. — Capítulo 1.</li>
 <li>NAUR, Peter; RANDELL, Brian (eds.). <em>Software Engineering: Report on a conference sponsored by the NATO Science Committee</em>, Garmisch, 7–11 out. 1968. NATO, 1969 — disponível em <a href="http://homepages.cs.ncl.ac.uk/brian.randell/NATO/">homepages.cs.ncl.ac.uk/brian.randell/NATO</a>.</li>
+<li>SBC. <em>Código de Ética e Conduta Profissional</em> (Resolução nº 2/2024) — <a href="https://www.sbc.org.br/wp-content/uploads/2024/07/C-digo-de-tica-e-Conduta-Profissional_Resolucao_002-2024.pdf">sbc.org.br</a></li>
+<li>BRASIL. <em>Lei nº 9.609/1998</em> (programas de computador) — <a href="https://planalto.gov.br/ccivil_03/Leis/L9609.htm">planalto.gov.br</a></li>
+<li>GitHub, <em>Choose a License</em> — <a href="https://choosealicense.com/licenses/">choosealicense.com</a></li>
 <li>IEEE Std 610.12-1990. <em>IEEE Standard Glossary of Software Engineering Terminology</em> (substituído) — <a href="https://standards.ieee.org/standard/610_12-1990.html">standards.ieee.org</a></li>
 </ul>
 
