@@ -171,7 +171,7 @@ Alguns cuidados de boas práticas embutidos neste `Dockerfile`:
 * **Remover o `pip`**: o que não é necessário para rodar também não precisa ser corrigido depois.
 * **`.dockerignore`**: evita enviar ao *build* o ambiente virtual, o histórico do Git e arquivos locais como `.env`, que podem conter segredos.
 
-O job `imagem` apenas constrói a imagem, para garantir que o `Dockerfile` continua funcionando. O passo seguinte seria usar `docker/build-push-action` para publicá-la em um registro (GitHub Container Registry, Docker Hub, ECR) a cada merge na branch principal — o primeiro passo em direção à entrega contínua. Com o job `seguranca`, apresentado adiante, o job que publica deve declarar `needs: [test, seguranca]`, para que nada seja publicado com uma verificação reprovada.
+O job `imagem` apenas constrói a imagem, para garantir que o `Dockerfile` continua funcionando. O passo seguinte é publicá-la em um registro a cada merge na branch principal, o que se faz [adiante](#publicar-a-imagem), depois das verificações de segurança.
 
 !!! example "Quando há banco de dados"
     O sistema de arquivos de um contêiner some junto com ele. O [`Dockerfile` do TaskFlow](https://github.com/lambdageo-edu/taskflow/blob/main/Dockerfile) cria a pasta `/dados`, entrega-a ao usuário sem privilégios, declara um `VOLUME` e aponta o banco para lá com a variável `TAREFAS_DB`:
@@ -290,6 +290,102 @@ Ler o resultado exige cuidado. Em um teste com o TaskFlow, em novembro de 2026, 
 
 O **teste de invasão** (*pentest*) é feito por pessoas autorizadas que combinam falhas e exploram a lógica do negócio, o que ferramentas automáticas fazem mal. O escopo, o período e o que é proibido são acertados antes, por escrito.
 
+## 📦 Publicar, versionar e implantar
+
+Até aqui, o pipeline confere a imagem e a descarta. Falta colocá-la em uso.
+
+### Publicar a imagem
+
+Um **registro** guarda imagens para que outras máquinas as baixem. Para usar o do GitHub (GHCR), ajuste o início do job `imagem`, para que ele dependa também das verificações de segurança e possa gravar pacotes:
+
+```yaml
+  imagem:
+    needs: [test, seguranca]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+```
+
+E acrescente, depois do passo do Trivy:
+
+```yaml
+      - name: Publicar a imagem
+        if: github.event_name == 'push'
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IMAGEM: ghcr.io/${{ github.repository }}:${{ github.sha }}
+        run: |
+          echo "$TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker tag api-tarefas "$IMAGEM"
+          docker push "$IMAGEM"
+```
+
+Assim, só é publicada a imagem que passou pelos testes e pela varredura, e apenas em `push` para a `main`. A etiqueta com o identificador do *commit* diz de que código ela saiu. O nome da imagem precisa estar em minúsculas.
+
+### Versões e releases
+
+Quem usa o sistema precisa saber o que mudou. O [versionamento semântico](https://semver.org/lang/pt-BR/) usa três números, `MAIOR.MENOR.CORREÇÃO`:
+
+| Mudança | Número que sobe | Exemplo em uma API |
+|---|---|---|
+| Incompatível com o uso anterior | MAIOR | Remover um campo da resposta |
+| Funcionalidade nova, compatível | MENOR | Acrescentar um *endpoint* |
+| Correção compatível | CORREÇÃO | Consertar um código de resposta errado |
+
+Enquanto a versão começa com `0.`, tudo ainda pode mudar. Uma versão publicada não se altera: corrige-se com outra. No Git, uma etiqueta anotada marca o ponto:
+
+```bash
+git tag -a v1.2.0 -m "Filtro por responsável"
+git push origin v1.2.0
+```
+
+Registre as novidades em um [`CHANGELOG.md`](https://keepachangelog.com/) ou nas *releases* do GitHub, escrito para quem usa, não como cópia da lista de *commits*. (As etiquetas do TaskFlow marcam etapas didáticas, e não versões semânticas.)
+
+### Do contêiner ao servidor
+
+É comum ter ambientes separados: o de desenvolvimento, o de **homologação**, parecido com o real, para conferir antes, e o de **produção**. A imagem é a mesma em todos; o que muda é a configuração, recebida do ambiente.
+
+Para publicar uma API na rede falta o **HTTPS**. Um caminho simples é colocar à frente dela um ***proxy* reverso**, que recebe as conexões, cifra o tráfego e repassa os pedidos. O [Caddy](https://caddyserver.com/docs/quick-starts/reverse-proxy) obtém e renova os certificados sozinho. Com o Docker Compose, um arquivo `compose.yaml` na raiz do TaskFlow descreve os dois serviços:
+
+```yaml
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - dados:/dados
+
+  proxy:
+    image: caddy:2
+    restart: unless-stopped
+    command: caddy reverse-proxy --from ${DOMINIO:-localhost} --to api:8000
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - certificados:/data
+    depends_on:
+      - api
+
+volumes:
+  dados:
+  certificados:
+```
+
+```bash
+docker compose up -d --build   # em um servidor: DOMINIO=tarefas.exemplo.org docker compose up -d --build
+curl -k https://localhost/docs
+```
+
+Repare que a API não publica porta: só o *proxy* é alcançável de fora. Em `localhost`, o certificado é emitido por uma autoridade local, e por isso o `curl` precisa do `-k`. Com um domínio real, o DNS deve apontar para o servidor e as portas 80 e 443 devem estar abertas à internet. Logo depois de subir, o *proxy* pode responder 502 por alguns segundos, enquanto a API inicia. A imagem `caddy:2` é uma *tag*, pelo mesmo motivo da imagem base do `Dockerfile`.
+
+Voltar atrás (*rollback*) é implantar a imagem anterior, o que só funciona se o banco continuar compatível com ela ([Capítulo 8](08_evolucao_manutencao.md)). E o HTTPS não resolve tudo: continuam faltando cópias de segurança, limite de requisições e monitoramento.
+
+### Infraestrutura como código
+
+O `compose.yaml` é um exemplo de **infraestrutura como código**: o ambiente é descrito em um arquivo versionado e revisado como o restante, em vez de montado à mão. Ferramentas como [OpenTofu](https://opentofu.org/) ou Terraform descrevem também servidores, redes e bancos; Ansible configura as máquinas. O ganho é poder recriar o ambiente e saber quem mudou o quê. O cuidado: segredos não vão para esses arquivos.
+
 ## 🤖 Agentes de codificação e o pipeline
 
 Uma tendência recente é a de agentes de codificação que não apenas sugerem trechos de código, mas abrem *pull requests* completos de forma autônoma — recebendo uma tarefa (ex: uma *issue* do GitHub), explorando o repositório, implementando a mudança, e submetendo-a para revisão. Do ponto de vista do pipeline de CI/CD, isso não muda a arquitetura discutida neste capítulo: um *pull request* aberto por um agente passa pelos mesmos portões de qualidade — lint, testes, cobertura mínima — que um *pull request* aberto por uma pessoa.
@@ -313,6 +409,8 @@ Um agente com acesso ao repositório traz um risco novo. Ele lê *issues*, comen
 4. Descreva, para um sistema hipotético que você conheça, qual estratégia de deploy (blue-green, canary, feature flags) você usaria para lançar uma mudança arriscada, e por quê.
 5. Acrescente o job `seguranca` ao seu repositório. Depois, em uma branch de teste, grave um token **falso** em um arquivo e confira se o pipeline o aponta.
 6. Rode o ZAP contra a sua API, em um ambiente de teste. Quantas rotas ele realmente exercitou? O que mudaria se ele tivesse um *token*?
+7. Suba o TaskFlow com o `compose.yaml`. Confira que o HTTP redireciona para HTTPS e que a porta 8000 não responde fora do contêiner. Depois execute `docker compose down` e suba de novo: os dados continuam? (Cuidado: com `-v`, os volumes são apagados.)
+8. Para três mudanças no TaskFlow (uma correção, uma funcionalidade e uma quebra de compatibilidade), diga qual seria a próxima versão a partir de `1.4.2` e escreva a entrada do *changelog*.
 
 ## 📚 Para saber mais
 
@@ -322,6 +420,10 @@ Um agente com acesso ao repositório traz um risco novo. Ele lê *issues*, comen
 * ZAP, *API Scan* — [zaproxy.org](https://www.zaproxy.org/docs/docker/api-scan)
 * Aqua Security. *Trivy supply chain attack: what you need to know*, 2026 — [aquasec.com](https://www.aquasec.com/blog/trivy-supply-chain-attack-what-you-need-to-know/)
 * *OWASP GenAI Top 10 for LLM Applications*, 2026 — [genai.owasp.org](https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/)
+* *Versionamento Semântico 2.0.0* — [semver.org](https://semver.org/lang/pt-BR/)
+* *Keep a Changelog* — [keepachangelog.com](https://keepachangelog.com/)
+* Caddy, *Reverse proxy quick-start* — [caddyserver.com](https://caddyserver.com/docs/quick-starts/reverse-proxy)
+* GitHub, *Publishing and installing a package with GitHub Actions* — [docs.github.com](https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions)
 * Documentação oficial: [GitHub Actions](https://docs.github.com/actions), [Docker](https://docs.docker.com/)
 * Relatórios anuais da DORA (Google Cloud): *State of DevOps* até 2024 e *State of AI-assisted Software Development* em 2025 — [dora.dev](https://dora.dev/).
 * FOWLER, Martin. *Blue Green Deployment*, 2010 — [martinfowler.com](https://www.martinfowler.com/bliki/BlueGreenDeployment.html)
