@@ -639,6 +639,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#seguranca-no-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🛡️ Segurança no pipeline
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#agentes-de-codificacao-e-o-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -838,6 +849,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#seguranca-no-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🛡️ Segurança no pipeline
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#agentes-de-codificacao-e-o-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -931,10 +953,12 @@
 <p><code>requirements-dev.txt</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>-r requirements.txt
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>pytest==9.2.0
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>pytest-cov==7.1.0
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>httpx2==2.16.2
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>ruff==0.17.6
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>mypy==2.4.1
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>bandit==1.9.4
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>pip-audit==2.10.1
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>pytest-cov==7.1.0
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>httpx2==2.16.2
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>ruff==0.17.6
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>mypy==2.4.1
 </code></pre></div>
 <p>As versões estão fixadas (<code>==</code>) para que o pipeline instale hoje o mesmo que instalará amanhã. São as versões testadas em novembro de 2026. Fixar não significa congelar: atualize de propósito, com os testes rodando, por exemplo a partir dos <em>pull requests</em> do Dependabot. Para fixar também as dependências indiretas, use um arquivo de <em>lock</em>, gerado por ferramentas como <code>uv</code> ou <code>pip-tools</code>.</p>
 <h3 id="o-workflow-githubworkflowsciyml">O workflow: <code>.github/workflows/ci.yml</code><a class="headerlink" href="#o-workflow-githubworkflowsciyml" title="Permanent link">&para;</a></h3>
@@ -952,10 +976,10 @@
 <a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
 <a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
 <a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout do código</span>
-<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v7</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1</span><span class="w"> </span><span class="c1"># v7.0.1</span>
 <a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configurar Python</span>
-<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v7</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0</span><span class="w"> </span><span class="c1"># v7.1.0</span>
 <a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
 <a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">"3.14"</span>
 <a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">          </span><span class="nt">cache</span><span class="p">:</span><span class="w"> </span><span class="s">"pip"</span>
@@ -982,7 +1006,7 @@
 <a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>
 <a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
 <a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout do código</span>
-<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v7</span>
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1</span><span class="w"> </span><span class="c1"># v7.0.1</span>
 <a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>
 <a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Construir a imagem</span>
 <a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker build -t api-tarefas .</span>
@@ -1044,9 +1068,97 @@
 <p class="admonition-title">Deploy frequente reduz risco, não aumenta</p>
 <p>É comum a intuição de que "fazer deploy com mais frequência é mais arriscado". A evidência das pesquisas da DORA (relatórios <em>State of DevOps</em>, até 2024) aponta o contrário: deploys pequenos e frequentes são mais fáceis de testar, mais fáceis de reverter e mais fáceis de depurar (menos mudanças acumuladas por deploy) do que grandes lançamentos espaçados — que concentram risco em vez de distribuí-lo.</p>
 </div>
+<h2 id="seguranca-no-pipeline">🛡️ Segurança no pipeline<a class="headerlink" href="#seguranca-no-pipeline" title="Permanent link">&para;</a></h2>
+<p>O pipeline é o lugar natural para as verificações que ninguém lembra de fazer à mão. Cada uma procura um tipo de problema (<a href="../05_implementacao_qualidade/">Capítulo 5</a>):</p>
+<table>
+<thead>
+<tr>
+<th>Verificação</th>
+<th>Ferramenta no exemplo</th>
+<th>O que procura</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Código (SAST)</td>
+<td><a href="https://bandit.readthedocs.io/">Bandit</a></td>
+<td>Padrões inseguros no seu código Python</td>
+</tr>
+<tr>
+<td>Dependências (SCA)</td>
+<td><a href="https://github.com/pypa/pip-audit">pip-audit</a></td>
+<td>Bibliotecas com vulnerabilidades conhecidas</td>
+</tr>
+<tr>
+<td>Segredos</td>
+<td><a href="https://github.com/gitleaks/gitleaks">Gitleaks</a></td>
+<td>Chaves e tokens no histórico do repositório</td>
+</tr>
+<tr>
+<td>Imagem</td>
+<td><a href="https://trivy.dev/">Trivy</a></td>
+<td>Pacotes vulneráveis dentro da imagem</td>
+</tr>
+</tbody>
+</table>
+<p>Acrescente ao <code>ci.yml</code> o job <code>seguranca</code>, no mesmo nível de <code>test</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="w">  </span><span class="nt">seguranca</span><span class="p">:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout do código</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1</span><span class="w"> </span><span class="c1"># v7.0.1</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w"> </span><span class="c1"># o Gitleaks examina todo o histórico</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Procurar segredos</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">          </span><span class="no">docker run --rm -v "$PWD:/repo:ro"</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">          </span><span class="no">zricethezav/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">          </span><span class="no">git /repo --redact</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configurar Python</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0</span><span class="w"> </span><span class="c1"># v7.1.0</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">"3.14"</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Instalar dependências</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install -r requirements-dev.txt</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Analisar o código (SAST)</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bandit -r app</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>
+<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Auditar as dependências</span>
+<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip-audit -r requirements-dev.txt</span>
+</code></pre></div>
+<p>E, ao final do job <code>imagem</code>, depois de construí-la:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Procurar vulnerabilidades na imagem</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">          </span><span class="no">docker run --rm -v /var/run/docker.sock:/var/run/docker.sock</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">          </span><span class="no">aquasec/trivy:0.76.2@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">          </span><span class="no">image --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">          </span><span class="no">--exit-code 1 api-tarefas</span>
+</code></pre></div>
+<p><code>--exit-code 1</code> faz o job falhar quando há vulnerabilidade alta ou crítica, e <code>--ignore-unfixed</code> ignora as que ainda não têm correção. Uma falha aqui pode vir da imagem base, e não do seu código: nesse caso, reconstrua com a base atualizada.</p>
+<p>Um teste simples mostra por que o Gitleaks precisa do histórico completo: um token gravado em um <em>commit</em> e apagado no seguinte continua sendo apontado.</p>
+<div class="admonition warning">
+<p class="admonition-title">As ferramentas do pipeline também são dependências</p>
+<p>Em março de 2026, atacantes publicaram uma versão maliciosa do Trivy e reescreveram quase todas as <em>tags</em> da <code>trivy-action</code>, passando a roubar segredos de pipelines que as usavam (<a href="https://www.aquasec.com/blog/trivy-supply-chain-attack-what-you-need-to-know/">comunicado da Aqua Security</a>). Uma <em>tag</em> como <code>v7</code> ou <code>0.76.2</code> pode ser movida; o SHA de um <em>commit</em> e o <em>digest</em> de uma imagem, não. Por isso os exemplos acima fixam os dois, como <a href="https://docs.github.com/en/actions/reference/security/secure-use">recomenda o GitHub</a>. Fixar não torna a versão confiável: apenas garante que ela não troca sem você ver. A imagem base do <code>Dockerfile</code> (<code>python:3.14-slim</code>) continua sendo uma <em>tag</em>, de propósito, para receber correções a cada reconstrução; fixá-la por <em>digest</em> é a alternativa quando reproduzir o build importa mais.</p>
+</div>
+<p>Dê também ao pipeline o <strong>privilégio mínimo</strong>. No topo do <code>ci.yml</code>, antes de <code>jobs</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">permissions</span><span class="p">:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span>
+</code></pre></div>
 <h2 id="agentes-de-codificacao-e-o-pipeline">🤖 Agentes de codificação e o pipeline<a class="headerlink" href="#agentes-de-codificacao-e-o-pipeline" title="Permanent link">&para;</a></h2>
 <p>Uma tendência recente é a de agentes de codificação que não apenas sugerem trechos de código, mas abrem <em>pull requests</em> completos de forma autônoma — recebendo uma tarefa (ex: uma <em>issue</em> do GitHub), explorando o repositório, implementando a mudança, e submetendo-a para revisão. Do ponto de vista do pipeline de CI/CD, isso não muda a arquitetura discutida neste capítulo: um <em>pull request</em> aberto por um agente passa pelos mesmos portões de qualidade — lint, testes, cobertura mínima — que um <em>pull request</em> aberto por uma pessoa.</p>
 <p>O que muda é a importância desses portões automatizados como linha de defesa: se o volume de <em>pull requests</em> aumenta porque parte deles é gerada por agentes (Capítulo 5), o pipeline de CI se torna a garantia consistente de que nenhuma mudança — humana ou não — chega à branch principal sem passar pelos mesmos critérios mínimos de qualidade.</p>
+<p>Um agente com acesso ao repositório traz um risco novo. Ele lê <em>issues</em>, comentários, páginas e arquivos, e um texto malicioso nesses lugares pode ser interpretado como instrução (<em>prompt injection</em>). Se o agente tiver permissões demais (<em>excessive agency</em>), o estrago é maior. Esses dois riscos estão entre os três primeiros do <a href="https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/">OWASP Top 10 para aplicações com LLM, edição de 2026</a>. Medidas práticas:</p>
+<ul>
+<li>conceder apenas as permissões que a tarefa exige, sem segredos de produção;</li>
+<li>exigir revisão humana antes do merge, com regras de proteção na branch principal;</li>
+<li>tratar o conteúdo de <em>issues</em> e <em>pull requests</em> de terceiros como entrada não confiável;</li>
+<li>revisar com atenção mudanças do agente em workflows, dependências e permissões.</li>
+</ul>
 <hr />
 <h2 id="atividades">🎯 Atividades<a class="headerlink" href="#atividades" title="Permanent link">&para;</a></h2>
 <ol>
@@ -1054,11 +1166,15 @@
 <li>Modifique o pipeline para falhar propositalmente (ex: aumente <code>--cov-fail-under</code> para 100, acima da cobertura atual do seu código) e observe o comportamento do GitHub Actions.</li>
 <li>Construa a imagem Docker localmente (<code>docker build -t api-tarefas .</code>) e rode um contêiner a partir dela (<code>docker run -p 8000:8000 api-tarefas</code>), acessando <code>http://localhost:8000/docs</code> para ver a documentação interativa gerada automaticamente pelo FastAPI.</li>
 <li>Descreva, para um sistema hipotético que você conheça, qual estratégia de deploy (blue-green, canary, feature flags) você usaria para lançar uma mudança arriscada, e por quê.</li>
+<li>Acrescente o job <code>seguranca</code> ao seu repositório. Depois, em uma branch de teste, grave um token <strong>falso</strong> em um arquivo e confira se o pipeline o aponta.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
 <li>FOWLER, Martin. <em>Continuous Integration</em> — <a href="https://martinfowler.com/articles/continuousIntegration.html">martinfowler.com/articles/continuousIntegration.html</a></li>
 <li>HUMBLE, Jez; FARLEY, David. <em>Continuous Delivery</em>. Addison-Wesley, 2010.</li>
+<li>GitHub, <em>Secure use reference</em> (Actions) — <a href="https://docs.github.com/en/actions/reference/security/secure-use">docs.github.com</a></li>
+<li>Aqua Security. <em>Trivy supply chain attack: what you need to know</em>, 2026 — <a href="https://www.aquasec.com/blog/trivy-supply-chain-attack-what-you-need-to-know/">aquasec.com</a></li>
+<li><em>OWASP GenAI Top 10 for LLM Applications</em>, 2026 — <a href="https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/">genai.owasp.org</a></li>
 <li>Documentação oficial: <a href="https://docs.github.com/actions">GitHub Actions</a>, <a href="https://docs.docker.com/">Docker</a></li>
 <li>Relatórios anuais da DORA (Google Cloud): <em>State of DevOps</em> até 2024 e <em>State of AI-assisted Software Development</em> em 2025 — <a href="https://dora.dev/">dora.dev</a>.</li>
 </ul>

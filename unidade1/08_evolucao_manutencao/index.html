@@ -625,6 +625,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#dependencias-e-vulnerabilidades" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🩹 Dependências e vulnerabilidades
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🩹 Dependências e vulnerabilidades">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quando-uma-vulnerabilidade-aparece" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quando uma vulnerabilidade aparece
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debito-tecnico-em-codigo-gerado-por-ia" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🤖 Débito técnico em código gerado por IA
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#observabilidade-entendendo-um-sistema-vivo" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -751,6 +790,45 @@
     <span class="md-ellipsis">
       <span class="md-typeset">
         🔨 Refatoração
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencias-e-vulnerabilidades" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🩹 Dependências e vulnerabilidades
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🩹 Dependências e vulnerabilidades">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quando-uma-vulnerabilidade-aparece" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quando uma vulnerabilidade aparece
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debito-tecnico-em-codigo-gerado-por-ia" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🤖 Débito técnico em código gerado por IA
       </span>
     </span>
   </a>
@@ -891,6 +969,37 @@
 <li><strong>Acoplamento excessivo</strong> entre módulos que deveriam ser independentes;</li>
 <li><strong>Comentários que compensam código confuso</strong>, em vez de explicar decisões não óbvias.</li>
 </ul>
+<h2 id="dependencias-e-vulnerabilidades">🩹 Dependências e vulnerabilidades<a class="headerlink" href="#dependencias-e-vulnerabilidades" title="Permanent link">&para;</a></h2>
+<p>Um sistema que não muda fica mais vulnerável com o tempo, porque falhas continuam sendo descobertas nas bibliotecas que ele usa. Atualizar dependências é manutenção preventiva, e funciona melhor em passos pequenos e frequentes do que num salto anual.</p>
+<p>O <a href="https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference">Dependabot</a>, do GitHub, abre <em>pull requests</em> com as versões novas, e o pipeline do <a href="../07_integracao_entrega_continua/">Capítulo 7</a> diz se algo quebrou. Para a API de tarefas, o arquivo <code>.github/dependabot.yml</code> seria:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">updates</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">"pip"</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">"/"</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">"weekly"</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">"github-actions"</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">"/"</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">"weekly"</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">"docker"</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">"/"</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">"weekly"</span>
+</code></pre></div>
+<p>Esse arquivo configura atualizações de versão. Os alertas e as correções de segurança do Dependabot são ativados nas configurações do repositório. Imagens citadas dentro de comandos <code>run</code>, como as do Gitleaks e do Trivy no exemplo, não são atualizadas por ele: revise-as à mão.</p>
+<h3 id="quando-uma-vulnerabilidade-aparece">Quando uma vulnerabilidade aparece<a class="headerlink" href="#quando-uma-vulnerabilidade-aparece" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Confirmar</strong>: o alerta se aplica à versão que você usa?</li>
+<li><strong>Avaliar</strong>: o trecho vulnerável é alcançado? Está exposto? Que dados estão em risco?</li>
+<li><strong>Corrigir ou mitigar</strong>: atualizar, desativar a funcionalidade ou restringir o acesso.</li>
+<li><strong>Verificar e publicar</strong>: testes, pipeline e implantação.</li>
+<li><strong>Aprender</strong>: registrar o ocorrido e o que evitaria a repetição.</li>
+</ol>
+<p>Decida antes quem recebe o aviso e em quanto tempo responde. Em projetos abertos, um arquivo <code>SECURITY.md</code> diz como relatar uma falha sem expô-la numa <em>issue</em> pública. O <a href="https://csrc.nist.gov/pubs/sp/800/218/final">SSDF, do NIST</a>, reúne práticas de desenvolvimento seguro que incluem identificar e responder a vulnerabilidades.</p>
+<h2 id="debito-tecnico-em-codigo-gerado-por-ia">🤖 Débito técnico em código gerado por IA<a class="headerlink" href="#debito-tecnico-em-codigo-gerado-por-ia" title="Permanent link">&para;</a></h2>
+<p>Gerar código ficou rápido; entendê-lo e mantê-lo, não necessariamente. Quando um trecho entra no sistema sem que ninguém do time consiga explicá-lo, nasce uma dívida que não aparece em nenhum quadro. Alguns sinais: soluções diferentes para o mesmo problema em pontos diferentes, abstrações que ninguém pediu e testes que apenas repetem a implementação.</p>
+<p>O relatório DORA de 2025 descreve a IA como um <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report">amplificador do que a organização já tem</a>: associa seu uso a mais vazão de entregas, mas também a menos estabilidade, e aponta testes automatizados, controle de versão maduro e retorno rápido como proteção. Na prática: mudanças pequenas, revisão por quem vai manter, e refatoração como parte do trabalho, não como promessa.</p>
 <h2 id="observabilidade-entendendo-um-sistema-vivo">🔭 Observabilidade: entendendo um sistema vivo<a class="headerlink" href="#observabilidade-entendendo-um-sistema-vivo" title="Permanent link">&para;</a></h2>
 <p>Manter e evoluir um sistema em produção com segurança depende de conseguir <strong>observar</strong> seu comportamento real — não apenas assumir que ele funciona como planejado. Três pilares, hoje tratados como parte essencial da manutenção de qualquer sistema relevante:</p>
 <ul>
@@ -905,10 +1014,14 @@
 <li>Classifique três mudanças recentes em um projeto seu (ou de algum software que você usa e acompanha) segundo os quatro tipos de manutenção (corretiva, adaptativa, evolutiva, preventiva).</li>
 <li>Descreva um exemplo de débito técnico "deliberado e prudente" que você tomaria conscientemente em um projeto real, explicando a troca de curto prazo por longo prazo envolvida.</li>
 <li>Escolha um trecho de código com pelo menos um <em>code smell</em> (duplicação, método longo, nome ruim) e refatore-o, garantindo que os testes existentes (ou novos testes que você escreva antes) continuem passando depois da mudança.</li>
+<li>Configure o Dependabot em um repositório seu e analise o primeiro <em>pull request</em> que ele abrir: o que mudou na dependência e como você sabe que é seguro aceitar?</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
 <li>SOMMERVILLE, Ian. <em>Engenharia de Software</em>. 10. ed. — Capítulo 9.</li>
+<li>NIST SP 800-218. <em>Secure Software Development Framework (SSDF)</em>, versão 1.1, 2022 — <a href="https://csrc.nist.gov/pubs/sp/800/218/final">csrc.nist.gov</a></li>
+<li>GitHub, referência de opções do Dependabot — <a href="https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference">docs.github.com</a></li>
+<li>Google Cloud. <em>Announcing the 2025 DORA Report</em> — <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report">cloud.google.com</a></li>
 <li>FOWLER, Martin. <em>Refactoring: Improving the Design of Existing Code</em>. 2. ed. Addison-Wesley, 2018.</li>
 <li>CUNNINGHAM, Ward. <em>The WyCash Portfolio Management System</em> (artigo original sobre débito técnico, 1992).</li>
 <li>Artigo <em>TechnicalDebtQuadrant</em> — <a href="https://martinfowler.com/bliki/TechnicalDebtQuadrant.html">martinfowler.com/bliki/TechnicalDebtQuadrant.html</a></li>
