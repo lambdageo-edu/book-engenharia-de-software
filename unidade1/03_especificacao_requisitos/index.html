@@ -537,6 +537,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#modelando-o-comportamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🧭 Modelando o comportamento
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧭 Modelando o comportamento">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#casos-de-uso" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Casos de uso
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atividades" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Atividades
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#boas-praticas-de-especificacao" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -598,7 +637,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#atividades" class="md-nav__link">
+  <a href="#atividades_1" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
         🎯 Atividades
@@ -988,6 +1027,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#modelando-o-comportamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🧭 Modelando o comportamento
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧭 Modelando o comportamento">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#casos-de-uso" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Casos de uso
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atividades" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Atividades
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#boas-praticas-de-especificacao" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1049,7 +1127,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#atividades" class="md-nav__link">
+  <a href="#atividades_1" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
         🎯 Atividades
@@ -1213,6 +1291,74 @@
 <p class="admonition-title">História de usuário não é 'requisito ágil de baixa qualidade'</p>
 <p>Um erro comum é achar que histórias de usuário dispensam análise. Na verdade, elas deslocam o detalhamento para o momento certo (<em>just in time</em>), em vez de tentar prever tudo antecipadamente — mas ainda exigem elicitação cuidadosa, critérios de aceitação claros e refinamento contínuo do backlog.</p>
 </div>
+<h2 id="modelando-o-comportamento">🧭 Modelando o comportamento<a class="headerlink" href="#modelando-o-comportamento" title="Permanent link">&para;</a></h2>
+<p>Um modelo é uma visão simplificada, feita para responder a uma pergunta. Aqui, a pergunta é o que o sistema faz e para quem. Os diagramas seguem a notação da UML (OMG, 2017) e imaginam a evolução da API de tarefas para uma <strong>equipe</strong>, com projetos, membros e donos. O código dos Capítulos 6 e 7 ainda não tem usuários: este é um modelo do que se quer construir.</p>
+<h3 id="casos-de-uso">Casos de uso<a class="headerlink" href="#casos-de-uso" title="Permanent link">&para;</a></h3>
+<p>Um <strong>ator</strong> é um papel externo ao sistema (uma pessoa ou outro sistema), e um <strong>caso de uso</strong> é um objetivo que o ator alcança com o sistema.</p>
+<pre class="mermaid"><code>flowchart LR
+    membro["👤 Membro"]
+    dono["👤 Dono do projeto"]
+    subgraph api[API de tarefas]
+        criar([Criar tarefa])
+        listar([Listar tarefas])
+        concluir([Concluir tarefa])
+        convidar([Adicionar membro])
+    end
+    membro --- criar
+    membro --- listar
+    membro --- concluir
+    dono --- convidar
+    dono -- é um --&gt; membro</code></pre>
+<p>As linhas ligam cada ator aos seus objetivos. A seta "é um" representa a <strong>generalização</strong>: o dono do projeto faz tudo o que o membro faz e mais. O desenho acima é um fluxograma que imita a notação: na UML, os atores são bonecos e a generalização é uma linha com triângulo vazado.</p>
+<p>O diagrama é um índice. O conteúdo está na descrição textual de cada caso (COCKBURN, 2000):</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Concluir tarefa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ator principal</strong></td>
+<td>Membro</td>
+</tr>
+<tr>
+<td><strong>Pré-condição</strong></td>
+<td>O membro está autenticado e participa do projeto.</td>
+</tr>
+<tr>
+<td><strong>Fluxo principal</strong></td>
+<td>1. O membro pede a conclusão de uma tarefa. 2. O sistema verifica a permissão. 3. O sistema marca a tarefa como concluída e a devolve.</td>
+</tr>
+<tr>
+<td><strong>Alternativa: tarefa inexistente</strong></td>
+<td>No passo 1, o sistema responde 404.</td>
+</tr>
+<tr>
+<td><strong>Alternativa: sem permissão</strong></td>
+<td>No passo 2, quem não é o responsável nem o dono recebe 403, e nada muda.</td>
+</tr>
+<tr>
+<td><strong>Pós-condição</strong></td>
+<td>A tarefa está concluída.</td>
+</tr>
+</tbody>
+</table>
+<p>Repare que as alternativas vêm das perguntas que o fluxo principal não responde, e que uma delas é o requisito de segurança da seção anterior.</p>
+<h3 id="atividades">Atividades<a class="headerlink" href="#atividades" title="Permanent link">&para;</a></h3>
+<p>O <strong>diagrama de atividades</strong> mostra a ordem dos passos e as decisões de um processo. Abaixo, o mesmo caso de uso, desenhado como fluxograma do Mermaid, que é próximo da notação da UML, mas não idêntico a ela:</p>
+<pre class="mermaid"><code>flowchart TD
+    inicio([Pedido de conclusão]) --&gt; existe{Tarefa existe?}
+    existe -- não --&gt; e404([Responde 404])
+    existe -- sim --&gt; pode{É o responsável ou o dono?}
+    pode -- não --&gt; e403([Responde 403])
+    pode -- sim --&gt; marca[Marca como concluída]
+    marca --&gt; ok([Devolve a tarefa])</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Quando vale a pena</p>
+<p>Casos de uso ajudam a delimitar o escopo e a conversar com quem não programa. Um diagrama de atividades compensa quando há várias decisões ou vários participantes. Para um cadastro simples, uma história de usuário com critérios de aceitação basta.</p>
+</div>
 <h2 id="boas-praticas-de-especificacao">✅ Boas práticas de especificação<a class="headerlink" href="#boas-praticas-de-especificacao" title="Permanent link">&para;</a></h2>
 <p>Independente do formato (documento formal ou história de usuário), um bom requisito deve ser:</p>
 <ul>
@@ -1298,13 +1444,14 @@ Qual limite? Espaços contam? O que a API responde? Tarefas antigas são afetada
 </ul>
 <p>Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de documentação viva (Notion, Confluence) cumprem hoje boa parte desse papel de forma mais leve do que os documentos de especificação formal (como o padrão IEEE 830, hoje substituído pela ISO/IEC/IEEE 29148, cuja edição de 2018 é a referência atual) usados historicamente — mas o problema que resolvem é o mesmo: manter requisitos rastreáveis, atualizados e visíveis para todo o time.</p>
 <hr />
-<h2 id="atividades">🎯 Atividades<a class="headerlink" href="#atividades" title="Permanent link">&para;</a></h2>
+<h2 id="atividades_1">🎯 Atividades<a class="headerlink" href="#atividades_1" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Escreva três requisitos funcionais e três requisitos não funcionais para um aplicativo de biblioteca universitária (empréstimo de livros).</li>
 <li>Reescreva um dos requisitos funcionais do item anterior como uma história de usuário com critérios de aceitação no formato Dado/Quando/Então.</li>
 <li>Avalie uma história de usuário real (sua ou de um colega) usando o critério INVEST. Ela falha em algum dos critérios? Como você a melhoraria?</li>
 <li>Escreva duas histórias de abuso para o aplicativo de biblioteca do item 1 e transforme cada uma em um critério de aceitação.</li>
 <li>Escreva a especificação de uma pequena mudança antes de pedi-la a um assistente de IA. Compare o resultado com o de um pedido de uma linha: o que foi suposto em cada caso?</li>
+<li>Para o aplicativo de biblioteca do item 1, desenhe o diagrama de casos de uso e descreva um dos casos, com pelo menos duas alternativas.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1319,6 +1466,8 @@ Qual limite? Espaços contam? O que a API responde? Tarefas antigas são afetada
 <li>PATTON, Jeff. <em>User Story Mapping</em>. O'Reilly, 2014.</li>
 <li>BRANDOLINI, Alberto. <em>Introducing EventStorming</em> — <a href="https://leanpub.com/introducing_eventstorming">leanpub.com</a></li>
 <li>ISO/IEC/IEEE 29148:2018. <em>Systems and software engineering: Life cycle processes, Requirements engineering</em>.</li>
+<li>OMG. <em>Unified Modeling Language</em>, versão 2.5.1, 2017 — <a href="https://www.omg.org/spec/UML/About-UML/">omg.org/spec/UML</a></li>
+<li>COCKBURN, Alistair. <em>Writing Effective Use Cases</em>. Addison-Wesley, 2000.</li>
 </ul>
 
 

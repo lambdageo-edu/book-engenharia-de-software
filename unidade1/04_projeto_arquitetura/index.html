@@ -558,6 +558,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#modelando-a-estrutura-e-as-interacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        📐 Modelando a estrutura e as interações
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📐 Modelando a estrutura e as interações">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classes-o-que-existe-e-como-se-relaciona" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Classes: o que existe e como se relaciona
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequencia-quem-chama-quem-e-em-que-ordem" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Sequência: quem chama quem, e em que ordem
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estados-o-ciclo-de-vida-de-um-objeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Estados: o ciclo de vida de um objeto
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#seguranca-desde-o-projeto" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -965,6 +1015,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#modelando-a-estrutura-e-as-interacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        📐 Modelando a estrutura e as interações
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📐 Modelando a estrutura e as interações">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classes-o-que-existe-e-como-se-relaciona" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Classes: o que existe e como se relaciona
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequencia-quem-chama-quem-e-em-que-ordem" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Sequência: quem chama quem, e em que ordem
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estados-o-ciclo-de-vida-de-um-objeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Estados: o ciclo de vida de um objeto
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#seguranca-desde-o-projeto" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1134,6 +1234,69 @@
 </tbody>
 </table>
 <p>Esses padrões seguem relevantes, mas vale um alerta prático: padrões de projeto resolvem problemas de um contexto específico (sistemas orientados a objetos, em linguagens com certas limitações dos anos 1990). Aplicá-los de forma automática, sem que o problema realmente exista, é uma forma comum de complexidade desnecessária — o oposto do princípio YAGNI mencionado acima.</p>
+<h2 id="modelando-a-estrutura-e-as-interacoes">📐 Modelando a estrutura e as interações<a class="headerlink" href="#modelando-a-estrutura-e-as-interacoes" title="Permanent link">&para;</a></h2>
+<p>O Capítulo 3 modelou o que o sistema faz. Três diagramas da UML (OMG, 2017) ajudam a decidir como (FOWLER, 2003). Os exemplos de classes e estados descrevem a versão em equipe da API de tarefas, que ainda não está no código.</p>
+<h3 id="classes-o-que-existe-e-como-se-relaciona">Classes: o que existe e como se relaciona<a class="headerlink" href="#classes-o-que-existe-e-como-se-relaciona" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>classDiagram
+    direction TB
+    class Usuario {
+        +int id
+        +str nome
+    }
+    class Projeto {
+        +int id
+        +str nome
+    }
+    class Tarefa {
+        +int id
+        +str titulo
+        +Status status
+        +concluir()
+    }
+    Usuario "1" --&gt; "0..*" Projeto : é dono de
+    Usuario "1..*" -- "0..*" Projeto : participa de
+    Projeto "1" *-- "0..*" Tarefa : contém
+    Usuario "0..1" --&gt; "0..*" Tarefa : é responsável por</code></pre>
+<p>Os números são as <strong>multiplicidades</strong>: um projeto tem zero ou mais tarefas, e uma tarefa pode ainda não ter responsável (<code>0..1</code>). O losango preenchido indica <strong>composição</strong>: a tarefa não existe fora do seu projeto. Cada uma dessas marcas é uma decisão que precisa ser confirmada com quem pediu o sistema.</p>
+<h3 id="sequencia-quem-chama-quem-e-em-que-ordem">Sequência: quem chama quem, e em que ordem<a class="headerlink" href="#sequencia-quem-chama-quem-e-em-que-ordem" title="Permanent link">&para;</a></h3>
+<p>Este descreve o <code>POST /tarefas</code> com a validação do <a href="../06_testes_validacao/">Capítulo 6</a>:</p>
+<pre class="mermaid"><code>sequenceDiagram
+    actor C as Cliente
+    participant A as FastAPI
+    participant V as TarefaEntrada
+    participant R as criar_tarefa
+    C-&gt;&gt;A: POST /tarefas
+    A-&gt;&gt;V: valida o corpo
+    alt título válido
+        V--&gt;&gt;A: dados validados
+        A-&gt;&gt;R: criar_tarefa(dados)
+        R--&gt;&gt;A: Tarefa com id
+        A--&gt;&gt;C: 201 Created
+    else vazio ou acima de 200 caracteres
+        V--&gt;&gt;A: erro de validação
+        A--&gt;&gt;C: 422
+    end</code></pre>
+<p>No caminho de erro, a função <code>criar_tarefa</code> nem chega a ser chamada. É o tipo de informação que o diagrama mostra melhor do que o código lido isoladamente.</p>
+<h3 id="estados-o-ciclo-de-vida-de-um-objeto">Estados: o ciclo de vida de um objeto<a class="headerlink" href="#estados-o-ciclo-de-vida-de-um-objeto" title="Permanent link">&para;</a></h3>
+<p>Hoje a tarefa tem apenas o campo <code>concluida</code>. Na versão em equipe, uma decisão possível é:</p>
+<pre class="mermaid"><code>stateDiagram-v2
+    direction TB
+    [*] --&gt; Pendente : criar
+    Pendente --&gt; EmAndamento : iniciar
+    EmAndamento --&gt; Pendente : devolver
+    EmAndamento --&gt; Concluida : concluir
+    Concluida --&gt; EmAndamento : reabrir
+    state "Em andamento" as EmAndamento
+    state "Concluída" as Concluida</code></pre>
+<p>O que <strong>não</strong> está desenhado também é regra: neste modelo, uma tarefa pendente não pode ser concluída direto. Cada transição ausente pode virar um teste.</p>
+<div class="admonition tip">
+<p class="admonition-title">Quando vale a pena</p>
+<p>Classes ajudam a discutir o domínio antes de criar o banco de dados. Sequência, quando vários componentes colaboram ou o tratamento de erro não é óbvio. Estados, quando um objeto muda de situação e nem toda mudança é permitida. Diagrama desatualizado engana: mantenha poucos, junto do código.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Diagramas gerados por IA</p>
+<p>Um assistente produz diagramas com boa aparência a partir de uma descrição curta. Confira cada multiplicidade e cada transição: o que a descrição não disse foi inventado.</p>
+</div>
 <h2 id="seguranca-desde-o-projeto">🛡️ Segurança desde o projeto<a class="headerlink" href="#seguranca-desde-o-projeto" title="Permanent link">&para;</a></h2>
 <p>Uma falha de código se corrige com um <em>commit</em>. Uma falha de projeto, como não prever quem pode acessar o quê, costuma exigir mudar modelo de dados, interfaces e código já escrito. Por isso a segurança entra nas decisões de arquitetura. Alguns princípios antigos continuam válidos, vários deles formulados por Saltzer e Schroeder em 1975:</p>
 <ul>
@@ -1233,10 +1396,14 @@
 <li>Identifique um padrão de projeto (dos criacionais, estruturais ou comportamentais) que você já usou, mesmo sem saber o nome, em algum código que escreveu. Descreva o problema que ele resolveu.</li>
 <li>Faça a modelagem de ameaças de uma funcionalidade pequena (por exemplo, atribuir uma tarefa a outra pessoa): diagrama com a fronteira de confiança, ao menos quatro ameaças do STRIDE e a resposta escolhida para cada uma.</li>
 <li>Peça a um assistente de IA ameaças para a mesma funcionalidade. Separe as que acrescentam algo, as genéricas e as erradas.</li>
+<li>Inclua no diagrama de estados uma tarefa cancelada. De quais estados se chega a ela? É possível reativá-la? Escreva os testes que essas respostas sugerem.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
 <li>SOMMERVILLE, Ian. <em>Engenharia de Software</em>. 10. ed. — Capítulo 6.</li>
+<li>SOMMERVILLE, Ian. <em>Engenharia de Software</em>. 10. ed. — Capítulo 5 (modelagem de sistemas).</li>
+<li>OMG. <em>Unified Modeling Language</em>, versão 2.5.1, 2017 — <a href="https://www.omg.org/spec/UML/About-UML/">omg.org/spec/UML</a></li>
+<li>FOWLER, Martin. <em>UML Distilled</em>. 3. ed. Addison-Wesley, 2003.</li>
 <li>GAMMA, Erich et al. <em>Design Patterns: Elements of Reusable Object-Oriented Software</em>. Addison-Wesley, 1994.</li>
 <li>FOWLER, Martin. <em>Patterns of Enterprise Application Architecture</em>. Addison-Wesley, 2002.</li>
 <li>OWASP <em>Threat Modeling Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
