@@ -236,9 +236,9 @@ test_main.py::test_concluir_tarefa_muda_status PASSED
 
 Name              Stmts   Miss  Cover   Missing
 -----------------------------------------------
-app/main.py          34      2    94%   41, 48
+app/main.py          32      2    94%   41, 48
 -----------------------------------------------
-TOTAL                34      2    94%
+TOTAL                32      2    94%
 
 5 passed in 1.12s
 ```

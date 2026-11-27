@@ -112,5 +112,5 @@ Sommerville complementa: *"a engenharia de software é uma disciplina de engenha
 ## 📚 Para saber mais
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 1.
-* PRESSMAN, Roger S. *Engenharia de Software: Uma Abordagem Profissional*. 8. ed. — Capítulo 1.
+* PRESSMAN, Roger S.; MAXIM, Bruce R. *Engenharia de Software: Uma Abordagem Profissional*. 9. ed. AMGH, 2021. — Capítulo 1.
 * Relatório da Conferência da OTAN de 1968 sobre Engenharia de Software (documento histórico, domínio público) — disponível em [homepages.cs.ncl.ac.uk/brian.randell/NATO](http://homepages.cs.ncl.ac.uk/brian.randell/NATO/).

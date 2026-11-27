@@ -46,9 +46,9 @@ O desenvolvimento incremental é a base de todas as abordagens ágeis modernas, 
 
 Como desvantagens, o processo é menos visível para fins de gestão (entregas rápidas dificultam medir progresso via documentação), e a estrutura do sistema tende a se degradar a cada novo incremento, a menos que tempo seja investido em refatoração.
 
-### Engenharia orientada a reúso
+### Integração e configuração
 
-Baseia-se em um conjunto significativo de componentes reutilizáveis — o desenvolvimento se concentra em integrar componentes e sistemas já existentes, em vez de construir tudo do zero. Esse modelo é ainda mais relevante hoje do que era: bibliotecas *open source*, serviços gerenciados de nuvem (bancos de dados, filas, autenticação) e SaaS de terceiros (pagamento, e-mail transacional) tornaram o reúso a norma, não a exceção, no desenvolvimento moderno.
+Também chamado de desenvolvimento orientado a reúso, baseia-se em um conjunto significativo de componentes reutilizáveis — o desenvolvimento se concentra em integrar componentes e sistemas já existentes, em vez de construir tudo do zero. Esse modelo é ainda mais relevante hoje do que era: bibliotecas *open source*, serviços gerenciados de nuvem (bancos de dados, filas, autenticação) e SaaS de terceiros (pagamento, e-mail transacional) tornaram o reúso a norma, não a exceção, no desenvolvimento moderno.
 
 ## 🚀 O Manifesto Ágil
 
@@ -68,7 +68,13 @@ Esses valores se desdobram em 12 princípios, dos quais vale destacar alguns que
 
 ### Scrum
 
-Scrum é o framework ágil mais adotado no mercado. Organiza o trabalho em **sprints** (iterações de tempo fixo, tipicamente 1 a 4 semanas), com três papéis (*Product Owner*, *Scrum Master*, time de desenvolvimento), três artefatos (*Product Backlog*, *Sprint Backlog*, Incremento) e cinco eventos (*Sprint Planning*, *Daily Scrum*, *Sprint Review*, *Sprint Retrospective*, e a própria Sprint).
+Scrum é o framework ágil mais adotado no mercado. Organiza o trabalho em **sprints**, iterações de duração fixa de um mês ou menos. A versão de 2020 do [Guia do Scrum](https://scrumguides.org/) define um *Scrum Team* com três **responsabilidades** (*accountabilities*): *Product Owner*, *Scrum Master* e *Developers*. São cinco eventos (a própria Sprint, *Sprint Planning*, *Daily Scrum*, *Sprint Review* e *Sprint Retrospective*) e três artefatos, cada um com um **compromisso** que dá direção e transparência:
+
+| Artefato | Compromisso |
+|---|---|
+| *Product Backlog* | Meta do produto (*Product Goal*) |
+| *Sprint Backlog* | Meta da sprint (*Sprint Goal*) |
+| Incremento | Definição de pronto (*Definition of Done*) |
 
 ### Kanban
 
@@ -76,7 +82,7 @@ Kanban tem origem no sistema de produção da Toyota e foi adaptado ao desenvolv
 
 === "Scrum"
     * Trabalho organizado em sprints de duração fixa
-    * Papéis formais e cerimônias definidas
+    * Responsabilidades e eventos definidos
     * Boa opção quando o time precisa de ritmo e previsibilidade de entrega
     * Exige maturidade para não virar "cascata em fatias de 2 semanas"
 
@@ -101,7 +107,17 @@ DevOps propõe tratar essa fronteira como uma responsabilidade compartilhada, ap
 * **Automação de ponta a ponta**: infraestrutura como código, pipelines de integração e entrega contínua (Capítulo 7), testes automatizados (Capítulo 6) — tudo para reduzir trabalho manual e erro humano em processos repetitivos.
 * **Cultura de aprendizado sem culpa (*blameless postmortems*)**: falhas em produção são tratadas como oportunidades de melhorar o sistema e o processo, não como motivo para punir indivíduos — o que incentiva as pessoas a reportar problemas cedo, em vez de escondê-los.
 
-Um pilar prático do DevOps é a métrica **DORA** (*DevOps Research and Assessment*), que identifica quatro indicadores fortemente correlacionados com o desempenho de engenharia de uma organização: frequência de deploy, *lead time* para mudanças, taxa de falha em mudanças, e tempo de restauração após incidente. Times de alto desempenho fazem deploy sob demanda (múltiplas vezes ao dia), com *lead time* de horas, baixa taxa de falha e recuperação em minutos — contra deploys mensais/trimestrais, *lead time* de meses e recuperação em dias, típicos de organizações menos maduras.
+Um instrumento prático do DevOps são as [métricas de entrega de software da DORA](https://dora.dev/guides/dora-metrics/history/) (*DevOps Research and Assessment*). Desde 2024 são cinco, em dois grupos:
+
+| Grupo | Métrica | O que mede |
+|---|---|---|
+| Vazão | Tempo de espera das mudanças (*change lead time*) | Do *commit* até a mudança em produção |
+| Vazão | Frequência de implantação | Com que frequência se implanta |
+| Vazão | Tempo de recuperação de implantação com falha | Quanto se leva para recuperar uma implantação que falhou |
+| Instabilidade | Taxa de falha das mudanças | Proporção de implantações que causam falha em produção |
+| Instabilidade | Taxa de retrabalho de implantação | Proporção de implantações não planejadas, feitas para corrigir problemas |
+
+Relatórios anteriores a 2025 agrupavam as organizações em faixas de desempenho (de baixo a elite). O [relatório de 2025](https://redmonk.com/rstephens/2025/12/18/dora2025/), renomeado para *State of AI-assisted Software Development*, trocou essas faixas por sete perfis de equipe. Use as métricas para acompanhar a evolução do seu próprio time, e não como um placar entre times.
 
 !!! tip "Ágil e DevOps não competem — se complementam"
     Ágil resolve "como planejamos e priorizamos o trabalho de desenvolvimento". DevOps resolve "como levamos esse trabalho até produção, com segurança e frequência". Um time pode ser ágil sem ser DevOps (sprints organizados, mas deploys manuais e raros) — e o contrário também é possível, embora menos comum na prática.
@@ -133,4 +149,4 @@ A maioria das organizações de produto digital hoje adota variantes ágeis com 
 * Manifesto para Desenvolvimento Ágil de Software — [agilemanifesto.org/iso/ptbr/manifesto.html](https://agilemanifesto.org/iso/ptbr/manifesto.html)
 * Scrum Guide (oficial) — [scrumguides.org](https://scrumguides.org/)
 * FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. *Accelerate: The Science of Lean Software and DevOps*. IT Revolution, 2018.
-* Relatório *State of DevOps* (DORA/Google Cloud), publicado anualmente.
+* Relatórios anuais da DORA (Google Cloud): *State of DevOps* até 2024 e *State of AI-assisted Software Development* em 2025 — [dora.dev](https://dora.dev/).

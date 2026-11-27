@@ -31,10 +31,16 @@ Ao longo do livro, os capítulos 6 e 7 incluem um projeto prático guiado: uma A
 
 ---
 
+## ⚖️ Licença
+
+© Sergio Souza Costa. Este livro, incluindo os exemplos de código, é distribuído sob a licença [Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br). Você pode copiar e adaptar o material para fins não comerciais, desde que dê o crédito e distribua as adaptações sob a mesma licença.
+
+---
+
 ## 📚 Bibliografia e Referências
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. Pearson, 2019.
-* PRESSMAN, Roger S.; MAXIM, Bruce R. *Engenharia de Software: Uma Abordagem Profissional*. 8. ed. McGraw Hill, 2016.
+* PRESSMAN, Roger S.; MAXIM, Bruce R. *Engenharia de Software: Uma Abordagem Profissional*. 9. ed. AMGH, 2021.
 * Manifesto para Desenvolvimento Ágil de Software — [agilemanifesto.org](https://agilemanifesto.org/iso/ptbr/manifesto.html)
 * FOWLER, Martin. *Refactoring: Improving the Design of Existing Code*. 2. ed. Addison-Wesley, 2018.
 * Documentação oficial: [pytest](https://docs.pytest.org/), [FastAPI](https://fastapi.tiangolo.com/), [GitHub Actions](https://docs.github.com/actions)

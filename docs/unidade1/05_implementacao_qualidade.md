@@ -79,7 +79,7 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 * **Convenção de commits semânticos** (ex: `feat:`, `fix:`, `docs:`, `refactor:`), útil para gerar changelogs automaticamente e para comunicar rapidamente a natureza de uma mudança.
 
 !!! tip "Qualidade de código é um investimento, não um luxo"
-    Times sob pressão de prazo frequentemente cortam revisão de código, testes ou análise estática como forma de "ir mais rápido". Na prática, dados de pesquisas como o *State of DevOps* mostram o oposto: times de alto desempenho entregam **mais rápido e com mais qualidade simultaneamente** — a disciplina de qualidade reduz o retrabalho que, no médio prazo, é o que realmente desacelera um time.
+    Times sob pressão de prazo frequentemente cortam revisão de código, testes ou análise estática como forma de "ir mais rápido". Na prática, as pesquisas da DORA (relatórios *State of DevOps*, até 2024) indicam o oposto: times de alto desempenho entregam **mais rápido e com mais qualidade simultaneamente** — a disciplina de qualidade reduz o retrabalho que, no médio prazo, é o que realmente desacelera um time.
 
 ---
 
