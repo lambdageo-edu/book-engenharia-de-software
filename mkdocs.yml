@@ -12,6 +12,7 @@ site_dir: site
 
 theme:
   name: material
+  variant: classic # mantém o visual anterior no Zensical
   language: pt
   font: false
   features:

@@ -1,5 +1,6 @@
-# MkDocs
+# Site gerado (Zensical)
 site/
+.cache/
 
 # Python
 __pycache__/

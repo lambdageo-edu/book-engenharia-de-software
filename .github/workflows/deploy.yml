@@ -20,7 +20,7 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v7
         with:
-          fetch-depth: 0 # Essencial para manter o histórico de revisão se houver plugins de Git
+          fetch-depth: 0 # Histórico completo, inclusive da gh-pages
 
       - name: Configurar o Python
         uses: actions/setup-python@v7
@@ -33,12 +33,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build do Livro (Apenas Validação)
-        # Executa mkdocs build em PRs para validar se não há erros na compilação
-        if: github.event_name == 'pull_request'
-        run: mkdocs build
+      - name: Build do Livro
+        # Em PRs e na main: o modo estrito interrompe o build se houver avisos
+        run: zensical build --strict --clean
 
-      - name: Build e Deploy para a branch gh-pages
-        # Faz o deploy apenas em pushes diretos ou merges na branch main
+      - name: Deploy para a branch gh-pages
+        # Faz o deploy apenas a partir da main, nunca em pull requests
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        run: mkdocs gh-deploy --force
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          ghp-import --no-jekyll --push --force --message "Publica o livro (${GITHUB_SHA})" site
