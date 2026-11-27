@@ -549,6 +549,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#orientacao-a-objetos-em-poucas-linhas" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🧩 Orientação a objetos em poucas linhas
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solid-na-pratica" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        📏 SOLID na prática
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#estilos-de-arquitetura" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -617,6 +639,23 @@
       </span>
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="🧩 Padrões de projeto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adapter-encaixar-o-que-nao-foi-feito-para-voce" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Adapter: encaixar o que não foi feito para você
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1139,6 +1178,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#orientacao-a-objetos-em-poucas-linhas" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🧩 Orientação a objetos em poucas linhas
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solid-na-pratica" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        📏 SOLID na prática
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#estilos-de-arquitetura" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1207,6 +1268,23 @@
       </span>
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="🧩 Padrões de projeto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adapter-encaixar-o-que-nao-foi-feito-para-voce" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Adapter: encaixar o que não foi feito para você
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1369,13 +1447,91 @@
 <li><strong>Separação de responsabilidades (<em>separation of concerns</em>)</strong>: cada componente deve ter uma responsabilidade bem definida, minimizando sobreposição.</li>
 <li><strong>Baixo acoplamento, alta coesão</strong>: componentes devem depender pouco uns dos outros (acoplamento) e cada componente deve agrupar responsabilidades fortemente relacionadas entre si (coesão).</li>
 <li><strong>Abstração</strong>: expor apenas o necessário através de interfaces, escondendo detalhes de implementação.</li>
-<li><strong>Princípio da responsabilidade única (<em>Single Responsibility Principle</em>)</strong>: um módulo deve ter apenas um motivo para mudar — o primeiro dos princípios <strong>SOLID</strong>, um conjunto de cinco diretrizes de projeto orientado a objetos (SRP, Open/Closed, Liskov, Interface Segregation, Dependency Inversion) amplamente usado como referência de projeto até hoje.</li>
+<li><strong>Princípio da responsabilidade única (<em>Single Responsibility Principle</em>)</strong>: um módulo deve ter apenas um motivo para mudar — o primeiro dos princípios <strong>SOLID</strong>, um conjunto de cinco diretrizes de projeto orientado a objetos (SRP, Open/Closed, Liskov, Interface Segregation, Dependency Inversion) amplamente usado como referência de projeto até hoje (veja adiante).</li>
 <li><strong><a href="https://www.martinfowler.com/bliki/Yagni.html">YAGNI</a> (<em>You Aren't Gonna Need It</em>)</strong>: não projete flexibilidade para requisitos hipotéticos que ainda não existem — complexidade antecipada tem custo real e nem sempre paga o benefício esperado.</li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Arquitetura não é só sobre tecnologia</p>
 <p>Decisões de arquitetura são, no fundo, decisões sobre <strong>onde colocar a complexidade</strong> e <strong>quais mudanças futuras você quer que sejam baratas</strong>. Trocar de banco de dados, adicionar um novo canal de acesso (app mobile), escalar um componente específico — uma boa arquitetura torna algumas dessas mudanças fáceis, ao custo de tornar outras mais difíceis. Não existe arquitetura sem trade-off.</p>
 </div>
+<h2 id="orientacao-a-objetos-em-poucas-linhas">🧩 Orientação a objetos em poucas linhas<a class="headerlink" href="#orientacao-a-objetos-em-poucas-linhas" title="Permanent link">&para;</a></h2>
+<p>SOLID, padrões de projeto e diagramas de classes pressupõem alguns conceitos:</p>
+<ul>
+<li><strong>Classe</strong> e <strong>objeto</strong>: a classe descreve; o objeto é um exemplar, com seu próprio estado;</li>
+<li><strong>Mensagem</strong>: um objeto pede algo a outro chamando um método;</li>
+<li><strong>Encapsulamento</strong>: quem usa o objeto depende do que ele oferece, não de como guarda os dados;</li>
+<li><strong>Herança</strong> ("é um") e <strong>composição</strong> ("tem um"): duas formas de reaproveitar comportamento;</li>
+<li><strong>Polimorfismo</strong>: objetos diferentes respondem à mesma mensagem, cada um a seu modo.</li>
+</ul>
+<p>Para revisar com calma, o livro <a href="https://lambdageo-edu.github.io/book-paradigmas-de-programacao/unidade2/01_classes_objetos/">Paradigmas de Programação</a> trata de <a href="https://lambdageo-edu.github.io/book-paradigmas-de-programacao/unidade2/01_classes_objetos/">classes e objetos</a>, <a href="https://lambdageo-edu.github.io/book-paradigmas-de-programacao/unidade2/02_relacoes/">relações e herança</a>, <a href="https://lambdageo-edu.github.io/book-paradigmas-de-programacao/unidade2/03_polimorfismo/">polimorfismo</a> e <a href="https://lambdageo-edu.github.io/book-paradigmas-de-programacao/unidade2/04_classes_abstratas_interfaces/">interfaces</a>. Os exemplos de lá são em Java: os conceitos são os mesmos, a forma muda. Em Python, por exemplo, o encapsulamento é uma convenção (nomes iniciados por <code>_</code>), e não é preciso declarar que uma classe implementa um <code>Protocol</code>.</p>
+<h2 id="solid-na-pratica">📏 SOLID na prática<a class="headerlink" href="#solid-na-pratica" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Princípio</th>
+<th>Em uma frase</th>
+<th>Sinal de problema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>S</strong>: responsabilidade única</td>
+<td>Um motivo para mudar</td>
+<td>A mesma classe calcula, grava e envia e-mail</td>
+</tr>
+<tr>
+<td><strong>O</strong>: aberto/fechado</td>
+<td>Acrescentar sem reescrever</td>
+<td>Cada caso novo exige mais um <code>elif</code></td>
+</tr>
+<tr>
+<td><strong>L</strong>: substituição de Liskov</td>
+<td>O subtipo cumpre o contrato do tipo</td>
+<td>A subclasse recusa um método herdado</td>
+</tr>
+<tr>
+<td><strong>I</strong>: segregação de interfaces</td>
+<td>Interfaces pequenas</td>
+<td>Quem implementa deixa métodos vazios</td>
+</tr>
+<tr>
+<td><strong>D</strong>: inversão de dependência</td>
+<td>Depender de abstrações</td>
+<td>A regra de negócio cria sozinha o banco ou o serviço que usa</td>
+</tr>
+</tbody>
+</table>
+<p>Suponha que se queira exportar as tarefas em mais de um formato (o TaskFlow não faz isso; é um exemplo). A primeira versão costuma ser assim:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">exportar</span><span class="p">(</span><span class="n">titulos</span><span class="p">,</span> <span class="n">formato</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="k">if</span> <span class="n">formato</span> <span class="o">==</span> <span class="s2">"texto"</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">titulos</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="k">elif</span> <span class="n">formato</span> <span class="o">==</span> <span class="s2">"markdown"</span><span class="p">:</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- [ ] </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">titulos</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">formato</span><span class="p">)</span>
+</code></pre></div>
+<p>Cada formato novo modifica essa função. Com o padrão <strong>Strategy</strong>, cada variação vira um objeto, e a função depende apenas do que todos oferecem:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Protocol</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">Formato</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">gerar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">titulos</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="k">class</span><span class="w"> </span><span class="nc">Texto</span><span class="p">:</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">gerar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">titulos</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">titulos</span><span class="p">)</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="k">class</span><span class="w"> </span><span class="nc">Markdown</span><span class="p">:</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">gerar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">titulos</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- [ ] </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">titulos</span><span class="p">)</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="k">def</span><span class="w"> </span><span class="nf">exportar</span><span class="p">(</span><span class="n">titulos</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">formato</span><span class="p">:</span> <span class="n">Formato</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="k">return</span> <span class="n">formato</span><span class="o">.</span><span class="n">gerar</span><span class="p">(</span><span class="n">titulos</span><span class="p">)</span>
+</code></pre></div>
+<p>Um formato CSV é uma classe nova, sem tocar em <code>exportar</code> (<strong>O</strong>). A função depende da abstração <code>Formato</code>, e quem chama escolhe a implementação (<strong>D</strong>). A interface tem um só método (<strong>I</strong>), e toda implementação deve devolver um texto com todos os títulos: uma que descartasse alguns quebraria o contrato (<strong>L</strong>).</p>
+<p>Com apenas dois formatos que não vão mudar, o <code>if</code> é melhor (YAGNI). Em Python, quando a estratégia é uma única operação, uma função costuma bastar no lugar da classe. E às vezes a variação cabe em dados: no TaskFlow, as mudanças de estado são um dicionário (<code>TRANSICOES</code>), e não uma sequência de <code>if</code>.</p>
 <h2 id="estilos-de-arquitetura">🧱 Estilos de arquitetura<a class="headerlink" href="#estilos-de-arquitetura" title="Permanent link">&para;</a></h2>
 <p>Os estilos a seguir não são todos alternativas entre si, porque respondem a perguntas diferentes. <strong>Camadas</strong> trata da organização lógica do código. <strong>Monólito</strong> e <strong>microsserviços</strong> tratam de como o sistema é implantado. As duas escolhas se combinam: um monólito pode, e costuma, ser organizado em camadas.</p>
 <h3 id="arquitetura-em-camadas">Arquitetura em camadas<a class="headerlink" href="#arquitetura-em-camadas" title="Permanent link">&para;</a></h3>
@@ -1441,6 +1597,25 @@
 </tbody>
 </table>
 <p>Esses padrões seguem relevantes, mas vale um alerta prático: padrões de projeto resolvem problemas de um contexto específico (sistemas orientados a objetos, em linguagens com certas limitações dos anos 1990). Aplicá-los de forma automática, sem que o problema realmente exista, é uma forma comum de complexidade desnecessária — o oposto do princípio YAGNI mencionado acima.</p>
+<h3 id="adapter-encaixar-o-que-nao-foi-feito-para-voce">Adapter: encaixar o que não foi feito para você<a class="headerlink" href="#adapter-encaixar-o-que-nao-foi-feito-para-voce" title="Permanent link">&para;</a></h3>
+<p>O <strong>Adapter</strong> converte a interface que existe na interface que o seu código espera. Imagine que o sistema precise avisar uma pessoa, e a biblioteca escolhida (fictícia, no exemplo) fale em canais:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">BibliotecaDeMensagens</span><span class="p">:</span>  <span class="c1"># de terceiros: não se altera</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">channel</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">class</span><span class="w"> </span><span class="nc">Notificador</span><span class="p">:</span>  <span class="c1"># o adaptador</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">biblioteca</span><span class="p">:</span> <span class="n">BibliotecaDeMensagens</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_biblioteca</span> <span class="o">=</span> <span class="n">biblioteca</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">avisar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">login</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mensagem</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_biblioteca</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">"@</span><span class="si">{</span><span class="n">login</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">mensagem</span><span class="p">)</span>
+</code></pre></div>
+<p>O restante do sistema conhece apenas <code>avisar</code>. Trocar de biblioteca significa escrever outro adaptador, e nos testes um objeto falso com o mesmo método ocupa o lugar do serviço real.</p>
+<div class="admonition warning">
+<p class="admonition-title">Cuidado com o Singleton</p>
+<p>Ele garante uma única instância, acessível de qualquer lugar. Na prática, costuma funcionar como uma variável global: esconde dependências e faz um teste interferir no outro. Criar o objeto uma vez e passá-lo a quem precisa resolve a maioria dos casos.</p>
+</div>
 <h2 id="modelando-a-estrutura-e-as-interacoes">📐 Modelando a estrutura e as interações<a class="headerlink" href="#modelando-a-estrutura-e-as-interacoes" title="Permanent link">&para;</a></h2>
 <p>O Capítulo 3 modelou o que o sistema faz. Três diagramas da UML (OMG, 2017) ajudam a decidir como (FOWLER, 2003). Os exemplos de classes e estados descrevem a versão em equipe da API de tarefas, implementada no <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a>.</p>
 <h3 id="classes-o-que-existe-e-como-se-relaciona">Classes: o que existe e como se relaciona<a class="headerlink" href="#classes-o-que-existe-e-como-se-relaciona" title="Permanent link">&para;</a></h3>
@@ -1649,6 +1824,7 @@
 <li>Faça a modelagem de ameaças de uma funcionalidade pequena (por exemplo, atribuir uma tarefa a outra pessoa): diagrama com a fronteira de confiança, ao menos quatro ameaças do STRIDE e a resposta escolhida para cada uma.</li>
 <li>Peça a um assistente de IA ameaças para a mesma funcionalidade. Separe as que acrescentam algo, as genéricas e as erradas.</li>
 <li>Inclua no diagrama de estados uma tarefa cancelada. De quais estados se chega a ela? É possível reativá-la? Escreva os testes que essas respostas sugerem.</li>
+<li>Acrescente o formato CSV ao exemplo de exportação, primeiro na versão com <code>if</code> e depois na versão com Strategy. Em cada uma, o que precisou mudar? Escreva um teste que valha para todos os formatos.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
