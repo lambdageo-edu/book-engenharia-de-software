@@ -73,14 +73,6 @@ TDD é uma prática (não apenas uma técnica de teste) em que o teste é escrit
 
 A promessa do TDD não é "ter mais testes" — é que escrever o teste primeiro força a pensar na interface e no comportamento esperado antes dos detalhes de implementação, e garante que todo código de produção tenha, desde o nascimento, um teste que o cubra.
 
-### Praticando TDD nesta API
-
-Depois de montar a API no *hands-on* a seguir, volte aqui: como exercício de TDD, tente adicionar um endpoint `DELETE /tarefas/{tarefa_id}` seguindo o ciclo Red-Green-Refactor:
-
-1. **Red**: escreva `test_deletar_tarefa_remove_da_lista`, chamando um endpoint que ainda não existe.
-2. **Green**: implemente o `DELETE /tarefas/{tarefa_id}` da forma mais simples possível para o teste passar.
-3. **Refactor**: revise o código à luz das práticas de clean code do Capítulo 5.
-
 ---
 
 ## 🧑‍💻 Hands-on: testando uma API com pytest e FastAPI
@@ -244,9 +236,17 @@ TOTAL                32      2    94%
 !!! danger "Cobertura alta não é sinônimo de bons testes"
     100% de cobertura significa apenas que toda linha foi **executada** por algum teste — não que o comportamento foi **verificado** corretamente. É possível ter cobertura total com testes que não fazem nenhuma asserção significativa. Use cobertura para encontrar código não testado, nunca como meta isolada de qualidade.
 
+### Praticando TDD nesta API
+
+Com a API montada, como exercício de TDD, tente adicionar um endpoint `DELETE /tarefas/{tarefa_id}` seguindo o ciclo Red-Green-Refactor:
+
+1. **Red**: escreva `test_deletar_tarefa_remove_da_lista`, chamando um endpoint que ainda não existe.
+2. **Green**: implemente o `DELETE /tarefas/{tarefa_id}` da forma mais simples possível para o teste passar.
+3. **Refactor**: revise o código à luz das práticas de clean code do Capítulo 5.
+
 ## 🤖 Testes gerados por IA
 
-Assistentes de codificação são cada vez mais usados para gerar testes automaticamente a partir do código de produção — uma forma rápida de aumentar cobertura numérica. O alerta acima vale com ainda mais força nesse caso: um teste gerado a partir do código existente tende a **confirmar o que o código já faz**, inclusive quando o código tem um defeito, em vez de verificar o que o código **deveria** fazer segundo o requisito. É o oposto do espírito do TDD (seção anterior), em que o teste nasce do requisito, antes do código existir.
+Assistentes de codificação são cada vez mais usados para gerar testes automaticamente a partir do código de produção — uma forma rápida de aumentar cobertura numérica. O alerta acima vale com ainda mais força nesse caso: um teste gerado a partir do código existente tende a **confirmar o que o código já faz**, inclusive quando o código tem um defeito, em vez de verificar o que o código **deveria** fazer segundo o requisito. É o oposto do espírito do TDD (visto acima), em que o teste nasce do requisito, antes do código existir.
 
 Isso não invalida o uso de IA para gerar testes — apenas desloca a responsabilidade do desenvolvedor: ler e validar cada teste gerado contra o comportamento esperado (não contra o comportamento atual do código) continua sendo indispensável antes de aceitar a mudança na suíte.
 

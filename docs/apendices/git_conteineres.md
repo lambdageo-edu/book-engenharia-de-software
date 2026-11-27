@@ -109,10 +109,12 @@ Uma **imagem** é o pacote somente leitura com a aplicação e suas dependência
 
 ```bash
 docker build -t api-tarefas .
-docker run -d --name api -p 8000:8000 api-tarefas
+docker run -d --name api -p 127.0.0.1:8000:8000 api-tarefas
 docker logs api            # primeira parada quando algo falha
 docker stop api && docker rm api
 ```
+
+O `127.0.0.1` publica a porta só para a sua máquina: a API deste livro não tem HTTPS.
 
 O que é gravado dentro do contêiner se perde quando ele é removido; dados que precisam sobreviver vão para um *volume*.
 

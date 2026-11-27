@@ -10,7 +10,7 @@ O termo *clean code* foi popularizado pelo livro homônimo de Robert C. Martin (
 
 Algumas práticas amplamente aceitas de código limpo:
 
-* **Nomes que revelam intenção**: `diasDesdeUltimoLogin` comunica mais que `d`. O tempo economizado por nomes ruins na hora de escrever é pago, com juros, por quem lê depois.
+* **Nomes que revelam intenção**: `dias_desde_ultimo_login` comunica mais que `d`. O tempo economizado por nomes ruins na hora de escrever é pago, com juros, por quem lê depois.
 * **Funções pequenas e com um único propósito**: uma função que faz "uma coisa" é mais fácil de testar, entender e reutilizar do que uma função de 200 linhas que faz cinco coisas.
 * **Evitar duplicação (princípio DRY — *Don't Repeat Yourself*, de Hunt e Thomas)**: lógica duplicada em vários lugares significa que uma correção precisa ser lembrada e replicada em todos eles.
 * **Comentários que explicam o "porquê", não o "o quê"**: se o código precisa de um comentário para explicar o que ele faz, muitas vezes é sinal de que ele poderia ser reescrito de forma mais clara. Comentários são mais valiosos quando explicam uma decisão não óbvia ("usamos X em vez de Y por causa da limitação Z da API externa").
@@ -166,7 +166,7 @@ Assistentes e agentes de codificação (GitHub Copilot, Claude Code, Cursor e eq
 
 ### O que a pesquisa já mostrou
 
-* Num experimento de 2023 com 47 participantes, a maioria estudantes, quem usou um assistente de IA escreveu código **menos seguro** em quatro de cinco tarefas e, ao mesmo tempo, tendeu a **confiar mais** na segurança do que escreveu ([Perry et al., 2023](https://arxiv.org/abs/2211.03622)). O modelo usado é antigo, e os números não valem automaticamente para as ferramentas atuais, mas o alerta sobre excesso de confiança continua útil.
+* Num experimento com 47 participantes, a maioria estudantes, publicado em 2023, quem usou um assistente de IA escreveu código **menos seguro** em quatro de cinco tarefas e, ao mesmo tempo, tendeu a **confiar mais** na segurança do que escreveu ([Perry et al., 2023](https://arxiv.org/abs/2211.03622)). O modelo usado é antigo, e os números não valem automaticamente para as ferramentas atuais, mas o alerta sobre excesso de confiança continua útil.
 * Modelos que geram código às vezes recomendam **pacotes que não existem**. Um estudo com 16 modelos mediu, em média, ao menos 5,2% de pacotes inventados nos modelos comerciais e 21,7% nos abertos ([Spracklen et al., 2025](https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen)). Alguém pode publicar um pacote malicioso com um desses nomes. Antes de instalar uma dependência sugerida, confirme que ela existe, é a que você pretendia e tem manutenção.
 
 ### O que não entregar à ferramenta

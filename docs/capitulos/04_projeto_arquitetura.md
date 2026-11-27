@@ -11,7 +11,7 @@ Alguns princípios atravessam décadas de engenharia de software e continuam ori
 * **Separação de responsabilidades (*separation of concerns*)**: cada componente deve ter uma responsabilidade bem definida, minimizando sobreposição.
 * **Baixo acoplamento, alta coesão**: componentes devem depender pouco uns dos outros (acoplamento) e cada componente deve agrupar responsabilidades fortemente relacionadas entre si (coesão).
 * **Abstração**: expor apenas o necessário através de interfaces, escondendo detalhes de implementação.
-* **Princípio da responsabilidade única (*Single Responsibility Principle*)**: um módulo deve ter apenas um motivo para mudar — o primeiro dos princípios **SOLID**, um conjunto de cinco diretrizes de projeto orientado a objetos (SRP, Open/Closed, Liskov, Interface Segregation, Dependency Inversion) amplamente usado como referência de projeto até hoje (veja adiante).
+* **Responsabilidade única**: um módulo deve ter apenas um motivo para mudar. É o primeiro dos cinco princípios **SOLID**, apresentados adiante.
 * **[YAGNI](https://www.martinfowler.com/bliki/Yagni.html) (*You Aren't Gonna Need It*)**: não projete flexibilidade para requisitos hipotéticos que ainda não existem — complexidade antecipada tem custo real e nem sempre paga o benefício esperado.
 
 !!! warning "Arquitetura não é só sobre tecnologia"
@@ -314,8 +314,8 @@ A decisão continua sendo do time. Um bom teste: quem aprovou consegue explicar,
 
 Arquitetura só é útil se for compreendida por quem constrói o sistema. Algumas ferramentas práticas:
 
-* **Diagramas C4** (Contexto, Contêineres, Componentes, Código): um modelo proposto por Simon Brown, de diagramação em quatro níveis de zoom, do mais abstrato (como o sistema se encaixa no mundo) ao mais detalhado (classes de um componente específico) — mais leve e mais usado atualmente do que notações formais completas como UML.
-* **Registros de Decisão de Arquitetura (*Architecture Decision Records* — ADRs)**, [popularizados por Michael Nygard](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions): pequenos documentos versionados junto ao código, registrando uma decisão de arquitetura, o contexto que levou a ela, e as alternativas consideradas — úteis para que decisões antigas não pareçam arbitrárias para quem chega depois no time.
+* **Diagramas C4** (Contexto, Contêineres, Componentes, Código): um modelo proposto por Simon Brown, de diagramação em quatro níveis de zoom, do mais abstrato (como o sistema se encaixa no mundo) ao mais detalhado (classes de um componente específico) — uma alternativa mais leve do que modelar o sistema inteiro em UML.
+* **Registros de Decisão de Arquitetura (*Architecture Decision Records* — ADRs)**, [popularizados por Michael Nygard](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions): pequenos documentos versionados junto ao código, cada um registrando uma decisão de arquitetura. O modelo de Nygard tem cinco partes: título, contexto, decisão, situação (*status*) e consequências. Muitas equipes acrescentam as alternativas consideradas. São úteis para que decisões antigas não pareçam arbitrárias para quem chega depois no time.
 * **UML**, ainda útil para diagramas específicos (classes, sequência) quando o nível de detalhe compensa o custo de mantê-los atualizados — mas raramente usado hoje como especificação completa e exaustiva de um sistema, como se popularizou nos anos 1990/2000.
 
 ---
@@ -323,7 +323,7 @@ Arquitetura só é útil se for compreendida por quem constrói o sistema. Algum
 ## 🎯 Atividades
 
 1. Para um sistema de e-commerce de pequeno porte, você optaria por um monólito modularizado ou por microsserviços? Justifique com base nos trade-offs discutidos.
-2. Escreva um ADR curto (contexto, decisão, alternativas consideradas, consequências) para a escolha de arquitetura do item anterior.
+2. Escreva um ADR curto (título, contexto, decisão, situação, consequências e alternativas consideradas) para a escolha de arquitetura do item anterior.
 3. Identifique um padrão de projeto (dos criacionais, estruturais ou comportamentais) que você já usou, mesmo sem saber o nome, em algum código que escreveu. Descreva o problema que ele resolveu.
 4. Faça a modelagem de ameaças de uma funcionalidade pequena (por exemplo, atribuir uma tarefa a outra pessoa): diagrama com a fronteira de confiança, ao menos quatro ameaças do STRIDE e a resposta escolhida para cada uma.
 5. Peça a um assistente de IA ameaças para a mesma funcionalidade. Separe as que acrescentam algo, as genéricas e as erradas.

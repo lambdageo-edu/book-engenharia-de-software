@@ -78,7 +78,7 @@ Scrum é o framework ágil mais adotado no mercado. Organiza o trabalho em **spr
 
 #### Definição de pronto
 
-A **definição de pronto** (*Definition of Done*) descreve o estado que um incremento precisa atingir para atender às medidas de qualidade do produto. Um item que não a cumpre não é entregue nem apresentado na revisão da *sprint*: volta para o *backlog* (SCHWABER; SUTHERLAND, 2020). Para a API de tarefas, uma primeira versão poderia ser:
+A **definição de pronto** (*Definition of Done*) descreve o estado que um incremento precisa atingir para atender às medidas de qualidade do produto. Um item que não a cumpre não é entregue nem apresentado na revisão da *sprint*: volta para o *backlog* (SCHWABER; SUTHERLAND, 2020). Para a API de tarefas, o [projeto condutor](../index.md) do livro, construída no [Capítulo 6](06_testes_validacao.md), uma primeira versão poderia ser:
 
 * os critérios de aceitação têm testes, e todos passam;
 * o pipeline está verde, incluindo as verificações de segurança (Capítulo 7);
@@ -107,7 +107,7 @@ Kanban tem origem no sistema de produção da Toyota e foi adaptado ao desenvolv
 Na prática, muitas equipes usam híbridos (às vezes chamados *Scrumban*): sprints para planejamento e alinhamento, com um quadro Kanban e limites de WIP para gerenciar o fluxo do dia a dia.
 
 !!! note "Scrum não é a única resposta a processos ágeis"
-    Scrum continua sendo o framework ágil mais adotado no mercado, mas não é unânime: é comum times relatarem "fadiga de cerimônias" quando o ritmo de sprints, *dailies* e retrospectivas vira ritual repetitivo em vez de ferramenta útil — o que alguns autores chamam de "Scrum de fachada" (todas as cerimônias, nenhuma agilidade real). Como resposta, abordagens mais leves como o [**Shape Up**](https://basecamp.com/shapeup) (criado na Basecamp e descrito por Ryan Singer) vêm ganhando adoção real em alguns times e empresas: substituem sprints curtos e cerimônias diárias por ciclos mais longos (tipicamente 6 semanas) de trabalho focado, com um período de "resfriamento" entre ciclos. Isso não torna Scrum obsoleto — continua sendo uma escolha sólida, especialmente com múltiplos times que precisam de sincronização — mas reforça o ponto já feito neste capítulo: não existe processo universalmente superior, e vale conhecer alternativas ao framework mais popular.
+    A adoção ampla não o torna unânime: é comum times relatarem "fadiga de cerimônias" quando o ritmo de sprints, *dailies* e retrospectivas vira ritual repetitivo em vez de ferramenta útil — o que se costuma chamar de "Scrum de fachada" (todas as cerimônias, nenhuma agilidade real). Como resposta, abordagens mais leves como o [**Shape Up**](https://basecamp.com/shapeup) (criado na Basecamp e descrito por Ryan Singer) propõem outro ritmo: substituem sprints curtos e cerimônias diárias por ciclos mais longos (tipicamente 6 semanas) de trabalho focado, com um período de "resfriamento" entre ciclos. Isso não torna Scrum obsoleto, que continua sendo uma escolha sólida, especialmente com múltiplos times que precisam de sincronização.
 
 ## 🛠️ DevOps: além do processo de desenvolvimento
 
