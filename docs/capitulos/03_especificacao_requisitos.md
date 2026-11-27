@@ -175,6 +175,8 @@ As linhas ligam cada ator aos seus objetivos. A seta "é um" representa a **gene
 
 *Assumir* é o membro tomar para si uma tarefa sem responsável; *atribuir*, o dono escolher quem responde por ela. Só se conclui uma tarefa que foi iniciada. Devolver e reabrir ficaram de fora para não carregar o desenho.
 
+Os números das alternativas abaixo, como 404 e 409, são códigos de resposta do HTTP, explicados no [apêndice](../apendices/http_api.md).
+
 O diagrama é um índice. O conteúdo está na descrição textual de cada caso (COCKBURN, 2000):
 
 | Campo | Concluir tarefa |
