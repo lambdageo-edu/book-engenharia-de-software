@@ -100,6 +100,63 @@ Esse formato *Dado/Quando/Então* (Gherkin) tem a vantagem de já nascer no form
 !!! tip "História de usuário não é 'requisito ágil de baixa qualidade'"
     Um erro comum é achar que histórias de usuário dispensam análise. Na verdade, elas deslocam o detalhamento para o momento certo (*just in time*), em vez de tentar prever tudo antecipadamente — mas ainda exigem elicitação cuidadosa, critérios de aceitação claros e refinamento contínuo do backlog.
 
+## 🧭 Modelando o comportamento
+
+Um modelo é uma visão simplificada, feita para responder a uma pergunta. Aqui, a pergunta é o que o sistema faz e para quem. Os diagramas seguem a notação da UML (OMG, 2017) e imaginam a evolução da API de tarefas para uma **equipe**, com projetos, membros e donos. O código dos Capítulos 6 e 7 ainda não tem usuários: este é um modelo do que se quer construir.
+
+### Casos de uso
+
+Um **ator** é um papel externo ao sistema (uma pessoa ou outro sistema), e um **caso de uso** é um objetivo que o ator alcança com o sistema.
+
+```mermaid
+flowchart LR
+    membro["👤 Membro"]
+    dono["👤 Dono do projeto"]
+    subgraph api[API de tarefas]
+        criar([Criar tarefa])
+        listar([Listar tarefas])
+        concluir([Concluir tarefa])
+        convidar([Adicionar membro])
+    end
+    membro --- criar
+    membro --- listar
+    membro --- concluir
+    dono --- convidar
+    dono -- é um --> membro
+```
+
+As linhas ligam cada ator aos seus objetivos. A seta "é um" representa a **generalização**: o dono do projeto faz tudo o que o membro faz e mais. O desenho acima é um fluxograma que imita a notação: na UML, os atores são bonecos e a generalização é uma linha com triângulo vazado.
+
+O diagrama é um índice. O conteúdo está na descrição textual de cada caso (COCKBURN, 2000):
+
+| Campo | Concluir tarefa |
+|---|---|
+| **Ator principal** | Membro |
+| **Pré-condição** | O membro está autenticado e participa do projeto. |
+| **Fluxo principal** | 1. O membro pede a conclusão de uma tarefa. 2. O sistema verifica a permissão. 3. O sistema marca a tarefa como concluída e a devolve. |
+| **Alternativa: tarefa inexistente** | No passo 1, o sistema responde 404. |
+| **Alternativa: sem permissão** | No passo 2, quem não é o responsável nem o dono recebe 403, e nada muda. |
+| **Pós-condição** | A tarefa está concluída. |
+
+Repare que as alternativas vêm das perguntas que o fluxo principal não responde, e que uma delas é o requisito de segurança da seção anterior.
+
+### Atividades
+
+O **diagrama de atividades** mostra a ordem dos passos e as decisões de um processo. Abaixo, o mesmo caso de uso, desenhado como fluxograma do Mermaid, que é próximo da notação da UML, mas não idêntico a ela:
+
+```mermaid
+flowchart TD
+    inicio([Pedido de conclusão]) --> existe{Tarefa existe?}
+    existe -- não --> e404([Responde 404])
+    existe -- sim --> pode{É o responsável ou o dono?}
+    pode -- não --> e403([Responde 403])
+    pode -- sim --> marca[Marca como concluída]
+    marca --> ok([Devolve a tarefa])
+```
+
+!!! tip "Quando vale a pena"
+    Casos de uso ajudam a delimitar o escopo e a conversar com quem não programa. Um diagrama de atividades compensa quando há várias decisões ou vários participantes. Para um cadastro simples, uma história de usuário com critérios de aceitação basta.
+
 ## ✅ Boas práticas de especificação
 
 Independente do formato (documento formal ou história de usuário), um bom requisito deve ser:
@@ -195,6 +252,7 @@ Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de doc
 3. Avalie uma história de usuário real (sua ou de um colega) usando o critério INVEST. Ela falha em algum dos critérios? Como você a melhoraria?
 4. Escreva duas histórias de abuso para o aplicativo de biblioteca do item 1 e transforme cada uma em um critério de aceitação.
 5. Escreva a especificação de uma pequena mudança antes de pedi-la a um assistente de IA. Compare o resultado com o de um pedido de uma linha: o que foi suposto em cada caso?
+6. Para o aplicativo de biblioteca do item 1, desenhe o diagrama de casos de uso e descreva um dos casos, com pelo menos duas alternativas.
 
 ## 📚 Para saber mais
 
@@ -209,3 +267,5 @@ Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de doc
 * PATTON, Jeff. *User Story Mapping*. O'Reilly, 2014.
 * BRANDOLINI, Alberto. *Introducing EventStorming* — [leanpub.com](https://leanpub.com/introducing_eventstorming)
 * ISO/IEC/IEEE 29148:2018. *Systems and software engineering: Life cycle processes, Requirements engineering*.
+* OMG. *Unified Modeling Language*, versão 2.5.1, 2017 — [omg.org/spec/UML](https://www.omg.org/spec/UML/About-UML/)
+* COCKBURN, Alistair. *Writing Effective Use Cases*. Addison-Wesley, 2000.
