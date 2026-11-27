@@ -111,6 +111,68 @@ Independente do formato (documento formal ou história de usuário), um bom requ
 
 Um critério útil e amplamente usado para avaliar requisitos, especialmente em contexto ágil, é o acrônimo **INVEST**: Independente, Negociável, Valioso, Estimável, Pequeno (*Small*) e Testável.
 
+## 🔐 Requisitos de segurança
+
+"O sistema deve ser seguro" não é um requisito: não diz contra o quê proteger nem permite verificar se a proteção existe. Um requisito de segurança útil nomeia o que se protege e o comportamento esperado, e pode ser testado como qualquer outro:
+
+| Vago | Verificável |
+|---|---|
+| O sistema deve ser seguro. | Somente o responsável por uma tarefa ou o dono do projeto pode concluí-la. As demais tentativas recebem 403. |
+| A API não pode ser sobrecarregada. | Títulos com mais de 200 caracteres são recusados com 422. |
+| Os dados devem ser protegidos. | Senhas são armazenadas apenas como *hash* de uma função própria para senhas, nunca em texto puro. |
+
+Três fontes ajudam a descobrir esses requisitos:
+
+* **O próprio domínio**: quem pode ver e alterar cada informação? O que acontece se a pessoa errada fizer isso?
+* **A lei**: a LGPD (Lei 13.709/2018) exige que as medidas de segurança para dados pessoais sejam observadas desde a concepção do produto (art. 46, § 2º) e que o tratamento se limite aos dados necessários à finalidade (princípio da necessidade, art. 6º, III). Não coletar um dado é a forma mais barata de protegê-lo.
+* **Catálogos**: o [OWASP ASVS](https://owasp.org/ASVS/) (*Application Security Verification Standard*) reúne requisitos de segurança verificáveis para aplicações, e serve de lista de conferência.
+
+### Histórias de abuso
+
+Uma história de usuário descreve o que alguém quer fazer com o sistema. Uma **história de abuso** descreve o que não pode acontecer, do ponto de vista de quem tenta se aproveitar dele. A pergunta é: como esta funcionalidade pode ser usada de um jeito que não prevíamos?
+
+A API de tarefas do [Capítulo 6](06_testes_validacao.md) passa em todos os seus testes e, mesmo assim, aceita um título de 10 milhões de caracteres, cria quantas tarefas pedirem e deixa qualquer pessoa que alcance o servidor ler e concluir todas elas. Os testes verificam o que foi pedido, e ninguém pediu o contrário.
+
+```
+Como alguém mal-intencionado,
+quero enviar títulos enormes repetidas vezes,
+para esgotar a memória do servidor e derrubar o serviço.
+```
+
+A história de abuso só tem efeito quando vira **critério de aceitação** da funcionalidade que ela ameaça:
+
+```
+Dado um título com mais de 200 caracteres,
+quando alguém tenta criar a tarefa,
+então a API responde 422 e nada é armazenado.
+```
+
+Esse critério trata o tamanho de cada tarefa, mas não a quantidade de requisições. Para isso é preciso outro, sobre limite de requisições por cliente. Registre também os riscos que o time decidiu aceitar por ora, com o motivo. Veja a [folha de referência da OWASP sobre casos de abuso](https://cheatsheetseries.owasp.org/cheatsheets/Abuse_Case_Cheat_Sheet.html), mantida como material histórico.
+
+## 🤖 Especificar antes de pedir código
+
+Um assistente de IA preenche as lacunas de um pedido com suposições, e o resultado pode compilar, passar em testes superficiais e resolver o problema errado. Compare:
+
+=== "Pedido vago"
+    ```
+    Coloque um limite no título das tarefas.
+    ```
+    Qual limite? Espaços contam? O que a API responde? Tarefas antigas são afetadas? Cada pergunta sem resposta será decidida por quem escreve o código.
+
+=== "Especificação"
+    ```
+    Em POST /tarefas, limitar o título a 200 caracteres.
+    - Remover espaços das pontas antes de contar.
+    - Vazio ou acima de 200: responder 422 e não armazenar.
+    - Exatamente 200: aceitar.
+    - Não alterar os outros endpoints nem adicionar dependências.
+    - Incluir testes com 200 e 201 caracteres e com título só de espaços.
+    ```
+
+Essa prática, ampliada, é chamada de *desenvolvimento dirigido por especificação* (*spec-driven development*). O [Spec Kit](https://github.github.com/spec-kit/), do GitHub, por exemplo, propõe especificar, planejar, dividir em tarefas e só então implementar, com uma pessoa conferindo o resultado de cada fase. Não é preciso adotar uma ferramenta para seguir a ideia: critérios de aceitação bem escritos já são uma especificação.
+
+A IA também ajuda a escrever requisitos. Peça casos de borda, contradições e histórias de abuso que faltam. Trate a resposta como sugestão: ela não conhece seus usuários, não substitui a conversa com eles e pode inventar regras de negócio que parecem plausíveis. E não cole em ferramentas externas dados pessoais reais ou informações sigilosas sem autorização para isso.
+
 ## 🔁 Validação e gerenciamento de requisitos
 
 **Validar** requisitos significa checar se eles de fato representam o que o cliente precisa — não apenas se estão bem escritos. Técnicas comuns incluem revisões estruturadas com stakeholders, protótipos e a construção de casos de teste diretamente a partir dos requisitos (se é difícil escrever um teste para um requisito, é sinal de que ele está mal especificado).
@@ -131,9 +193,13 @@ Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de doc
 1. Escreva três requisitos funcionais e três requisitos não funcionais para um aplicativo de biblioteca universitária (empréstimo de livros).
 2. Reescreva um dos requisitos funcionais do item anterior como uma história de usuário com critérios de aceitação no formato Dado/Quando/Então.
 3. Avalie uma história de usuário real (sua ou de um colega) usando o critério INVEST. Ela falha em algum dos critérios? Como você a melhoraria?
+4. Escreva duas histórias de abuso para o aplicativo de biblioteca do item 1 e transforme cada uma em um critério de aceitação.
+5. Escreva a especificação de uma pequena mudança antes de pedi-la a um assistente de IA. Compare o resultado com o de um pedido de uma linha: o que foi suposto em cada caso?
 
 ## 📚 Para saber mais
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 4.
 * COHN, Mike. *User Stories Applied: For Agile Software Development*. Addison-Wesley, 2004.
+* OWASP *Application Security Verification Standard* — [owasp.org/ASVS](https://owasp.org/ASVS/)
+* Lei Geral de Proteção de Dados (Lei 13.709/2018) — [texto atualizado](https://www2.camara.leg.br/legin/fed/lei/2018/lei-13709-14-agosto-2018-787077-normaatualizada-pl.html)
 * Formato Gherkin (Cucumber) — [cucumber.io/docs/gherkin](https://cucumber.io/docs/gherkin/)

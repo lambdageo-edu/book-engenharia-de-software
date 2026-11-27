@@ -68,6 +68,66 @@ Enquanto estilos de arquitetura organizam o sistema em larga escala, **padrões 
 
 Esses padrões seguem relevantes, mas vale um alerta prático: padrões de projeto resolvem problemas de um contexto específico (sistemas orientados a objetos, em linguagens com certas limitações dos anos 1990). Aplicá-los de forma automática, sem que o problema realmente exista, é uma forma comum de complexidade desnecessária — o oposto do princípio YAGNI mencionado acima.
 
+## 🛡️ Segurança desde o projeto
+
+Uma falha de código se corrige com um *commit*. Uma falha de projeto, como não prever quem pode acessar o quê, costuma exigir mudar modelo de dados, interfaces e código já escrito. Por isso a segurança entra nas decisões de arquitetura. Alguns princípios antigos continuam válidos, vários deles formulados por Saltzer e Schroeder em 1975:
+
+* **Privilégio mínimo**: cada pessoa e cada componente recebe apenas as permissões de que precisa (o `USER appuser` do [Capítulo 7](07_integracao_entrega_continua.md) é um exemplo).
+* **Negar por padrão**: o acesso precisa ser concedido explicitamente; na dúvida ou em caso de erro, recusa-se.
+* **Mediação completa**: a permissão é verificada em todo acesso, no servidor, e não apenas escondendo um botão na tela.
+* **Simplicidade**: quanto menor e mais simples o mecanismo, mais fácil revisá-lo.
+* **Defesa em profundidade**: mais de uma barreira, para que a falha de uma não exponha tudo.
+* **Reduzir a superfície de ataque**: o que não está exposto não pode ser atacado.
+
+### Modelagem de ameaças
+
+**Modelar ameaças** é analisar o projeto para descobrir o que pode dar errado antes que alguém descubra por você. Um roteiro enxuto usa [quatro perguntas](https://threatmodelingmanifesto.org/):
+
+1. No que estamos trabalhando?
+2. O que pode dar errado?
+3. O que vamos fazer a respeito?
+4. Fizemos um trabalho bom o suficiente?
+
+Para a primeira, basta um diagrama de por onde os dados passam, marcando as **fronteiras de confiança**: os pontos em que um dado vem de alguém em quem o sistema não deve confiar. Na API de tarefas:
+
+```
+ Cliente (navegador, script)
+        |
+        |  HTTP: título, identificador da tarefa
+ - - - -|- - - - - - - - - - - -  fronteira de confiança
+        v
+ API (FastAPI)  ----->  Armazenamento (hoje, um dicionário em memória)
+```
+
+Para a segunda, o acrônimo **STRIDE** serve de lista de conferência. Aplicado à versão atual da API:
+
+| Ameaça | Propriedade violada | Na API de tarefas |
+|---|---|---|
+| ***S**poofing* (falsificação de identidade) | Autenticação | Não há identificação: o sistema não sabe quem está pedindo. |
+| ***T**ampering* (adulteração) | Integridade | Qualquer um conclui qualquer tarefa. |
+| ***R**epudiation* (repúdio) | Responsabilização | Não há registro de quem concluiu uma tarefa. |
+| ***I**nformation disclosure* (vazamento) | Confidencialidade | `GET /tarefas` entrega todas as tarefas a quem pedir. |
+| ***D**enial of service* (negação de serviço) | Disponibilidade | Não há limite de tamanho do título nem de requisições. |
+| ***E**levation of privilege* (elevação de privilégio) | Autorização | Ainda não há papéis. Quando houver, um membro não pode agir como dono do projeto. |
+
+Para a terceira, cada ameaça recebe uma resposta: **mitigar** (reduzir a chance ou o dano), **eliminar** (retirar a funcionalidade que a cria), **transferir** (passar a responsabilidade a outro, como um provedor de identidade, registrando o risco que sobra) ou **aceitar** (conscientemente, com o motivo). Por exemplo, enquanto a API só roda na máquina do desenvolvedor, a falta de autenticação pode ser aceita. Antes de publicá-la na rede, precisa ser mitigada. O limite do título é barato e pode ser feito já.
+
+!!! warning "Quando houver usuários, confira o dono de cada objeto"
+    Autenticar não basta. Se `PATCH /tarefas/42/concluir` verifica apenas se há alguém conectado, qualquer usuário conclui a tarefa de outro trocando o número. Essa falha, a *autorização quebrada em nível de objeto*, é a [primeira da lista OWASP de riscos em APIs](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/) (edição de 2023).
+
+A quarta pergunta lembra que o modelo não é um documento de uma vez só: revise-o quando surgir um novo endpoint, integração ou tipo de dado, e guarde-o no repositório, junto com os ADRs.
+
+## 🤖 IA nas decisões de projeto
+
+Assistentes de IA são úteis como interlocutores: propõem alternativas, apontam *trade-offs*, rascunham um ADR e sugerem ameaças que o time não listou. Os limites também são claros:
+
+* eles não conhecem o orçamento, o time, os prazos nem a história do sistema, a menos que alguém conte, e mesmo assim parcialmente;
+* uma lista de ameaças gerada pode parecer completa e ignorar a mais importante do seu domínio;
+* nomes de bibliotecas, recursos e referências precisam ser conferidos, porque podem não existir;
+* diagramas e configurações podem revelar detalhes sensíveis da infraestrutura: verifique o que pode ser enviado à ferramenta.
+
+A decisão continua sendo do time. Um bom teste: quem aprovou consegue explicar, sem a ferramenta, por que essa alternativa foi escolhida e o que se perde com ela?
+
 ## 🗺️ Documentando e comunicando arquitetura
 
 Arquitetura só é útil se for compreendida por quem constrói o sistema. Algumas ferramentas práticas:
@@ -83,11 +143,15 @@ Arquitetura só é útil se for compreendida por quem constrói o sistema. Algum
 1. Para um sistema de e-commerce de pequeno porte, você optaria por um monólito modularizado ou por microsserviços? Justifique com base nos trade-offs discutidos.
 2. Escreva um ADR curto (contexto, decisão, alternativas consideradas, consequências) para a escolha de arquitetura do item anterior.
 3. Identifique um padrão de projeto (dos criacionais, estruturais ou comportamentais) que você já usou, mesmo sem saber o nome, em algum código que escreveu. Descreva o problema que ele resolveu.
+4. Faça a modelagem de ameaças de uma funcionalidade pequena (por exemplo, atribuir uma tarefa a outra pessoa): diagrama com a fronteira de confiança, ao menos quatro ameaças do STRIDE e a resposta escolhida para cada uma.
+5. Peça a um assistente de IA ameaças para a mesma funcionalidade. Separe as que acrescentam algo, as genéricas e as erradas.
 
 ## 📚 Para saber mais
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 6.
 * GAMMA, Erich et al. *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley, 1994.
 * FOWLER, Martin. *Patterns of Enterprise Application Architecture*. Addison-Wesley, 2002.
+* OWASP *Threat Modeling Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html)
+* SALTZER, Jerome H.; SCHROEDER, Michael D. *The Protection of Information in Computer Systems*. Proceedings of the IEEE, 63(9), 1975.
 * Modelo C4 — [c4model.com](https://c4model.com/)
 * NEWMAN, Sam. *Building Microservices*. 2. ed. O'Reilly, 2021.
