@@ -601,6 +601,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ciclo-de-vida-e-devsecops" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🔐 Ciclo de vida e DevSecOps
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#escolhendo-um-processo" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1328,6 +1339,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ciclo-de-vida-e-devsecops" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🔐 Ciclo de vida e DevSecOps
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#escolhendo-um-processo" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1693,6 +1715,78 @@
 <p class="admonition-title">Ágil e DevOps não competem — se complementam</p>
 <p>Ágil resolve "como planejamos e priorizamos o trabalho de desenvolvimento". DevOps resolve "como levamos esse trabalho até produção, com segurança e frequência". Um time pode ser ágil sem ser DevOps (sprints organizados, mas deploys manuais e raros) — e o contrário também é possível, embora menos comum na prática.</p>
 </div>
+<h2 id="ciclo-de-vida-e-devsecops">🔐 Ciclo de vida e DevSecOps<a class="headerlink" href="#ciclo-de-vida-e-devsecops" title="Permanent link">&para;</a></h2>
+<p>O conjunto de atividades que leva um software da ideia à operação e à evolução costuma ser chamado de <strong>ciclo de vida de desenvolvimento de software</strong> (<em>Software Development Life Cycle</em>, <strong>SDLC</strong>). Cascata, incremental, Scrum com DevOps: cada um é uma forma de organizar esse ciclo.</p>
+<p>O NIST observa que poucos modelos de ciclo de vida tratam a segurança em detalhe, e que por isso é preciso acrescentar práticas a eles. Seu <em>Secure Software Development Framework</em> (SSDF, versão 1.1) reúne essas práticas em quatro grupos, aplicáveis a qualquer modelo (SOUPPAYA; SCARFONE; DODSON, 2022):</p>
+<table>
+<thead>
+<tr>
+<th>Grupo do SSDF</th>
+<th>Em uma frase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preparar a organização (<em>PO</em>)</td>
+<td>Pessoas, processos e ferramentas prontos para desenvolver com segurança</td>
+</tr>
+<tr>
+<td>Proteger o software (<em>PS</em>)</td>
+<td>Evitar adulteração e acesso não autorizado ao código e aos seus componentes</td>
+</tr>
+<tr>
+<td>Produzir software bem protegido (<em>PW</em>)</td>
+<td>Lançar versões com o mínimo de vulnerabilidades</td>
+</tr>
+<tr>
+<td>Responder a vulnerabilidades (<em>RV</em>)</td>
+<td>Encontrar o que escapou, corrigir e evitar que se repita</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DevSecOps</strong> leva essa preocupação para o DevOps: os passos de segurança entram no mesmo fluxo de desenvolvimento e entrega, automatizados sempre que possível (<a href="https://devguide.owasp.org/en/09-operations/01-devsecops/">OWASP DevSecOps Guideline</a>). A ideia, muitas vezes chamada de <em>shift left</em> (antecipar), é não deixar a segurança para uma revisão no fim, quando corrigir custa mais. Neste livro ela aparece em cada etapa:</p>
+<table>
+<thead>
+<tr>
+<th>Momento</th>
+<th>O que se faz</th>
+<th>Onde</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Requisitos</td>
+<td>Histórias de abuso e requisitos de segurança</td>
+<td><a href="../03_especificacao_requisitos/">Capítulo 3</a></td>
+</tr>
+<tr>
+<td>Projeto</td>
+<td>Modelagem de ameaças com STRIDE</td>
+<td><a href="../04_projeto_arquitetura/">Capítulo 4</a></td>
+</tr>
+<tr>
+<td>Código</td>
+<td>Práticas de código seguro, revisão e análise estática</td>
+<td><a href="../05_implementacao_qualidade/">Capítulo 5</a></td>
+</tr>
+<tr>
+<td>Testes</td>
+<td>Testar também o que o sistema deve recusar</td>
+<td><a href="../06_testes_validacao/">Capítulo 6</a></td>
+</tr>
+<tr>
+<td>Entrega</td>
+<td>Verificações de segurança no pipeline</td>
+<td><a href="../07_integracao_entrega_continua/">Capítulo 7</a></td>
+</tr>
+<tr>
+<td>Evolução</td>
+<td>Atualizar dependências e tratar vulnerabilidades</td>
+<td><a href="../08_evolucao_manutencao/">Capítulo 8</a></td>
+</tr>
+</tbody>
+</table>
+<p>Rodar um verificador no pipeline não basta para fazer DevSecOps: alguém precisa ler o alerta, decidir e corrigir, e essa responsabilidade é do time inteiro.</p>
 <h2 id="escolhendo-um-processo">📊 Escolhendo um processo<a class="headerlink" href="#escolhendo-um-processo" title="Permanent link">&para;</a></h2>
 <p>Não existe processo universalmente superior — a escolha depende de fatores como:</p>
 <table>
@@ -1737,6 +1831,7 @@
 <li>Faça em par uma pequena mudança, alternando quem escreve a cada 15 minutos. O que a segunda pessoa percebeu que passaria despercebido? Quanto custou?</li>
 <li>Em grupo, estimem cinco histórias com <em>planning poker</em>. Onde houve a maior diferença, o que ela revelou?</li>
 <li>Liste três riscos de um projeto seu, com chance, impacto, o que fazer e quem acompanha.</li>
+<li>Em um projeto seu, indique o que é feito pela segurança em cada momento do ciclo de vida. Onde há uma etapa sem nada, o que seria o primeiro passo?</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1755,6 +1850,8 @@
 <li>SINGER, Ryan. <em>Shape Up: Stop Running in Circles and Ship Work that Matters</em>. Basecamp, 2019 — <a href="https://basecamp.com/shapeup">basecamp.com/shapeup</a></li>
 <li>VOGELS, Werner. <em>A Conversation with Werner Vogels</em> (entrevista a Jim Gray). ACM Queue, 4(4), 2006 — <a href="https://queue.acm.org/detail.cfm?id=1142065">queue.acm.org</a></li>
 <li>ALLSPAW, John. <em>Blameless PostMortems and a Just Culture</em>. Etsy, 2012 — <a href="https://www.etsy.com/codeascraft/blameless-postmortems">etsy.com/codeascraft</a></li>
+<li>SOUPPAYA, Murugiah; SCARFONE, Karen; DODSON, Donna. <em>Secure Software Development Framework (SSDF) Version 1.1</em>. NIST SP 800-218, 2022 — <a href="https://doi.org/10.6028/NIST.SP.800-218">doi.org/10.6028/NIST.SP.800-218</a>. A revisão 1.2 estava em consulta pública (rascunho de dezembro de 2025).</li>
+<li>OWASP Developer Guide, <em>DevSecOps</em> — <a href="https://devguide.owasp.org/en/09-operations/01-devsecops/">devguide.owasp.org</a></li>
 </ul>
 
 
