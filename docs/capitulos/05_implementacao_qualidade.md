@@ -152,6 +152,59 @@ Outras decisões do mesmo arquivo merecem ser lidas:
 
 Isso não dispensa o que está fora do código, como HTTPS e limite de tentativas. Em um sistema real, considere também delegar a autenticação a um provedor de identidade.
 
+## 🧯 Tratamento de erros
+
+Há erros **esperados**, parte do funcionamento normal, como um *login* já usado, e erros **inesperados**, como um defeito ou um disco cheio. Os primeiros merecem uma resposta específica; os segundos, uma resposta genérica ao cliente e um registro detalhado para quem mantém o sistema. Tratar mal as situações anormais é a categoria A10 da lista acima.
+
+O pior tratamento é o que esconde:
+
+```python
+def salvar(banco, titulo):
+    try:
+        banco.execute("INSERT INTO tarefas (titulo) VALUES (?)", (titulo,))
+    except Exception:
+        pass  # o erro some, e quem chamou acha que gravou
+```
+
+Capture apenas o que você sabe tratar. O TaskFlow captura a violação de unicidade no cadastro e a traduz para o vocabulário da API (trecho de `app/auth.py`):
+
+```python
+try:
+    cursor = banco.execute(
+        "INSERT INTO usuarios (login, nome, senha_hash) VALUES (?, ?, ?)",
+        (dados.login, dados.nome, hasher.hash(dados.senha)),
+    )
+except sqlite3.IntegrityError:
+    raise HTTPException(409, "Login já utilizado") from None
+```
+
+Qualquer outra exceção segue adiante e vira um 500. No FastAPI, fora do modo de depuração, o cliente recebe apenas `Internal Server Error`, e o detalhe vai para o terminal ou o *log* do servidor.
+
+Algumas regras práticas:
+
+* **Na dúvida, negue.** Se a verificação de permissão falhar por um erro, o acesso não deve ser liberado.
+* **Não vaze detalhes.** Pilha de execução, consulta SQL e caminhos de arquivos ajudam um atacante; guarde-os no *log*, sem senhas nem *tokens* ([Capítulo 8](08_evolucao_manutencao.md)).
+* **Libere os recursos**, com `with` ou `finally`. Atenção: no `sqlite3`, `with conexao` encerra a transação, mas não fecha a conexão.
+* **Não deixe gravação pela metade.** Use transações quando a operação tem vários passos ([Capítulo 4](04_projeto_arquitetura.md)).
+* **Defina um prazo** (*timeout*) para chamadas a outros serviços, e decida o que fazer quando ele estoura.
+* **Teste o caminho do erro.** É o que menos roda no dia a dia e o que menos se conhece.
+
+O primeiro item, em código (exemplo fora do TaskFlow, com um serviço de permissões externo):
+
+```python
+import logging
+
+log = logging.getLogger(__name__)
+
+
+def pode_concluir(servico, usuario_id, tarefa_id):
+    try:
+        return servico.permite(usuario_id, tarefa_id)
+    except TimeoutError:
+        log.exception("serviço de permissões não respondeu")
+        return False
+```
+
 ## 🤖 Revisando código gerado por IA
 
 Assistentes e agentes de codificação (GitHub Copilot, Claude Code, Cursor e equivalentes) já fazem parte do dia a dia de boa parte dos times de desenvolvimento, gerando desde trechos pontuais até *pull requests* inteiros. Isso não elimina a necessidade de revisão de código — pelo contrário, muda o que a revisão precisa verificar:
@@ -220,6 +273,7 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 3. Escreva um checklist de code review com pelo menos 6 itens que você usaria como revisor em um projeto real.
 4. Acrescente ao checklist três itens de segurança, cada um ligado a uma categoria do OWASP Top 10.
 5. Peça a um assistente de IA o código de um *login* simples e revise-o: como a senha é armazenada? Há segredo no código? As dependências sugeridas existem?
+6. Escreva um teste para `pode_concluir` com um dublê que levanta `TimeoutError`. Depois procure, em um projeto seu, um `except` que esconda um erro.
 
 ## 📚 Para saber mais
 
@@ -227,6 +281,7 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 * MEYER, Bertrand. *Object-Oriented Software Construction*. 2. ed. Prentice Hall, 1997.
 * FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. *Accelerate: The Science of Lean Software and DevOps*. IT Revolution, 2018.
 * Documentação do `ruff` (linter/formatador Python) — [docs.astral.sh/ruff](https://docs.astral.sh/ruff/)
+* OWASP *Error Handling Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html)
 * *OWASP Top 10:2025* — [owasp.org/Top10/2025](https://owasp.org/Top10/2025/0x00_2025-Introduction/)
 * OWASP *Secrets Management Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html)
 * PERRY, Neil; SRIVASTAVA, Megha; KUMAR, Deepak; BONEH, Dan. *Do Users Write More Insecure Code with AI Assistants?* ACM CCS, 2023 — [arxiv.org/abs/2211.03622](https://arxiv.org/abs/2211.03622)

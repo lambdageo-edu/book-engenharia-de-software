@@ -68,7 +68,24 @@ Esses valores se desdobram em 12 princípios, dos quais vale destacar alguns que
 
 ### Scrum
 
-Scrum é o framework ágil mais adotado no mercado. Organiza o trabalho em **sprints**, iterações de duração fixa de um mês ou menos. A versão de 2020 do [Guia do Scrum](https://scrumguides.org/) define um *Scrum Team* com três **responsabilidades** (*accountabilities*): *Product Owner*, *Scrum Master* e *Developers*. São cinco eventos (a própria Sprint, *Sprint Planning*, *Daily Scrum*, *Sprint Review* e *Sprint Retrospective*) e três artefatos, cada um com um **compromisso** que dá direção e transparência:
+Scrum é o framework ágil mais adotado no mercado. Organiza o trabalho em **sprints**, iterações de duração fixa de um mês ou menos. A versão de 2020 do [Guia do Scrum](https://scrumguides.org/) define um *Scrum Team* com três **responsabilidades** (*accountabilities*):
+
+| Responsabilidade | Responde por |
+|---|---|
+| *Product Owner* | Maximizar o valor do produto: define a meta e ordena o *backlog*. É uma pessoa, não um comitê |
+| *Scrum Master* | A eficácia do time: ajuda a entender o Scrum e a remover impedimentos |
+| *Developers* | Criar o incremento: planejam a *sprint*, cuidam da qualidade e ajustam o plano a cada dia |
+
+São cinco eventos. A própria *sprint* contém os outros quatro:
+
+| Evento | Para quê | Duração máxima, em *sprint* de um mês |
+|---|---|---|
+| *Sprint Planning* | Decidir por que a *sprint* vale a pena, o que entra e como fazer | 8 horas |
+| *Daily Scrum* | Os *Developers* conferem o avanço rumo à meta e ajustam o plano | 15 minutos (todo dia útil) |
+| *Sprint Review* | Mostrar o resultado a interessados e discutir o que vem depois | 4 horas |
+| *Sprint Retrospective* | Melhorar a forma de trabalhar | 3 horas |
+
+Há três artefatos. O *Product Backlog* é a lista ordenada do que o produto precisa; o *Sprint Backlog*, o que foi escolhido para a *sprint*, com o plano para entregar; e o **incremento**, um passo utilizável e verificado em direção à meta do produto. Cada um tem um **compromisso** que dá direção e transparência:
 
 | Artefato | Compromisso |
 |---|---|
@@ -108,6 +125,22 @@ Na prática, muitas equipes usam híbridos (às vezes chamados *Scrumban*): spri
 
 !!! note "Scrum não é a única resposta a processos ágeis"
     A adoção ampla não o torna unânime: é comum times relatarem "fadiga de cerimônias" quando o ritmo de sprints, *dailies* e retrospectivas vira ritual repetitivo em vez de ferramenta útil — o que se costuma chamar de "Scrum de fachada" (todas as cerimônias, nenhuma agilidade real). Como resposta, abordagens mais leves como o [**Shape Up**](https://basecamp.com/shapeup) (criado na Basecamp e descrito por Ryan Singer) propõem outro ritmo: substituem sprints curtos e cerimônias diárias por ciclos mais longos (tipicamente 6 semanas) de trabalho focado, com um período de "resfriamento" entre ciclos. Isso não torna Scrum obsoleto, que continua sendo uma escolha sólida, especialmente com múltiplos times que precisam de sincronização.
+
+### Extreme Programming (XP)
+
+Enquanto o Scrum organiza o trabalho e não prescreve técnicas, o **Extreme Programming** (XP), de Kent Beck, concentra-se nas práticas de programação. Seus cinco valores são comunicação, simplicidade, *feedback*, coragem e respeito. Entre as práticas, várias se tornaram comuns mesmo em equipes que não dizem usar XP:
+
+| Prática | Em uma frase | No livro |
+|---|---|---|
+| Programação em par | Duas pessoas no mesmo código: uma escreve, a outra acompanha e questiona, e os papéis se alternam | Complementa a revisão ([Capítulo 5](05_implementacao_qualidade.md)) |
+| Teste primeiro | O teste é escrito antes do código | TDD ([Capítulo 6](06_testes_validacao.md)) |
+| Integração contínua | Integrar e testar várias vezes ao dia | [Capítulo 7](07_integracao_entrega_continua.md) |
+| Pequenas entregas | Colocar versões em uso cedo e com frequência | MVP ([Capítulo 3](03_especificacao_requisitos.md)) |
+| Projeto simples e refatoração | Fazer o necessário hoje e melhorar o projeto continuamente | [Capítulos 4](04_projeto_arquitetura.md) e [8](08_evolucao_manutencao.md) |
+| Propriedade coletiva | Qualquer pessoa do time pode melhorar qualquer parte | [Capítulo 5](05_implementacao_qualidade.md) |
+| Ritmo sustentável | Não viver de horas extras | Também é princípio do Manifesto |
+
+Scrum e XP combinam bem: um organiza o ciclo, o outro cuida de como o código é feito.
 
 ## 🛠️ DevOps: além do processo de desenvolvimento
 
@@ -155,6 +188,7 @@ A maioria das organizações de produto digital hoje adota variantes ágeis com 
 2. Compare Scrum e Kanban usando um exemplo de equipe que você conhece (trabalho, estágio, projeto acadêmico). Qual se encaixaria melhor e por quê?
 3. Explique, com suas palavras, a diferença entre "ser ágil" e "fazer DevOps". Dê um exemplo de time que seria um, mas não o outro.
 4. Escreva a definição de pronto de um projeto em que você participa. Quais itens podem ser verificados automaticamente?
+5. Faça em par uma pequena mudança, alternando quem escreve a cada 15 minutos. O que a segunda pessoa percebeu que passaria despercebido? Quanto custou?
 
 ## 📚 Para saber mais
 
@@ -162,6 +196,8 @@ A maioria das organizações de produto digital hoje adota variantes ágeis com 
 * Manifesto para Desenvolvimento Ágil de Software — [agilemanifesto.org/iso/ptbr/manifesto.html](https://agilemanifesto.org/iso/ptbr/manifesto.html)
 * Scrum Guide (oficial) — [scrumguides.org](https://scrumguides.org/)
 * SCHWABER, Ken; SUTHERLAND, Jeff. *The Scrum Guide*, 2020 — [scrumguides.org](https://www.scrumguides.org/scrum-guide.html)
+* BECK, Kent; ANDRES, Cynthia. *Extreme Programming Explained: Embrace Change*. 2. ed. Addison-Wesley, 2004.
+* Agile Alliance, glossário: *Extreme Programming* — [agilealliance.org](https://agilealliance.org/?p=8031229)
 * FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. *Accelerate: The Science of Lean Software and DevOps*. IT Revolution, 2018.
 * Relatórios anuais da DORA (Google Cloud): *State of DevOps* até 2024 e *State of AI-assisted Software Development* em 2025 — [dora.dev](https://dora.dev/).
 * ROYCE, Winston W. *Managing the Development of Large Software Systems*. Proceedings of IEEE WESCON, 1970.

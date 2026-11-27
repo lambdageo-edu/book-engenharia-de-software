@@ -15,13 +15,13 @@ Os capítulos seguem uma ordem progressiva, mas também podem ser consultados se
 ## 🎯 Estrutura do Livro
 
 ### 📘 Parte I: Fundamentos (Capítulos 1-2)
-O que diferencia software de outros produtos, por que a engenharia de software nasceu como disciplina e como as equipes organizam o trabalho: cascata, desenvolvimento incremental, Manifesto Ágil, Scrum, Kanban e a cultura DevOps.
+O que diferencia software de outros produtos, por que a engenharia de software nasceu como disciplina e como as equipes organizam o trabalho: cascata, desenvolvimento incremental, Manifesto Ágil, Scrum, Kanban, XP e a cultura DevOps.
 
 ### 📙 Parte II: Requisitos e projeto (Capítulos 3-4)
 Como descobrir, prototipar e registrar o que o sistema precisa fazer, modelar seus conceitos, comportamento, estrutura e dados, aplicar princípios e padrões de projeto e tomar decisões de arquitetura, inclusive as de segurança.
 
 ### 📗 Parte III: Construção (Capítulos 5-6)
-Código legível e seguro, revisão, controle de versão verificação e validação, e testes, dos unitários aos de aceitação, com projeto de casos de teste e TDD.
+Código legível e seguro, tratamento de erros, revisão, controle de versão verificação e validação, e testes, dos unitários aos de aceitação, com projeto de casos de teste e TDD.
 
 ### 📕 Parte IV: Entrega e evolução (Capítulos 7-8)
 Pipelines de integração e entrega contínuas, contêineres, testes de segurança e a vida do software em produção: manutenção, dependências, resposta a incidentes, débito técnico e observabilidade.
