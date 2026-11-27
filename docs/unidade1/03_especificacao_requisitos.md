@@ -131,7 +131,7 @@ Três fontes ajudam a descobrir esses requisitos:
 
 Uma história de usuário descreve o que alguém quer fazer com o sistema. Uma **história de abuso** descreve o que não pode acontecer, do ponto de vista de quem tenta se aproveitar dele. A pergunta é: como esta funcionalidade pode ser usada de um jeito que não prevíamos?
 
-A API de tarefas do [Capítulo 6](06_testes_validacao.md) passa em todos os seus testes e, mesmo assim, aceita um título de 10 milhões de caracteres, cria quantas tarefas pedirem e deixa qualquer pessoa que alcance o servidor ler e concluir todas elas. Os testes verificam o que foi pedido, e ninguém pediu o contrário.
+A primeira versão da API de tarefas, no [Capítulo 6](06_testes_validacao.md), passa em todos os seus testes e, mesmo assim, aceita um título de 10 milhões de caracteres, cria quantas tarefas pedirem e deixa qualquer pessoa que alcance o servidor ler e concluir todas elas. Os testes verificam o que foi pedido, e ninguém pediu o contrário.
 
 ```
 Como alguém mal-intencionado,
