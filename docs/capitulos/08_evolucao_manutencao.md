@@ -96,6 +96,26 @@ Gerar código ficou rápido; entendê-lo e mantê-lo, não necessariamente. Quan
 
 O relatório DORA de 2025 descreve a IA como um [amplificador do que a organização já tem](https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report): associa seu uso a mais vazão de entregas, mas também a menos estabilidade, e aponta testes automatizados, controle de versão maduro e retorno rápido como proteção. Na prática: mudanças pequenas, revisão por quem vai manter, e refatoração como parte do trabalho, não como promessa.
 
+## 📖 Documentação de software
+
+Quem mantém um sistema raramente é só quem o escreveu. A documentação registra o que o código não conta: como executar, como usar e por que as coisas são como são. O modelo [Diátaxis](https://diataxis.fr/), de Daniele Procida, separa quatro necessidades que costumam ser misturadas:
+
+| Tipo | Responde a | Na API de tarefas |
+|---|---|---|
+| **Tutorial** | "Quero aprender fazendo" | Do clone à primeira tarefa criada |
+| **Guia prático** (*how-to*) | "Como resolvo este problema?" | Como atualizar uma dependência vulnerável |
+| **Referência** | "Quais são os detalhes exatos?" | Endpoints, campos e códigos de resposta |
+| **Explicação** | "Por que é assim?" | Por que o armazenamento é em memória |
+
+Um conjunto inicial suficiente para um projeto pequeno:
+
+* **`README.md`**: o que é, como instalar, rodar e testar;
+* **referência da API**: o FastAPI a gera a partir do código (`/docs`), o que reduz o risco de ficar desatualizada;
+* **registros de decisão** (ADRs, Capítulo 4): o porquê das escolhas;
+* **`SECURITY.md`**: como relatar uma vulnerabilidade.
+
+Mantenha a documentação no mesmo repositório e altere-a no mesmo *pull request* que muda o comportamento. Texto gerado por IA a partir do código descreve bem *o que* ele faz, mas pode inventar a intenção: o *porquê* precisa vir de quem decidiu.
+
 ## 🔭 Observabilidade: entendendo um sistema vivo
 
 Manter e evoluir um sistema em produção com segurança depende de conseguir **observar** seu comportamento real — não apenas assumir que ele funciona como planejado. Três pilares, hoje tratados como parte essencial da manutenção de qualquer sistema relevante:
@@ -114,11 +134,13 @@ Sem observabilidade adequada, manutenção corretiva vira um exercício de tenta
 2. Descreva um exemplo de débito técnico "deliberado e prudente" que você tomaria conscientemente em um projeto real, explicando a troca de curto prazo por longo prazo envolvida.
 3. Escolha um trecho de código com pelo menos um *code smell* (duplicação, método longo, nome ruim) e refatore-o, garantindo que os testes existentes (ou novos testes que você escreva antes) continuem passando depois da mudança.
 4. Configure o Dependabot em um repositório seu e analise o primeiro *pull request* que ele abrir: o que mudou na dependência e como você sabe que é seguro aceitar?
+5. Peça a um colega que execute um projeto seu seguindo apenas o `README.md`. Anote onde ele travou e corrija o texto.
 
 ## 📚 Para saber mais
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 9.
 * NIST SP 800-218. *Secure Software Development Framework (SSDF)*, versão 1.1, 2022 — [csrc.nist.gov](https://csrc.nist.gov/pubs/sp/800/218/final)
+* PROCIDA, Daniele. *Diátaxis* — [diataxis.fr](https://diataxis.fr/)
 * GitHub, referência de opções do Dependabot — [docs.github.com](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference)
 * Google Cloud. *Announcing the 2025 DORA Report* — [cloud.google.com](https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report)
 * FOWLER, Martin. *Refactoring: Improving the Design of Existing Code*. 2. ed. Addison-Wesley, 2018.

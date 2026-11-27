@@ -100,6 +100,21 @@ Esse formato *Dado/Quando/Então* (Gherkin) tem a vantagem de já nascer no form
 !!! tip "História de usuário não é 'requisito ágil de baixa qualidade'"
     Um erro comum é achar que histórias de usuário dispensam análise. Na verdade, elas deslocam o detalhamento para o momento certo (*just in time*), em vez de tentar prever tudo antecipadamente — mas ainda exigem elicitação cuidadosa, critérios de aceitação claros e refinamento contínuo do backlog.
 
+## ✂️ O que entra primeiro: MVP e priorização
+
+Há sempre mais requisitos do que tempo. Um **produto mínimo viável** (MVP, *Minimum Viable Product*), noção popularizada pelo movimento *Lean Startup*, é a versão que permite aprender o máximo sobre os usuários com o menor esforço (RIES, 2011). O ponto é o aprendizado: antes de definir o MVP, escreva qual dúvida ele deve responder. "Mínimo" também não é sinônimo de malfeito: se o MVP guarda dados de pessoas, os requisitos de segurança continuam valendo.
+
+Uma técnica simples de priorização é a **MoSCoW**, associada ao método DSDM, que classifica os requisitos *para uma entrega*. Aplicada à versão em equipe da API de tarefas, com a dúvida "uma equipe pequena consegue dividir o trabalho com ela?":
+
+| Categoria | Significado | Exemplo |
+|---|---|---|
+| ***Must have*** | Sem isso a entrega não serve | Criar tarefa, atribuir responsável, concluir; só membros acessam o projeto |
+| ***Should have*** | Importante, mas há como contornar por ora | Filtrar tarefas por responsável |
+| ***Could have*** | Desejável, se sobrar tempo | Ordenar por data de criação |
+| ***Won't have (this time)*** | Fica fora desta entrega, por decisão | Notificações, anexos, integrações |
+
+A última linha é tão importante quanto a primeira: registra o que foi **recusado agora**, e evita que volte pela porta dos fundos. Se quase tudo virou *Must*, a priorização ainda não aconteceu.
+
 ## 🧭 Modelando o comportamento
 
 Um modelo é uma visão simplificada, feita para responder a uma pergunta. Aqui, a pergunta é o que o sistema faz e para quem. Os diagramas seguem a notação da UML (OMG, 2017) e imaginam a evolução da API de tarefas para uma **equipe**, com projetos, membros e donos. O código dos Capítulos 6 e 7 ainda não tem usuários: este é um modelo do que se quer construir.
@@ -253,6 +268,7 @@ Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de doc
 4. Escreva duas histórias de abuso para o aplicativo de biblioteca do item 1 e transforme cada uma em um critério de aceitação.
 5. Escreva a especificação de uma pequena mudança antes de pedi-la a um assistente de IA. Compare o resultado com o de um pedido de uma linha: o que foi suposto em cada caso?
 6. Para o aplicativo de biblioteca do item 1, desenhe o diagrama de casos de uso e descreva um dos casos, com pelo menos duas alternativas.
+7. Defina a dúvida que um MVP do aplicativo de biblioteca deveria responder e classifique os requisitos com MoSCoW.
 
 ## 📚 Para saber mais
 
@@ -265,6 +281,9 @@ Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de doc
 * Formato Gherkin (Cucumber) — [cucumber.io/docs/gherkin](https://cucumber.io/docs/gherkin/)
 * WAKE, Bill. *INVEST in Good Stories, and SMART Tasks*, 2003 — [xp123.com](https://xp123.com/invest-in-good-stories-and-smart-tasks/)
 * PATTON, Jeff. *User Story Mapping*. O'Reilly, 2014.
+* RIES, Eric. *The Lean Startup*. Crown Business, 2011.
+* Agile Alliance, glossário: *Minimum Viable Product* — [agilealliance.org](https://agilealliance.org/?p=8031702)
+* Agile Business Consortium. *MoSCoW Prioritization Template and Poster*, 2026 — [agilebusiness.org](https://www.agilebusiness.org/resource/moscow-prioritization-template/)
 * BRANDOLINI, Alberto. *Introducing EventStorming* — [leanpub.com](https://leanpub.com/introducing_eventstorming)
 * ISO/IEC/IEEE 29148:2018. *Systems and software engineering: Life cycle processes, Requirements engineering*.
 * OMG. *Unified Modeling Language*, versão 2.5.1, 2017 — [omg.org/spec/UML](https://www.omg.org/spec/UML/About-UML/)
