@@ -14,20 +14,44 @@ Os capítulos seguem uma ordem progressiva, mas também podem ser consultados se
 
 ## 🎯 Estrutura do Livro
 
-### 📘 Fundamentos (Capítulos 1-2)
-O que diferencia software de outros produtos, por que a engenharia de software nasceu como disciplina, e como as organizações estruturam seu trabalho — do modelo em cascata, passando pelo desenvolvimento incremental, até o Manifesto Ágil, Scrum, Kanban e a cultura DevOps.
+### 📘 Parte I: Fundamentos (Capítulos 1-2)
+O que diferencia software de outros produtos, por que a engenharia de software nasceu como disciplina e como as equipes organizam o trabalho: cascata, desenvolvimento incremental, Manifesto Ágil, Scrum, Kanban e a cultura DevOps.
 
-### 📙 Ciclo de desenvolvimento (Capítulos 3-6)
-Como transformar uma necessidade de negócio em software funcionando: elicitação e especificação de requisitos (em formato clássico e como histórias de usuário, ou *user stories*), projeto de arquitetura e padrões de projeto, práticas de implementação e qualidade de código, e a disciplina de testes — de unitários a testes de sistema, além de testes de aceitação e TDD.
+### 📙 Parte II: Requisitos e projeto (Capítulos 3-4)
+Como descobrir e registrar o que o sistema precisa fazer, modelar o seu comportamento e a sua estrutura e tomar decisões de arquitetura, inclusive as de segurança.
 
-### 📗 Prática moderna e sustentação (Capítulos 7-8)
-Como entregar software com frequência e confiança: pipelines de integração e entrega contínua com GitHub Actions, contêineres, e como o software evolui depois de estar em produção — manutenção, débito técnico, refatoração e observabilidade.
+### 📗 Parte III: Construção (Capítulos 5-6)
+Código legível e seguro, revisão, controle de versão e testes, dos unitários aos de aceitação, com TDD.
+
+### 📕 Parte IV: Entrega e evolução (Capítulos 7-8)
+Pipelines de integração e entrega contínuas, contêineres e a vida do software em produção: manutenção, dependências, débito técnico e observabilidade.
+
+### 🧰 Apêndice
+Os comandos de [Git e contêineres](apendices/git_conteineres.md) usados ao longo do livro.
 
 ---
 
-## 🧪 Hands-on
+## 🧪 O projeto condutor: TaskFlow
 
-Ao longo do livro, os capítulos 6 e 7 incluem um projeto prático guiado: uma API REST em **FastAPI**, testada com **pytest** e publicada por um pipeline de **GitHub Actions**, usada como fio condutor para os conceitos de testes automatizados e CI/CD.
+Os exemplos giram em torno de um gerenciador de tarefas. Nos Capítulos 6 e 7, ele é uma pequena API em **FastAPI**, com os dados em memória, testada com **pytest** e verificada por um pipeline do **GitHub Actions**. Dela nasce o [TaskFlow](https://github.com/lambdageo-edu/taskflow): a mesma ideia para uma equipe, com banco SQLite, *login*, projetos, membros e permissões. É só a API, sem interface web.
+
+O repositório tem uma etiqueta (*tag*) para cada etapa:
+
+| Tag | Etapa |
+|---|---|
+| `v1-memoria` | API em memória ([Capítulo 6](capitulos/06_testes_validacao.md)) |
+| `v2-pipeline` | pipeline, imagem e verificações de segurança ([Capítulo 7](capitulos/07_integracao_entrega_continua.md)) |
+| `v3-sqlite` | persistência |
+| `v4-login` | usuários e sessões |
+| `v5-equipe` | projetos, membros, responsável e estados da tarefa |
+
+```bash
+git clone https://github.com/lambdageo-edu/taskflow.git
+cd taskflow
+git checkout v3-sqlite   # vê o projeto como estava nesta etapa
+```
+
+As etiquetas são retratos do passado e não recebem correções posteriores. Para usar ou modificar o projeto, parta da branch `main`.
 
 ---
 

@@ -133,8 +133,12 @@ FROM python:3.14-slim
 
 WORKDIR /app
 
+# Correções de segurança do sistema que a imagem base ainda não traz.
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# O pip só serve para instalar: removê-lo tira da imagem as bibliotecas que ele embute.
+RUN pip install --no-cache-dir -r requirements.txt && pip uninstall -y pip
 
 COPY app/ ./app/
 
@@ -163,9 +167,21 @@ Alguns cuidados de boas práticas embutidos neste `Dockerfile`:
 * **`--no-cache-dir`**: evita que o `pip` guarde um cache de pacotes dentro da imagem, mantendo-a menor.
 * **Usuário sem privilégios (`USER appuser`)**: por padrão o processo roda como `root` dentro do contêiner. Trocar o usuário limita o estrago caso a aplicação seja comprometida.
 * **Só as dependências de execução**: a imagem instala `requirements.txt`, sem `pytest` nem `ruff`.
+* **Atualizar os pacotes do sistema**: a imagem base pode demorar a incorporar uma correção já publicada. A troca é que dois builds em datas diferentes podem produzir imagens diferentes, e o cache do Docker pode reaproveitar uma camada antiga (`docker build --pull --no-cache` refaz tudo).
+* **Remover o `pip`**: o que não é necessário para rodar também não precisa ser corrigido depois.
 * **`.dockerignore`**: evita enviar ao *build* o ambiente virtual, o histórico do Git e arquivos locais como `.env`, que podem conter segredos.
 
 O job `imagem` apenas constrói a imagem, para garantir que o `Dockerfile` continua funcionando. O passo seguinte seria usar `docker/build-push-action` para publicá-la em um registro (GitHub Container Registry, Docker Hub, ECR) a cada merge na branch principal — o primeiro passo em direção à entrega contínua.
+
+!!! example "Quando há banco de dados"
+    O sistema de arquivos de um contêiner some junto com ele. O [`Dockerfile` do TaskFlow](https://github.com/lambdageo-edu/taskflow/blob/main/Dockerfile) cria a pasta `/dados`, entrega-a ao usuário sem privilégios, declara um `VOLUME` e aponta o banco para lá com a variável `TAREFAS_DB`:
+
+    ```bash
+    docker build -t taskflow .
+    docker run -p 127.0.0.1:8000:8000 -v taskflow-dados:/dados taskflow
+    ```
+
+    Com o volume nomeado, o contêiner pode ser removido e recriado sem perder os dados. Volume não é cópia de segurança. E publicar a porta em `127.0.0.1` evita expor na rede uma API sem HTTPS.
 
 Para ir além deste `Dockerfile`, veja o tutorial [Otimização de imagens: desenvolvimento e produção](https://lambdageo-edu.github.io/lambdageo-tutorials/docker/otimizacao-imagens-dev-vs-prod/). Os comandos básicos de Git e Docker estão no [apêndice](../apendices/git_conteineres.md).
 

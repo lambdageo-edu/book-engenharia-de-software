@@ -94,6 +94,8 @@ cursor.execute(f"SELECT * FROM tarefas WHERE titulo = '{titulo}'")
 cursor.execute("SELECT * FROM tarefas WHERE titulo = ?", (titulo,))
 ```
 
+O [TaskFlow](https://github.com/lambdageo-edu/taskflow) usa parâmetros em todas as consultas que recebem dados e tem um teste que cadastra uma tarefa com o título `x'); DROP TABLE tarefas; --`: ele é guardado como texto, e nada é apagado.
+
 O marcador (`?` no `sqlite3`) varia conforme a biblioteca. A mesma ideia vale para comandos do sistema operacional e para HTML gerado a partir de dados.
 
 ### Segredos fora do código
@@ -110,6 +112,27 @@ Para desenvolvimento, um arquivo `.env` local funciona, desde que esteja no `.gi
 
 !!! warning "Vazou um segredo? Apagar o arquivo não resolve"
     O histórico do Git guarda as versões anteriores, e cópias do repositório podem já ter o segredo. A ordem recomendada pela [OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html) é: **revogar** o segredo exposto, **substituí-lo** por um novo, **removê-lo** de onde apareceu e **registrar** o que aconteceu e quem teve acesso.
+
+### Senhas e sessões
+
+Senha não se guarda em texto puro, nem cifrada de forma reversível: guarda-se um *hash* feito para esse fim, lento e com *sal*, como o Argon2id ([OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)). No [TaskFlow](https://github.com/lambdageo-edu/taskflow), a biblioteca `argon2-cffi` cuida disso (trecho de `app/auth.py`):
+
+```python
+from argon2 import PasswordHasher
+
+hasher = PasswordHasher()  # Argon2id, com sal aleatório
+
+hash_guardado = hasher.hash(senha)       # no cadastro
+hasher.verify(hash_guardado, tentativa)  # no login; levanta exceção se não conferir
+```
+
+Outras decisões do mesmo arquivo merecem ser lidas:
+
+* a senha tem no mínimo 15 caracteres, como pede o [NIST SP 800-63B](https://pages.nist.gov/800-63-4/sp800-63b/passwords) para senhas usadas como único fator;
+* o erro de *login* é o mesmo para usuário inexistente e senha errada (o cadastro, porém, ainda revela que um *login* já existe);
+* o token de sessão é aleatório, expira, pode ser invalidado e só o seu *hash* vai para o banco.
+
+Isso não dispensa o que está fora do código, como HTTPS e limite de tentativas. Em um sistema real, considere também delegar a autenticação a um provedor de identidade.
 
 ## 🤖 Revisando código gerado por IA
 

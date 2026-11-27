@@ -70,7 +70,7 @@ Esses padrões seguem relevantes, mas vale um alerta prático: padrões de proje
 
 ## 📐 Modelando a estrutura e as interações
 
-O Capítulo 3 modelou o que o sistema faz. Três diagramas da UML (OMG, 2017) ajudam a decidir como (FOWLER, 2003). Os exemplos de classes e estados descrevem a versão em equipe da API de tarefas, que ainda não está no código.
+O Capítulo 3 modelou o que o sistema faz. Três diagramas da UML (OMG, 2017) ajudam a decidir como (FOWLER, 2003). Os exemplos de classes e estados descrevem a versão em equipe da API de tarefas, implementada no [TaskFlow](https://github.com/lambdageo-edu/taskflow).
 
 ### Classes: o que existe e como se relaciona
 
@@ -79,6 +79,7 @@ classDiagram
     direction TB
     class Usuario {
         +int id
+        +str login
         +str nome
     }
     class Projeto {
@@ -97,7 +98,7 @@ classDiagram
     Usuario "0..1" --> "0..*" Tarefa : é responsável por
 ```
 
-Os números são as **multiplicidades**: um projeto tem zero ou mais tarefas, e uma tarefa pode ainda não ter responsável (`0..1`). O losango preenchido indica **composição**: a tarefa não existe fora do seu projeto. Cada uma dessas marcas é uma decisão que precisa ser confirmada com quem pediu o sistema.
+Os números são as **multiplicidades**: um projeto tem zero ou mais tarefas, e uma tarefa pode ainda não ter responsável (`0..1`). O losango preenchido indica **composição**: a tarefa não existe fora do seu projeto. Cada uma dessas marcas é uma decisão que precisa ser confirmada com quem pediu o sistema. O diagrama também não diz tudo: no TaskFlow, o responsável precisa ser membro do projeto da tarefa, regra garantida por uma chave estrangeira no banco. O `concluir()` do desenho aparece no código como uma das ações de `POST .../tarefas/{tarefa_id}/{acao}`.
 
 ### Sequência: quem chama quem, e em que ordem
 
@@ -126,7 +127,7 @@ No caminho de erro, a função `criar_tarefa` nem chega a ser chamada. É o tipo
 
 ### Estados: o ciclo de vida de um objeto
 
-Hoje a tarefa tem apenas o campo `concluida`. Na versão em equipe, uma decisão possível é:
+Na primeira API, a tarefa tem apenas o campo `concluida`. Na versão em equipe, a decisão foi:
 
 ```mermaid
 stateDiagram-v2
@@ -140,7 +141,7 @@ stateDiagram-v2
     state "Concluída" as Concluida
 ```
 
-O que **não** está desenhado também é regra: neste modelo, uma tarefa pendente não pode ser concluída direto. Cada transição ausente pode virar um teste.
+O que **não** está desenhado também é regra: uma tarefa pendente não pode ser concluída direto. Cada transição ausente pode virar um teste; no TaskFlow, essa recebe a resposta 409.
 
 !!! tip "Quando vale a pena"
     Classes ajudam a discutir o domínio antes de criar o banco de dados. Sequência, quando vários componentes colaboram ou o tratamento de erro não é óbvio. Estados, quando um objeto muda de situação e nem toda mudança é permitida. Diagrama desatualizado engana: mantenha poucos, junto do código.
@@ -196,6 +197,21 @@ Para a terceira, cada ameaça recebe uma resposta: **mitigar** (reduzir a chance
 
 !!! warning "Quando houver usuários, confira o dono de cada objeto"
     Autenticar não basta. Se `PATCH /tarefas/42/concluir` verifica apenas se há alguém conectado, qualquer usuário conclui a tarefa de outro trocando o número. Essa falha, a *autorização quebrada em nível de objeto*, é a [primeira da lista OWASP de riscos em APIs](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/) (edição de 2023).
+
+### O que o TaskFlow respondeu
+
+Ao ganhar rede, usuários e banco de dados, o [TaskFlow](https://github.com/lambdageo-edu/taskflow) precisou revisitar a tabela:
+
+| Ameaça | Resposta no código | O que continua aberto |
+|---|---|---|
+| Falsificação de identidade | *Login* com senha e token de sessão que expira | HTTPS e limite de tentativas de *login* |
+| Adulteração | Permissão conferida a cada requisição; consultas SQL com parâmetros | Proteção do arquivo do banco no servidor |
+| Repúdio | Nenhuma | Registro de quem fez cada mudança |
+| Vazamento | Quem não é membro recebe 404; o banco guarda só o *hash* da senha e do token | HTTPS e proteção de cópias de segurança |
+| Negação de serviço | Limite de tamanho do título, dos nomes e da senha | Limite de requisições e do tamanho do corpo |
+| Elevação de privilégio | Só o dono adiciona membros e atribui tarefas a outras pessoas | Revisar a cada endpoint novo |
+
+A coluna da direita é tão importante quanto a do meio: um risco escrito pode ser tratado ou aceito; um risco esquecido, não.
 
 A quarta pergunta lembra que o modelo não é um documento de uma vez só: revise-o quando surgir um novo endpoint, integração ou tipo de dado, e guarde-o no repositório, junto com os ADRs.
 
