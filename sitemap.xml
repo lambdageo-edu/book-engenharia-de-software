@@ -1,3 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+      <url>
+        <loc>https://lambdageo-edu.github.io/book-engenharia-de-software/</loc>
+      </url>
+      <url>
+        <loc>https://lambdageo-edu.github.io/book-engenharia-de-software/apendices/git_conteineres/</loc>
+      </url>
+      <url>
+        <loc>https://lambdageo-edu.github.io/book-engenharia-de-software/capitulos/01_introducao_engenharia_software/</loc>
+      </url>
+      <url>
+        <loc>https://lambdageo-edu.github.io/book-engenharia-de-software/capitulos/02_processos_desenvolvimento/</loc>
+      </url>
+      <url>
+        <loc>https://lambdageo-edu.github.io/book-engenharia-de-software/capitulos/03_especificacao_requisitos/</loc>
+      </url>
+      <url>
+        <loc>https://lambdageo-edu.github.io/book-engenharia-de-software/capitulos/04_projeto_arquitetura/</loc>
+      </url>
+      <url>
+        <loc>https://lambdageo-edu.github.io/book-engenharia-de-software/capitulos/05_implementacao_qualidade/</loc>
+      </url>
+      <url>
+        <loc>https://lambdageo-edu.github.io/book-engenharia-de-software/capitulos/06_testes_validacao/</loc>
+      </url>
+      <url>
+        <loc>https://lambdageo-edu.github.io/book-engenharia-de-software/capitulos/07_integracao_entrega_continua/</loc>
+      </url>
+      <url>
+        <loc>https://lambdageo-edu.github.io/book-engenharia-de-software/capitulos/08_evolucao_manutencao/</loc>
+      </url>
 </urlset>
