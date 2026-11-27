@@ -143,7 +143,7 @@ docker compose -f compose.dev.yaml down         # remove os contêineres
 * `command` substitui o `CMD` do `Dockerfile` apenas neste ambiente;
 * mudou o `requirements.txt`? Rode de novo com `--build`.
 
-Se o servidor não reiniciar ao salvar, o que a documentação do Uvicorn relata no WSL, acrescente ao serviço `environment: ["WATCHFILES_FORCE_POLLING=true"]`.
+Se o servidor não reiniciar ao salvar (a documentação do Uvicorn relata esse problema no WSL), acrescente ao serviço `environment: ["WATCHFILES_FORCE_POLLING=true"]`.
 
 Este arquivo é para a sua máquina. Para implantar, o [Capítulo 7](../capitulos/07_integracao_entrega_continua.md) usa outro, sem recarga automática e com HTTPS.
 

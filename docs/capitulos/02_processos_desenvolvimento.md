@@ -200,7 +200,7 @@ Relatórios anteriores a 2025 agrupavam as organizações em faixas de desempenh
 
 ## 🔐 Ciclo de vida e DevSecOps
 
-O conjunto de atividades que leva um software da ideia à operação e à evolução costuma ser chamado de **ciclo de vida de desenvolvimento de software** (*Software Development Life Cycle*, **SDLC**). Cascata, incremental, Scrum com DevOps: cada um é uma forma de organizar esse ciclo.
+O conjunto de atividades que leva um software da ideia à operação e à evolução costuma ser chamado de **ciclo de vida de desenvolvimento de software** (*Software Development Life Cycle*, **SDLC**). O termo é usado de forma próxima de **processo de software**, definido no início deste capítulo, com ênfase no percurso completo. Cascata, incremental, Scrum com DevOps: cada um é uma forma de organizar esse ciclo.
 
 O NIST observa que poucos modelos de ciclo de vida tratam a segurança em detalhe, e que por isso é preciso acrescentar práticas a eles. Seu *Secure Software Development Framework* (SSDF, versão 1.1) reúne essas práticas em quatro grupos, aplicáveis a qualquer modelo (SOUPPAYA; SCARFONE; DODSON, 2022):
 
@@ -267,5 +267,5 @@ A maioria das organizações de produto digital hoje adota variantes ágeis com 
 * SINGER, Ryan. *Shape Up: Stop Running in Circles and Ship Work that Matters*. Basecamp, 2019 — [basecamp.com/shapeup](https://basecamp.com/shapeup)
 * VOGELS, Werner. *A Conversation with Werner Vogels* (entrevista a Jim Gray). ACM Queue, 4(4), 2006 — [queue.acm.org](https://queue.acm.org/detail.cfm?id=1142065)
 * ALLSPAW, John. *Blameless PostMortems and a Just Culture*. Etsy, 2012 — [etsy.com/codeascraft](https://www.etsy.com/codeascraft/blameless-postmortems)
-* SOUPPAYA, Murugiah; SCARFONE, Karen; DODSON, Donna. *Secure Software Development Framework (SSDF) Version 1.1*. NIST SP 800-218, 2022 — [doi.org/10.6028/NIST.SP.800-218](https://doi.org/10.6028/NIST.SP.800-218). A revisão 1.2 estava em consulta pública (rascunho de dezembro de 2025).
+* SOUPPAYA, Murugiah; SCARFONE, Karen; DODSON, Donna. *Secure Software Development Framework (SSDF) Version 1.1*. NIST SP 800-218, 2022 — [doi.org/10.6028/NIST.SP.800-218](https://doi.org/10.6028/NIST.SP.800-218). Há um rascunho da versão 1.2, de dezembro de 2025.
 * OWASP Developer Guide, *DevSecOps* — [devguide.owasp.org](https://devguide.owasp.org/en/09-operations/01-devsecops/)

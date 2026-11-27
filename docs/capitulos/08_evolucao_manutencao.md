@@ -132,7 +132,7 @@ Um roteiro para cada alerta:
 4. **Verificar e publicar**: testes, pipeline e implantação.
 5. **Aprender**: registrar o ocorrido e o que evitaria a repetição.
 
-Decida antes quem recebe o aviso e em quanto tempo responde. Em projetos abertos, um arquivo `SECURITY.md` diz como relatar uma falha sem expô-la numa *issue* pública. O [SSDF, do NIST](https://csrc.nist.gov/pubs/sp/800/218/final), reúne práticas de desenvolvimento seguro que incluem identificar e responder a vulnerabilidades.
+Decida antes quem recebe o aviso e em quanto tempo responde. Em projetos abertos, um arquivo `SECURITY.md` diz como relatar uma falha sem expô-la numa *issue* pública. O [SSDF, do NIST](https://csrc.nist.gov/pubs/sp/800/218/final), apresentado no [Capítulo 2](02_processos_desenvolvimento.md), tem um grupo de práticas só para responder a vulnerabilidades.
 
 ## 🚨 Resposta a incidentes
 
