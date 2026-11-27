@@ -7,7 +7,8 @@ site_author: "Sergio Souza Costa"
 site_url: https://lambdageo-edu.github.io/book-engenharia-de-software/
 copyright: >
   © Sergio Souza Costa ·
-  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br">CC BY-NC-SA 4.0</a>
+  Texto: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br">CC BY-NC-SA 4.0</a> ·
+  Código: <a href="https://github.com/lambdageo-edu/book-engenharia-de-software/blob/main/LICENSE-CODIGO">MIT</a>
 
 docs_dir: docs
 site_dir: site
@@ -16,6 +17,7 @@ theme:
   name: material
   variant: classic # mantém o visual anterior no Zensical
   language: pt
+  custom_dir: overrides
   font: false
   features:
     - navigation.instant
@@ -48,6 +50,18 @@ theme:
 
 plugins:
   - search
+  # Endereços da organização antiga, que ainda podem estar em links salvos.
+  - redirects:
+      redirect_maps:
+        unidade1/00_plano_unidade1.md: index.md
+        unidade1/01_introducao_engenharia_software.md: capitulos/01_introducao_engenharia_software.md
+        unidade1/02_processos_desenvolvimento.md: capitulos/02_processos_desenvolvimento.md
+        unidade1/03_especificacao_requisitos.md: capitulos/03_especificacao_requisitos.md
+        unidade1/04_projeto_arquitetura.md: capitulos/04_projeto_arquitetura.md
+        unidade1/05_implementacao_qualidade.md: capitulos/05_implementacao_qualidade.md
+        unidade1/06_testes_validacao.md: capitulos/06_testes_validacao.md
+        unidade1/07_integracao_entrega_continua.md: capitulos/07_integracao_entrega_continua.md
+        unidade1/08_evolucao_manutencao.md: capitulos/08_evolucao_manutencao.md
 
 markdown_extensions:
   - attr_list
