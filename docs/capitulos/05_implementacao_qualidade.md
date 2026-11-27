@@ -205,6 +205,91 @@ def pode_concluir(servico, usuario_id, tarefa_id):
         return False
 ```
 
+## 🐞 Depuração
+
+Um teste ou um usuário mostram que algo falhou. **Depurar** é encontrar o defeito que causou a falha ([Capítulo 6](06_testes_validacao.md)) e corrigi-lo. Mudar linhas ao acaso até o sintoma sumir costuma esconder o problema. Um roteiro:
+
+1. **Reproduzir.** Ache os passos e os dados que provocam a falha, de preferência no menor exemplo possível.
+2. **Ler a mensagem inteira.**
+3. **Formular uma hipótese** e testá-la, mudando uma coisa de cada vez.
+4. **Corrigir a causa**, e não só o sintoma.
+5. **Deixar um teste** que falhava antes da correção e passa depois.
+
+### Ler o *traceback*
+
+Este programa, em `relatorio.py`, tem um defeito:
+
+```python
+def media_por_membro(tarefas, membros):
+    return len(tarefas) / len(membros)
+
+
+def resumo(projeto):
+    media = media_por_membro(projeto["tarefas"], projeto["membros"])
+    return f"{media:.1f} tarefas por membro"
+
+
+if __name__ == "__main__":
+    print(resumo({"tarefas": ["Publicar"], "membros": []}))
+```
+
+Com Python 3.14, a saída é esta (o caminho do arquivo varia):
+
+```text
+Traceback (most recent call last):
+  File "/app/relatorio.py", line 11, in <module>
+    print(resumo({"tarefas": ["Publicar"], "membros": []}))
+          ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/relatorio.py", line 6, in resumo
+    media = media_por_membro(projeto["tarefas"], projeto["membros"])
+  File "/app/relatorio.py", line 2, in media_por_membro
+    return len(tarefas) / len(membros)
+           ~~~~~~~~~~~~~^~~~~~~~~~~~~~
+ZeroDivisionError: division by zero
+```
+
+Comece pela última linha, que diz **o que** aconteceu. Acima dela está o **caminho das chamadas**, com a mais recente embaixo. A linha 2 é onde o erro apareceu, mas a decisão que falta é outra: o que o relatório deve dizer de um projeto sem membros? Respondida a pergunta, escreve-se o teste, em `test_resumo.py`:
+
+```python
+from relatorio import resumo
+
+
+def test_projeto_sem_membros():
+    projeto = {"tarefas": ["Publicar"], "membros": []}
+    assert resumo(projeto) == "projeto sem membros"
+```
+
+Ele falha com o código atual. A correção entra em `resumo`, e o teste passa a protegê-la.
+
+### Parar o programa e olhar
+
+Quando a leitura não basta, o **depurador** interrompe a execução para examinar as variáveis. Em Python, escreva `breakpoint()` na linha onde quer parar e use o [pdb](https://docs.python.org/3.14/library/pdb.html):
+
+| Comando | O que faz |
+|---|---|
+| `p expressão` | Mostra um valor |
+| `n` | Executa até a próxima linha da função atual |
+| `s` | Avança entrando na função chamada |
+| `w` | Mostra onde se está na pilha de chamadas |
+| `c` | Continua a execução |
+| `q` | Encerra |
+
+Com `pytest --pdb`, o depurador abre no ponto em que um teste falha. Editores costumam oferecer os mesmos recursos com uma interface gráfica. Remova os `breakpoint()` antes do *commit*. Em produção não se depura parando o programa: usam-se os *logs* ([Capítulo 8](08_evolucao_manutencao.md)).
+
+### Quando começou?
+
+Se funcionava e deixou de funcionar, o [`git bisect`](https://git-scm.com/docs/git-bisect/2.52.0) procura, por busca binária, o *commit* que introduziu o problema:
+
+```bash
+git bisect start HEAD v1.2.0 --   # HEAD tem o defeito; v1.2.0 não tinha
+git bisect run pytest -q test_resumo.py
+git bisect reset                  # volta para onde você estava
+```
+
+O teste precisa continuar disponível nos *commits* antigos. Um arquivo novo, ainda não adicionado ao Git, permanece no lugar durante a busca. *Commits* pequenos fazem o resultado apontar para poucas linhas.
+
+Um assistente de IA pode ajudar a interpretar um *traceback*. Antes de colá-lo, retire segredos e dados pessoais, e confirme a explicação reproduzindo o erro.
+
 ## 🤖 Revisando código gerado por IA
 
 Assistentes e agentes de codificação (GitHub Copilot, Claude Code, Cursor e equivalentes) já fazem parte do dia a dia de boa parte dos times de desenvolvimento, gerando desde trechos pontuais até *pull requests* inteiros. Isso não elimina a necessidade de revisão de código — pelo contrário, muda o que a revisão precisa verificar:
@@ -274,6 +359,8 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 4. Acrescente ao checklist três itens de segurança, cada um ligado a uma categoria do OWASP Top 10.
 5. Peça a um assistente de IA o código de um *login* simples e revise-o: como a senha é armazenada? Há segredo no código? As dependências sugeridas existem?
 6. Escreva um teste para `pode_concluir` com um dublê que levanta `TimeoutError`. Depois procure, em um projeto seu, um `except` que esconda um erro.
+7. Reproduza o erro de `relatorio.py`, pare nele com `breakpoint()` e examine `membros`. Corrija e confira que o teste passa.
+8. Em um repositório de teste, introduza um defeito no meio de uma sequência de *commits* e encontre-o com `git bisect run`.
 
 ## 📚 Para saber mais
 
@@ -281,6 +368,9 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 * MEYER, Bertrand. *Object-Oriented Software Construction*. 2. ed. Prentice Hall, 1997.
 * FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. *Accelerate: The Science of Lean Software and DevOps*. IT Revolution, 2018.
 * Documentação do `ruff` (linter/formatador Python) — [docs.astral.sh/ruff](https://docs.astral.sh/ruff/)
+* Documentação do Python, *pdb* — [docs.python.org](https://docs.python.org/3.14/library/pdb.html)
+* Git, *git-bisect* — [git-scm.com](https://git-scm.com/docs/git-bisect/2.52.0)
+* ZELLER, Andreas. *Why Programs Fail: A Guide to Systematic Debugging*. 2. ed. Morgan Kaufmann, 2009.
 * OWASP *Error Handling Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html)
 * *OWASP Top 10:2025* — [owasp.org/Top10/2025](https://owasp.org/Top10/2025/0x00_2025-Introduction/)
 * OWASP *Secrets Management Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html)
