@@ -558,6 +558,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#seguranca-desde-o-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🛡️ Segurança desde o projeto
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🛡️ Segurança desde o projeto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modelagem-de-ameacas" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Modelagem de ameaças
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ia-nas-decisoes-de-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🤖 IA nas decisões de projeto
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#documentando-e-comunicando-arquitetura" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -838,6 +877,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#seguranca-desde-o-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🛡️ Segurança desde o projeto
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🛡️ Segurança desde o projeto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modelagem-de-ameacas" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Modelagem de ameaças
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ia-nas-decisoes-de-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🤖 IA nas decisões de projeto
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#documentando-e-comunicando-arquitetura" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -968,6 +1046,89 @@
 </tbody>
 </table>
 <p>Esses padrões seguem relevantes, mas vale um alerta prático: padrões de projeto resolvem problemas de um contexto específico (sistemas orientados a objetos, em linguagens com certas limitações dos anos 1990). Aplicá-los de forma automática, sem que o problema realmente exista, é uma forma comum de complexidade desnecessária — o oposto do princípio YAGNI mencionado acima.</p>
+<h2 id="seguranca-desde-o-projeto">🛡️ Segurança desde o projeto<a class="headerlink" href="#seguranca-desde-o-projeto" title="Permanent link">&para;</a></h2>
+<p>Uma falha de código se corrige com um <em>commit</em>. Uma falha de projeto, como não prever quem pode acessar o quê, costuma exigir mudar modelo de dados, interfaces e código já escrito. Por isso a segurança entra nas decisões de arquitetura. Alguns princípios antigos continuam válidos, vários deles formulados por Saltzer e Schroeder em 1975:</p>
+<ul>
+<li><strong>Privilégio mínimo</strong>: cada pessoa e cada componente recebe apenas as permissões de que precisa (o <code>USER appuser</code> do <a href="../07_integracao_entrega_continua/">Capítulo 7</a> é um exemplo).</li>
+<li><strong>Negar por padrão</strong>: o acesso precisa ser concedido explicitamente; na dúvida ou em caso de erro, recusa-se.</li>
+<li><strong>Mediação completa</strong>: a permissão é verificada em todo acesso, no servidor, e não apenas escondendo um botão na tela.</li>
+<li><strong>Simplicidade</strong>: quanto menor e mais simples o mecanismo, mais fácil revisá-lo.</li>
+<li><strong>Defesa em profundidade</strong>: mais de uma barreira, para que a falha de uma não exponha tudo.</li>
+<li><strong>Reduzir a superfície de ataque</strong>: o que não está exposto não pode ser atacado.</li>
+</ul>
+<h3 id="modelagem-de-ameacas">Modelagem de ameaças<a class="headerlink" href="#modelagem-de-ameacas" title="Permanent link">&para;</a></h3>
+<p><strong>Modelar ameaças</strong> é analisar o projeto para descobrir o que pode dar errado antes que alguém descubra por você. Um roteiro enxuto usa <a href="https://threatmodelingmanifesto.org/">quatro perguntas</a>:</p>
+<ol>
+<li>No que estamos trabalhando?</li>
+<li>O que pode dar errado?</li>
+<li>O que vamos fazer a respeito?</li>
+<li>Fizemos um trabalho bom o suficiente?</li>
+</ol>
+<p>Para a primeira, basta um diagrama de por onde os dados passam, marcando as <strong>fronteiras de confiança</strong>: os pontos em que um dado vem de alguém em quem o sistema não deve confiar. Na API de tarefas:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a> Cliente (navegador, script)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>        |
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        |  HTTP: título, identificador da tarefa
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a> - - - -|- - - - - - - - - - - -  fronteira de confiança
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        v
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a> API (FastAPI)  -----&gt;  Armazenamento (hoje, um dicionário em memória)
+</code></pre></div>
+<p>Para a segunda, o acrônimo <strong>STRIDE</strong>, proposto na Microsoft por Kohnfelder e Garg em 1999, serve de lista de conferência. Aplicado à versão atual da API:</p>
+<table>
+<thead>
+<tr>
+<th>Ameaça</th>
+<th>Propriedade violada</th>
+<th>Na API de tarefas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em><strong>S</strong>poofing</em> (falsificação de identidade)</td>
+<td>Autenticação</td>
+<td>Não há identificação: o sistema não sabe quem está pedindo.</td>
+</tr>
+<tr>
+<td><em><strong>T</strong>ampering</em> (adulteração)</td>
+<td>Integridade</td>
+<td>Qualquer um conclui qualquer tarefa.</td>
+</tr>
+<tr>
+<td><em><strong>R</strong>epudiation</em> (repúdio)</td>
+<td>Responsabilização</td>
+<td>Não há registro de quem concluiu uma tarefa.</td>
+</tr>
+<tr>
+<td><em><strong>I</strong>nformation disclosure</em> (vazamento)</td>
+<td>Confidencialidade</td>
+<td><code>GET /tarefas</code> entrega todas as tarefas a quem pedir.</td>
+</tr>
+<tr>
+<td><em><strong>D</strong>enial of service</em> (negação de serviço)</td>
+<td>Disponibilidade</td>
+<td>Não há limite de tamanho do título nem de requisições.</td>
+</tr>
+<tr>
+<td><em><strong>E</strong>levation of privilege</em> (elevação de privilégio)</td>
+<td>Autorização</td>
+<td>Ainda não há papéis. Quando houver, um membro não pode agir como dono do projeto.</td>
+</tr>
+</tbody>
+</table>
+<p>Para a terceira, cada ameaça recebe uma resposta: <strong>mitigar</strong> (reduzir a chance ou o dano), <strong>eliminar</strong> (retirar a funcionalidade que a cria), <strong>transferir</strong> (passar a responsabilidade a outro, como um provedor de identidade, registrando o risco que sobra) ou <strong>aceitar</strong> (conscientemente, com o motivo). Por exemplo, enquanto a API só roda na máquina do desenvolvedor, a falta de autenticação pode ser aceita. Antes de publicá-la na rede, precisa ser mitigada. O limite do título é barato e pode ser feito já.</p>
+<div class="admonition warning">
+<p class="admonition-title">Quando houver usuários, confira o dono de cada objeto</p>
+<p>Autenticar não basta. Se <code>PATCH /tarefas/42/concluir</code> verifica apenas se há alguém conectado, qualquer usuário conclui a tarefa de outro trocando o número. Essa falha, a <em>autorização quebrada em nível de objeto</em>, é a <a href="https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/">primeira da lista OWASP de riscos em APIs</a> (edição de 2023).</p>
+</div>
+<p>A quarta pergunta lembra que o modelo não é um documento de uma vez só: revise-o quando surgir um novo endpoint, integração ou tipo de dado, e guarde-o no repositório, junto com os ADRs.</p>
+<h2 id="ia-nas-decisoes-de-projeto">🤖 IA nas decisões de projeto<a class="headerlink" href="#ia-nas-decisoes-de-projeto" title="Permanent link">&para;</a></h2>
+<p>Assistentes de IA são úteis como interlocutores: propõem alternativas, apontam <em>trade-offs</em>, rascunham um ADR e sugerem ameaças que o time não listou. Os limites também são claros:</p>
+<ul>
+<li>eles não conhecem o orçamento, o time, os prazos nem a história do sistema, a menos que alguém conte, e mesmo assim parcialmente;</li>
+<li>uma lista de ameaças gerada pode parecer completa e ignorar a mais importante do seu domínio;</li>
+<li>nomes de bibliotecas, recursos e referências precisam ser conferidos, porque podem não existir;</li>
+<li>diagramas e configurações podem revelar detalhes sensíveis da infraestrutura: verifique o que pode ser enviado à ferramenta.</li>
+</ul>
+<p>A decisão continua sendo do time. Um bom teste: quem aprovou consegue explicar, sem a ferramenta, por que essa alternativa foi escolhida e o que se perde com ela?</p>
 <h2 id="documentando-e-comunicando-arquitetura">🗺️ Documentando e comunicando arquitetura<a class="headerlink" href="#documentando-e-comunicando-arquitetura" title="Permanent link">&para;</a></h2>
 <p>Arquitetura só é útil se for compreendida por quem constrói o sistema. Algumas ferramentas práticas:</p>
 <ul>
@@ -981,12 +1142,19 @@
 <li>Para um sistema de e-commerce de pequeno porte, você optaria por um monólito modularizado ou por microsserviços? Justifique com base nos trade-offs discutidos.</li>
 <li>Escreva um ADR curto (contexto, decisão, alternativas consideradas, consequências) para a escolha de arquitetura do item anterior.</li>
 <li>Identifique um padrão de projeto (dos criacionais, estruturais ou comportamentais) que você já usou, mesmo sem saber o nome, em algum código que escreveu. Descreva o problema que ele resolveu.</li>
+<li>Faça a modelagem de ameaças de uma funcionalidade pequena (por exemplo, atribuir uma tarefa a outra pessoa): diagrama com a fronteira de confiança, ao menos quatro ameaças do STRIDE e a resposta escolhida para cada uma.</li>
+<li>Peça a um assistente de IA ameaças para a mesma funcionalidade. Separe as que acrescentam algo, as genéricas e as erradas.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
 <li>SOMMERVILLE, Ian. <em>Engenharia de Software</em>. 10. ed. — Capítulo 6.</li>
 <li>GAMMA, Erich et al. <em>Design Patterns: Elements of Reusable Object-Oriented Software</em>. Addison-Wesley, 1994.</li>
 <li>FOWLER, Martin. <em>Patterns of Enterprise Application Architecture</em>. Addison-Wesley, 2002.</li>
+<li>OWASP <em>Threat Modeling Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
+<li>KOHNFELDER, Loren; GARG, Praerit. <em>The Threats to Our Products</em>. Microsoft, 1999 (origem do STRIDE) — <a href="https://threatmodelingbook.com/files/microsoft/The-Threats-To-Our-Products.docx">cópia do documento</a></li>
+<li><em>Threat Modeling Manifesto</em> — <a href="https://threatmodelingmanifesto.org/">threatmodelingmanifesto.org</a></li>
+<li><em>OWASP API Security Top 10</em>, edição de 2023 — <a href="https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/">owasp.org/API-Security</a></li>
+<li>SALTZER, Jerome H.; SCHROEDER, Michael D. <em>The Protection of Information in Computer Systems</em>. Proceedings of the IEEE, 63(9), 1975.</li>
 <li>Modelo C4 — <a href="https://c4model.com/">c4model.com</a></li>
 <li>NEWMAN, Sam. <em>Building Microservices</em>. 2. ed. O'Reilly, 2021.</li>
 </ul>
