@@ -641,10 +641,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#empacotando-em-um-container-dockerfile" class="md-nav__link">
+  <a href="#empacotando-em-um-conteiner-dockerfile" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Empacotando em um container: Dockerfile
+        Empacotando em um contêiner: Dockerfile
       
     </span>
   </a>
@@ -838,10 +838,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#empacotando-em-um-container-dockerfile" class="md-nav__link">
+  <a href="#empacotando-em-um-conteiner-dockerfile" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Empacotando em um container: Dockerfile
+        Empacotando em um contêiner: Dockerfile
       
     </span>
   </a>
@@ -929,11 +929,11 @@
 <li><strong>Build</strong>: compilar o código (ou, em linguagens interpretadas como Python, instalar dependências e validar que o pacote pode ser construído).</li>
 <li><strong>Análise estática</strong>: rodar linters, formatadores e verificadores de tipo (Capítulo 5).</li>
 <li><strong>Testes automatizados</strong>: rodar a suíte de testes (Capítulo 6), tipicamente com um limite mínimo de cobertura.</li>
-<li><strong>Empacotamento</strong>: construir um artefato de deploy — no ecossistema moderno, quase sempre uma imagem de container.</li>
+<li><strong>Empacotamento</strong>: construir um artefato de deploy — no ecossistema moderno, quase sempre uma imagem de contêiner.</li>
 <li><strong>Deploy</strong>: publicar o artefato em um ambiente (homologação, produção), com estratégia de rollout controlada.</li>
 </ol>
 <h2 id="hands-on-pipeline-de-ci-para-a-api-de-tarefas">🧑‍💻 Hands-on: pipeline de CI para a API de tarefas<a class="headerlink" href="#hands-on-pipeline-de-ci-para-a-api-de-tarefas" title="Permanent link">&para;</a></h2>
-<p>Vamos construir um pipeline de GitHub Actions para a API de tarefas do Capítulo 6, cobrindo lint, testes com cobertura mínima obrigatória, e build de uma imagem de container.</p>
+<p>Vamos construir um pipeline de GitHub Actions para a API de tarefas do Capítulo 6, cobrindo lint, formatação, verificação de tipos, testes com cobertura mínima obrigatória e build de uma imagem de contêiner.</p>
 <h3 id="estrutura-do-projeto">Estrutura do projeto<a class="headerlink" href="#estrutura-do-projeto" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>api-tarefas/
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── app/
@@ -961,6 +961,7 @@
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>pytest-cov&gt;=6.0
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>httpx2&gt;=2.9
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>ruff&gt;=0.7
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>mypy&gt;=1.10
 </code></pre></div>
 <h3 id="o-workflow-githubworkflowsciyml">O workflow: <code>.github/workflows/ci.yml</code><a class="headerlink" href="#o-workflow-githubworkflowsciyml" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CI</span>
@@ -992,16 +993,29 @@
 <a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Rodar linter (ruff)</span>
 <a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ruff check .</span>
 <a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>
-<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Rodar testes com cobertura</span>
-<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pytest -v --cov=app --cov-report=term-missing --cov-fail-under=80</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Conferir formatação</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ruff format --check .</span>
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Verificar tipos</span>
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mypy app</span>
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Rodar testes com cobertura</span>
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pytest -v --cov=app --cov-report=term-missing --cov-fail-under=80</span>
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a><span class="w">  </span><span class="nt">imagem</span><span class="p">:</span>
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a><span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout do código</span>
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v7</span>
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>
+<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Construir a imagem</span>
+<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker build -t api-tarefas .</span>
 </code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Validação deste workflow</p>
-<p>O YAML acima foi validado neste material por <em>parsing</em> automatizado (<code>yaml.safe_load</code>), garantindo que sua sintaxe está correta. Ao adaptá-lo, atenção a um detalhe clássico de YAML: a chave <code>on:</code> pode ser interpretada por alguns parsers (não pelo GitHub Actions) como o booleano <code>true</code> — um problema puramente de ferramentas de terceiros que leem o arquivo, sem efeito no funcionamento real do workflow.</p>
-</div>
-<p>Repare na estrutura: <code>on</code> define os gatilhos (aqui, todo <code>push</code> ou <code>pull_request</code> para <code>main</code>); <code>jobs.test.steps</code> é a sequência de passos executados em uma máquina virtual limpa do GitHub a cada execução. A <em>action</em> <code>actions/setup-python</code> com <code>cache: "pip"</code> acelera execuções futuras reaproveitando o cache de dependências entre pipelines.</p>
+<p>Repare na estrutura: <code>on</code> define os gatilhos (aqui, todo <code>push</code> ou <code>pull_request</code> para <code>main</code>); <code>jobs.test.steps</code> é a sequência de passos executados em uma máquina virtual limpa do GitHub a cada execução. O job <code>imagem</code> declara <code>needs: test</code>, portanto só roda se o job de testes passar. A <em>action</em> <code>actions/setup-python</code> com <code>cache: "pip"</code> acelera execuções futuras reaproveitando o cache de dependências entre pipelines.</p>
 <p>O parâmetro <code>--cov-fail-under=80</code> faz o próprio comando de teste <strong>falhar</strong> se a cobertura cair abaixo de 80% — transformando um limite de qualidade em um portão automático do pipeline, em vez de depender de alguém checar o relatório manualmente.</p>
-<h3 id="empacotando-em-um-container-dockerfile">Empacotando em um container: <code>Dockerfile</code><a class="headerlink" href="#empacotando-em-um-container-dockerfile" title="Permanent link">&para;</a></h3>
+<h3 id="empacotando-em-um-conteiner-dockerfile">Empacotando em um contêiner: <code>Dockerfile</code><a class="headerlink" href="#empacotando-em-um-conteiner-dockerfile" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.12-slim</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
@@ -1034,7 +1048,7 @@
 <li><strong>Só as dependências de execução</strong>: a imagem instala <code>requirements.txt</code>, sem <code>pytest</code> nem <code>ruff</code>.</li>
 <li><strong><code>.dockerignore</code></strong>: evita enviar ao <em>build</em> o ambiente virtual, o histórico do Git e arquivos locais como <code>.env</code>, que podem conter segredos.</li>
 </ul>
-<p>Para estender o pipeline com o passo de build da imagem, adicionaríamos um job (ou passo) adicional usando <code>docker/build-push-action</code>, publicando a imagem em um registro (GitHub Container Registry, Docker Hub, ECR) a cada merge na branch principal — o primeiro passo em direção à entrega contínua.</p>
+<p>O job <code>imagem</code> apenas constrói a imagem, para garantir que o <code>Dockerfile</code> continua funcionando. O passo seguinte seria usar <code>docker/build-push-action</code> para publicá-la em um registro (GitHub Container Registry, Docker Hub, ECR) a cada merge na branch principal — o primeiro passo em direção à entrega contínua.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Continuous Delivery</label><label for="__tabbed_1_2">Continuous Deployment</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1064,7 +1078,7 @@
 <ol>
 <li>Adicione o workflow <code>ci.yml</code> deste capítulo a um repositório GitHub contendo a API de tarefas do Capítulo 6 e confirme que ele roda com sucesso a cada <code>push</code>.</li>
 <li>Modifique o pipeline para falhar propositalmente (ex: aumente <code>--cov-fail-under</code> para 100, acima da cobertura atual do seu código) e observe o comportamento do GitHub Actions.</li>
-<li>Construa a imagem Docker localmente (<code>docker build -t api-tarefas .</code>) e rode um container a partir dela (<code>docker run -p 8000:8000 api-tarefas</code>), acessando <code>http://localhost:8000/docs</code> para ver a documentação interativa gerada automaticamente pelo FastAPI.</li>
+<li>Construa a imagem Docker localmente (<code>docker build -t api-tarefas .</code>) e rode um contêiner a partir dela (<code>docker run -p 8000:8000 api-tarefas</code>), acessando <code>http://localhost:8000/docs</code> para ver a documentação interativa gerada automaticamente pelo FastAPI.</li>
 <li>Descreva, para um sistema hipotético que você conheça, qual estratégia de deploy (blue-green, canary, feature flags) você usaria para lançar uma mudança arriscada, e por quê.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>

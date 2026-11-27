@@ -535,10 +535,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#user-stories-o-formato-agil-de-requisito" class="md-nav__link">
+  <a href="#requisito-em-formato-classico" class="md-nav__link">
     <span class="md-ellipsis">
       
-        User stories: o formato ágil de requisito
+        Requisito em formato clássico
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#historias-de-usuario-o-formato-agil-de-requisito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histórias de usuário: o formato ágil de requisito
       
     </span>
   </a>
@@ -850,10 +861,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#user-stories-o-formato-agil-de-requisito" class="md-nav__link">
+  <a href="#requisito-em-formato-classico" class="md-nav__link">
     <span class="md-ellipsis">
       
-        User stories: o formato ágil de requisito
+        Requisito em formato clássico
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#historias-de-usuario-o-formato-agil-de-requisito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histórias de usuário: o formato ágil de requisito
       
     </span>
   </a>
@@ -928,7 +950,7 @@
 
 <h1 id="especificacao-de-requisitos">Especificação de Requisitos<a class="headerlink" href="#especificacao-de-requisitos" title="Permanent link">&para;</a></h1>
 <h2 id="o-que-sao-requisitos">📋 O que são requisitos<a class="headerlink" href="#o-que-sao-requisitos" title="Permanent link">&para;</a></h2>
-<p>Requisitos descrevem <strong>o que</strong> um sistema deve fazer e <strong>sob quais restrições</strong> ele deve operar. Eles são, em geral, o produto mais difícil de acertar em um projeto de software: requisitos errados ou incompletos custam caro para corrigir quanto mais tarde forem descobertos, e a maioria dos problemas de projetos de software tem raiz em requisitos malentendidos, não em código malfeito.</p>
+<p>Requisitos descrevem <strong>o que</strong> um sistema deve fazer e <strong>sob quais restrições</strong> ele deve operar. Eles são, em geral, o produto mais difícil de acertar em um projeto de software: requisitos errados ou incompletos custam caro para corrigir quanto mais tarde forem descobertos, e a maioria dos problemas de projetos de software tem raiz em requisitos mal-entendidos, não em código malfeito.</p>
 <p>Requisitos costumam existir em diferentes níveis de abstração, e diferentes públicos leem diferentes níveis:</p>
 <ul>
 <li><strong>Requisitos de usuário</strong>: enunciados em linguagem natural (e às vezes diagramas), descrevendo os serviços que o sistema deve fornecer e as restrições sob as quais deve operar, voltados a clientes e usuários finais.</li>
@@ -998,25 +1020,62 @@
 </div>
 </div>
 </div>
-<h3 id="user-stories-o-formato-agil-de-requisito">User stories: o formato ágil de requisito<a class="headerlink" href="#user-stories-o-formato-agil-de-requisito" title="Permanent link">&para;</a></h3>
-<p>Em processos ágeis (Capítulo 2), requisitos funcionais são frequentemente escritos como <strong>user stories</strong>, um formato deliberadamente leve que adia detalhes de especificação para o momento em que a funcionalidade será de fato construída:</p>
+<h3 id="requisito-em-formato-classico">Requisito em formato clássico<a class="headerlink" href="#requisito-em-formato-classico" title="Permanent link">&para;</a></h3>
+<p>Em processos dirigidos a planos, cada requisito costuma ser registrado em um documento, com identificador e campos definidos. Um exemplo:</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Conteúdo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Identificador</strong></td>
+<td>RF-012</td>
+</tr>
+<tr>
+<td><strong>Descrição</strong></td>
+<td>O sistema deve exibir ao assinante do plano gratuito o número de créditos restantes no mês corrente.</td>
+</tr>
+<tr>
+<td><strong>Origem</strong></td>
+<td>Equipe de atendimento</td>
+</tr>
+<tr>
+<td><strong>Prioridade</strong></td>
+<td>Média</td>
+</tr>
+<tr>
+<td><strong>Pré-condição</strong></td>
+<td>O assinante está autenticado.</td>
+</tr>
+<tr>
+<td><strong>Critério de verificação</strong></td>
+<td>O valor exibido no painel é igual ao saldo registrado para o assinante.</td>
+</tr>
+</tbody>
+</table>
+<p>O mesmo requisito aparece a seguir no formato ágil, o que permite comparar os dois.</p>
+<h3 id="historias-de-usuario-o-formato-agil-de-requisito">Histórias de usuário: o formato ágil de requisito<a class="headerlink" href="#historias-de-usuario-o-formato-agil-de-requisito" title="Permanent link">&para;</a></h3>
+<p>Em processos ágeis (Capítulo 2), requisitos funcionais são frequentemente escritos como <strong>histórias de usuário</strong> (<em>user stories</em>), um formato deliberadamente leve que adia detalhes de especificação para o momento em que a funcionalidade será de fato construída:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Como &lt;tipo de usuário&gt;,
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>quero &lt;realizar uma ação&gt;,
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>para que &lt;benefício/objetivo&gt;.
 </code></pre></div>
 <p><em>Exemplo:</em> "Como assinante do plano gratuito, quero ver quantos créditos me restam no mês, para que eu possa planejar meu uso sem ser surpreendido."</p>
-<p>Uma user story sozinha costuma ser incompleta demais para guiar o desenvolvimento — por isso ela é normalmente acompanhada de <strong>critérios de aceitação</strong>, que funcionam como uma especificação mínima e testável:</p>
+<p>Uma história de usuário sozinha costuma ser incompleta demais para guiar o desenvolvimento — por isso ela é normalmente acompanhada de <strong>critérios de aceitação</strong>, que funcionam como uma especificação mínima e testável:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Dado que o assinante está logado no plano gratuito,
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>quando ele acessa o painel principal,
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>então o sistema exibe o número de créditos restantes no mês corrente.
 </code></pre></div>
 <p>Esse formato <em>Dado/Quando/Então</em> (Gherkin) tem a vantagem de já nascer no formato usado por ferramentas de teste de aceitação automatizado (como Cucumber ou Behave) — aproximando requisito e teste, um tema que retomaremos no Capítulo 6.</p>
 <div class="admonition tip">
-<p class="admonition-title">User story não é 'requisito ágil de baixa qualidade'</p>
-<p>Um erro comum é achar que user stories dispensam análise. Na verdade, elas deslocam o detalhamento para o momento certo (<em>just in time</em>), em vez de tentar prever tudo antecipadamente — mas ainda exigem elicitação cuidadosa, critérios de aceitação claros e refinamento contínuo do backlog.</p>
+<p class="admonition-title">História de usuário não é 'requisito ágil de baixa qualidade'</p>
+<p>Um erro comum é achar que histórias de usuário dispensam análise. Na verdade, elas deslocam o detalhamento para o momento certo (<em>just in time</em>), em vez de tentar prever tudo antecipadamente — mas ainda exigem elicitação cuidadosa, critérios de aceitação claros e refinamento contínuo do backlog.</p>
 </div>
 <h2 id="boas-praticas-de-especificacao">✅ Boas práticas de especificação<a class="headerlink" href="#boas-praticas-de-especificacao" title="Permanent link">&para;</a></h2>
-<p>Independente do formato (documento formal ou user story), um bom requisito deve ser:</p>
+<p>Independente do formato (documento formal ou história de usuário), um bom requisito deve ser:</p>
 <ul>
 <li><strong>Claro e não ambíguo</strong> — evitar termos vagos como "rápido", "fácil de usar", "sempre" sem defini-los quantitativamente.</li>
 <li><strong>Verificável/testável</strong> — deve ser possível checar, objetivamente, se o requisito foi atendido.</li>
@@ -1038,8 +1097,8 @@
 <h2 id="atividades">🎯 Atividades<a class="headerlink" href="#atividades" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Escreva três requisitos funcionais e três requisitos não funcionais para um aplicativo de biblioteca universitária (empréstimo de livros).</li>
-<li>Reescreva um dos requisitos funcionais do item anterior como uma user story com critérios de aceitação no formato Dado/Quando/Então.</li>
-<li>Avalie uma user story real (sua ou de um colega) usando o critério INVEST. Ela falha em algum dos critérios? Como você a melhoraria?</li>
+<li>Reescreva um dos requisitos funcionais do item anterior como uma história de usuário com critérios de aceitação no formato Dado/Quando/Então.</li>
+<li>Avalie uma história de usuário real (sua ou de um colega) usando o critério INVEST. Ela falha em algum dos critérios? Como você a melhoraria?</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
