@@ -812,6 +812,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#sistemas-legados" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🏚️ Sistemas legados
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#debito-tecnico-em-codigo-gerado-por-ia" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -866,6 +877,17 @@
     <span class="md-ellipsis">
       <span class="md-typeset">
         🗃️ Evoluindo o banco de dados
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#copias-de-seguranca-e-restauracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        💾 Cópias de segurança e restauração
       </span>
     </span>
   </a>
@@ -1149,6 +1171,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#sistemas-legados" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🏚️ Sistemas legados
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#debito-tecnico-em-codigo-gerado-por-ia" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1203,6 +1236,17 @@
     <span class="md-ellipsis">
       <span class="md-typeset">
         🗃️ Evoluindo o banco de dados
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#copias-de-seguranca-e-restauracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        💾 Cópias de segurança e restauração
       </span>
     </span>
   </a>
@@ -1375,26 +1419,39 @@
 <li><strong>Acoplamento excessivo</strong> entre módulos que deveriam ser independentes;</li>
 <li><strong>Comentários que compensam código confuso</strong>, em vez de explicar decisões não óbvias.</li>
 </ul>
+<h2 id="sistemas-legados">🏚️ Sistemas legados<a class="headerlink" href="#sistemas-legados" title="Permanent link">&para;</a></h2>
+<p>Chama-se <strong>legado</strong> o sistema antigo que continua necessário e é difícil de mudar: quem o escreveu saiu, a tecnologia envelheceu, a documentação não acompanha. Michael Feathers (2004) concentra o problema em um ponto: sem testes, não há como saber se uma mudança quebrou algo.</p>
+<p>Antes de mexer, escreva <strong>testes de caracterização</strong>, que registram o que o código <a href="https://www.infoq.com/news/2007/03/characterization-testing">faz hoje</a>, e não o que deveria fazer:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">iniciais</span><span class="p">(</span><span class="n">nome</span><span class="p">):</span>  <span class="c1"># código herdado, sem documentação</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="k">return</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">nome</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_caracteriza_iniciais</span><span class="p">():</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">assert</span> <span class="n">iniciais</span><span class="p">(</span><span class="s2">"Ana de Souza"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"AS"</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">assert</span> <span class="n">iniciais</span><span class="p">(</span><span class="s2">"Li Wu"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">""</span>  <span class="c1"># estranho, mas é o que ele faz</span>
+</code></pre></div>
+<p>O segundo caso parece um defeito. Não o corrija junto com a reorganização: alguém pode depender dele. Registre, pergunte e, se for o caso, mude depois, em um passo separado, atualizando o teste. Com essa rede, refatora-se em passos pequenos.</p>
+<p>Reescrever tudo de uma vez é arriscado: demora, e o comportamento antigo raramente está todo documentado. Uma alternativa é a <a href="https://www.martinfowler.com/bliki/StranglerFigApplication.html"><strong>figueira estranguladora</strong></a> (<em>strangler fig</em>), descrita por Martin Fowler: o novo cresce ao lado do antigo e assume uma função por vez, até que o antigo possa ser desligado.</p>
 <h2 id="debito-tecnico-em-codigo-gerado-por-ia">🤖 Débito técnico em código gerado por IA<a class="headerlink" href="#debito-tecnico-em-codigo-gerado-por-ia" title="Permanent link">&para;</a></h2>
 <p>Gerar código ficou rápido; entendê-lo e mantê-lo, não necessariamente. Quando um trecho entra no sistema sem que ninguém do time consiga explicá-lo, nasce uma dívida que não aparece em nenhum quadro. Alguns sinais: soluções diferentes para o mesmo problema em pontos diferentes, abstrações que ninguém pediu e testes que apenas repetem a implementação.</p>
 <p>O relatório DORA de 2025 descreve a IA como um <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report">amplificador do que a organização já tem</a>: associa seu uso a mais vazão de entregas, mas também a menos estabilidade, e aponta testes automatizados, controle de versão maduro e retorno rápido como proteção. Na prática: mudanças pequenas, revisão por quem vai manter, e refatoração como parte do trabalho, não como promessa.</p>
 <h2 id="dependencias-e-vulnerabilidades">🩹 Dependências e vulnerabilidades<a class="headerlink" href="#dependencias-e-vulnerabilidades" title="Permanent link">&para;</a></h2>
 <p>Um sistema que não muda fica mais vulnerável com o tempo, porque falhas continuam sendo descobertas nas bibliotecas que ele usa. Atualizar dependências é manutenção preventiva, e funciona melhor em passos pequenos e frequentes do que num salto anual.</p>
 <p>O <a href="https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference">Dependabot</a>, do GitHub, abre <em>pull requests</em> com as versões novas, e o pipeline do <a href="../07_integracao_entrega_continua/">Capítulo 7</a> diz se algo quebrou. Para a API de tarefas, o arquivo <code>.github/dependabot.yml</code> seria:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">updates</span><span class="p">:</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">"pip"</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">"/"</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">"weekly"</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">"github-actions"</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">"/"</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">"weekly"</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">"docker"</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">"/"</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">"weekly"</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">updates</span><span class="p">:</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">"pip"</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">"/"</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">"weekly"</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">"github-actions"</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">"/"</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">"weekly"</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">"docker"</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">"/"</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">"weekly"</span>
 </code></pre></div>
 <p>Esse arquivo configura atualizações de versão. Os alertas e as correções de segurança do Dependabot são ativados nas configurações do repositório. Imagens citadas dentro de comandos <code>run</code>, como as do Gitleaks e do Trivy no exemplo, não são atualizadas por ele: revise-as à mão.</p>
 <div class="admonition warning">
@@ -1465,20 +1522,57 @@
 <h2 id="evoluindo-o-banco-de-dados">🗃️ Evoluindo o banco de dados<a class="headerlink" href="#evoluindo-o-banco-de-dados" title="Permanent link">&para;</a></h2>
 <p>Código antigo se substitui; dados antigos precisam continuar valendo. O <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a> cria as tabelas na inicialização com <a href="https://www.sqlite.org/lang_createtable.html"><code>CREATE TABLE IF NOT EXISTS</code></a>. Isso funciona em um banco vazio, mas, se uma versão nova acrescentar uma coluna ao comando, um banco que já tem a tabela <strong>não muda</strong>, e a aplicação falha quando tentar usar a coluna.</p>
 <p>A solução é uma <strong>migração</strong>: um passo versionado que transforma o esquema existente. No SQLite, um começo simples usa o número guardado em <a href="https://www.sqlite.org/pragma.html#pragma_user_version"><code>PRAGMA user_version</code></a>. O exemplo abaixo, que ainda não faz parte do TaskFlow, acrescenta um prazo às tarefas:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">MIGRACOES</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="s2">"ALTER TABLE tarefas ADD COLUMN prazo TEXT"</span><span class="p">,</span>  <span class="c1"># versão 1</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p">]</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">migrar</span><span class="p">(</span><span class="n">con</span><span class="p">):</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">versao</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA user_version"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="k">for</span> <span class="n">numero</span><span class="p">,</span> <span class="n">comando</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">MIGRACOES</span><span class="p">[</span><span class="n">versao</span><span class="p">:],</span> <span class="n">start</span><span class="o">=</span><span class="n">versao</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"BEGIN"</span><span class="p">)</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        <span class="k">with</span> <span class="n">con</span><span class="p">:</span>  <span class="c1"># grava tudo ou desfaz tudo</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">comando</span><span class="p">)</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PRAGMA user_version = </span><span class="si">{</span><span class="n">numero</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">MIGRACOES</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="s2">"ALTER TABLE tarefas ADD COLUMN prazo TEXT"</span><span class="p">,</span>  <span class="c1"># versão 1</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">]</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">migrar</span><span class="p">(</span><span class="n">con</span><span class="p">):</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">versao</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"PRAGMA user_version"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="k">for</span> <span class="n">numero</span><span class="p">,</span> <span class="n">comando</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">MIGRACOES</span><span class="p">[</span><span class="n">versao</span><span class="p">:],</span> <span class="n">start</span><span class="o">=</span><span class="n">versao</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"BEGIN"</span><span class="p">)</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        <span class="k">with</span> <span class="n">con</span><span class="p">:</span>  <span class="c1"># grava tudo ou desfaz tudo</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">comando</span><span class="p">)</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PRAGMA user_version = </span><span class="si">{</span><span class="n">numero</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 <p>A função supõe uma conexão aberta com <code>isolation_level=None</code>, como a do TaskFlow. Migrações já aplicadas não se editam: corrige-se com uma nova. Faça cópia de segurança antes e teste a migração sobre um banco com dados. Ferramentas como o <a href="https://alembic.sqlalchemy.org/">Alembic</a> assumem esse controle em projetos que usam SQLAlchemy.</p>
+<h2 id="copias-de-seguranca-e-restauracao">💾 Cópias de segurança e restauração<a class="headerlink" href="#copias-de-seguranca-e-restauracao" title="Permanent link">&para;</a></h2>
+<p>Um volume preserva os dados quando o contêiner é recriado, mas não os protege de um <code>down -v</code>, de um disco com defeito, de uma migração errada ou de um invasor. Para isso há as <strong>cópias de segurança</strong>.</p>
+<p>Copiar o arquivo do SQLite com o sistema gravando pode gerar uma cópia corrompida. Use a <a href="https://sqlite.org/backup.html">API de <em>backup</em></a>, disponível no Python, que produz um retrato consistente com o banco em uso. Com o <code>compose.yaml</code> do <a href="../07_integracao_entrega_continua/">Capítulo 7</a>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>api<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="s2">import sqlite3</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="s2">origem = sqlite3.connect('/dados/tarefas.db')</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="s2">copia = sqlite3.connect('/dados/copia.db')</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="s2">origem.backup(copia)</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="s2">copia.close()</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="s2">origem.close()</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="s2">"</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>docker<span class="w"> </span>compose<span class="w"> </span>cp<span class="w"> </span>api:/dados/copia.db<span class="w"> </span>./copia.db
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>api<span class="w"> </span>rm<span class="w"> </span>/dados/copia.db
+</code></pre></div>
+<p><strong>Cópia que nunca foi restaurada é só uma esperança.</strong> Para restaurar, pare a API, para que ninguém grave durante a troca, e faça o caminho inverso:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>stop<span class="w"> </span>api
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-T<span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/copia.db:/tmp/copia.db:ro"</span><span class="w"> </span>api<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="s2">import sqlite3</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="s2">copia = sqlite3.connect('/tmp/copia.db')</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="s2">banco = sqlite3.connect('/dados/tarefas.db')</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="s2">copia.backup(banco)</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="s2">print(banco.execute('PRAGMA integrity_check').fetchone()[0])</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="s2">banco.close()</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="s2">copia.close()</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="s2">"</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>docker<span class="w"> </span>compose<span class="w"> </span>start<span class="w"> </span>api
+</code></pre></div>
+<p>O que foi gravado depois da cópia se perde. Sessões encerradas depois dela voltam a existir; se isso importar, apague as linhas da tabela <code>sessoes</code> antes de religar a API.</p>
+<p>Ao planejar, decida:</p>
+<ul>
+<li><strong>quanto se pode perder</strong>, o que define a frequência das cópias;</li>
+<li><strong>quanto tempo se pode ficar parado</strong>, o que define como restaurar;</li>
+<li><strong>onde guardar</strong>: fora do mesmo servidor, e com pelo menos uma cópia que quem invadir o servidor não consiga apagar;</li>
+<li><strong>como proteger</strong>: a cópia tem os mesmos dados pessoais e <em>hashes</em> de senha que o banco; restrinja o acesso e cifre;</li>
+<li><strong>por quanto tempo reter</strong>, e quando ensaiar a restauração.</li>
+</ul>
+<p>Os comandos acima são manuais. Em uso real, devem ser agendados, e uma falha precisa avisar alguém.</p>
 <h2 id="documentacao-de-software">📖 Documentação de software<a class="headerlink" href="#documentacao-de-software" title="Permanent link">&para;</a></h2>
 <p>Quem mantém um sistema raramente é só quem o escreveu. A documentação registra o que o código não conta: como executar, como usar e por que as coisas são como são. O modelo <a href="https://diataxis.fr/">Diátaxis</a>, de Daniele Procida, separa quatro necessidades que costumam ser misturadas:</p>
 <table>
@@ -1537,11 +1631,11 @@
 <li>erros e a inicialização e parada da aplicação.</li>
 </ul>
 <p>Cada registro precisa dizer <strong>quando, quem, o quê, sobre qual recurso e com que resultado</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">seguranca</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"seguranca"</span><span class="p">)</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">seguranca</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"acesso negado usuario=</span><span class="si">%s</span><span class="s2"> projeto=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">usuario_id</span><span class="p">,</span> <span class="n">projeto_id</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">seguranca</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"seguranca"</span><span class="p">)</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">seguranca</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"acesso negado usuario=</span><span class="si">%s</span><span class="s2"> projeto=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">usuario_id</span><span class="p">,</span> <span class="n">projeto_id</span><span class="p">)</span>
 </code></pre></div>
 <p><strong>Nunca registre</strong> senhas, <em>tokens</em>, chaves ou <em>strings</em> de conexão, e evite dados pessoais: o <em>log</em> costuma ter muito mais leitores que o banco. Cuidado também ao copiar texto do usuário para o registro, que pode conter quebras de linha e forjar entradas.</p>
 <p>Guardar não basta: alguém precisa ser avisado. Comece com poucos alertas que peçam ação, como muitas falhas de <em>login</em> seguidas. Proteja os registros contra alteração e defina por quanto tempo ficam.</p>
@@ -1557,6 +1651,8 @@
 <li>Peça a um colega que execute um projeto seu seguindo apenas o <code>README.md</code>. Anote onde ele travou e corrija o texto.</li>
 <li>Escreva o roteiro de resposta para este caso: uma senha do banco de dados foi publicada em um repositório público. Quem age, em que ordem, e o que se registra?</li>
 <li>No TaskFlow, registre os acessos negados e escreva um teste que confira o registro e garanta que nenhum <em>token</em> aparece nele.</li>
+<li>Escolha uma função sua sem testes, escreva testes de caracterização e só então a refatore.</li>
+<li>Faça uma cópia do banco do TaskFlow, cadastre um usuário, restaure e confira o que sumiu. Quanto tempo levou?</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1569,6 +1665,9 @@
 <li>PROCIDA, Daniele. <em>Diátaxis</em> — <a href="https://diataxis.fr/">diataxis.fr</a></li>
 <li>GitHub, referência de opções do Dependabot — <a href="https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference">docs.github.com</a></li>
 <li>Google Cloud. <em>Announcing the 2025 DORA Report</em> — <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report">cloud.google.com</a></li>
+<li>FEATHERS, Michael. <em>Working Effectively with Legacy Code</em>. Prentice Hall, 2004 — <a href="https://oreilly.com/library/view/-/0131177052">oreilly.com</a></li>
+<li>FOWLER, Martin. <em>Strangler Fig</em> — <a href="https://www.martinfowler.com/bliki/StranglerFigApplication.html">martinfowler.com</a></li>
+<li>SQLite, <em>Online Backup API</em> — <a href="https://sqlite.org/backup.html">sqlite.org</a></li>
 <li>FOWLER, Martin. <em>Refactoring: Improving the Design of Existing Code</em>. 2. ed. Addison-Wesley, 2018.</li>
 <li>CUNNINGHAM, Ward. <em>The WyCash Portfolio Management System</em> (artigo original sobre débito técnico, 1992) — <a href="https://c2.com/doc/oopsla92.html">c2.com</a></li>
 <li>Artigo <em>TechnicalDebtQuadrant</em> — <a href="https://martinfowler.com/bliki/TechnicalDebtQuadrant.html">martinfowler.com/bliki/TechnicalDebtQuadrant.html</a></li>

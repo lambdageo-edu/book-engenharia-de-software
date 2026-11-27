@@ -584,6 +584,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#usabilidade-e-acessibilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Usabilidade e acessibilidade
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#requisito-em-formato-classico" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1273,6 +1284,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#usabilidade-e-acessibilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Usabilidade e acessibilidade
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#requisito-em-formato-classico" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1583,6 +1605,98 @@
 <p class="admonition-title">Protótipo descartável não vai para produção</p>
 <p>Ele foi feito sem testes, tratamento de erros nem segurança. Se há intenção de aproveitá-lo, trate-o como código de verdade desde o início. Vale o mesmo para a aplicação que um assistente de IA monta em minutos.</p>
 </div>
+<h3 id="usabilidade-e-acessibilidade">Usabilidade e acessibilidade<a class="headerlink" href="#usabilidade-e-acessibilidade" title="Permanent link">&para;</a></h3>
+<p><strong>Usabilidade</strong> é o quanto as pessoas conseguem fazer o que querem, com acerto e sem esforço desnecessário. Um <strong><em>wireframe</em></strong> é o lugar barato para começar a cuidar disso: mostra o que há em cada tela e para onde se vai, sem aparência final. Um quadro de tarefas, se o TaskFlow ganhasse uma interface:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>+--------------------------------------------------------+
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>| Projeto: Site do evento              [+ Nova tarefa]   |
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>+------------------+------------------+------------------+
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>| Pendentes (2)    | Em andamento (1) | Concluídas (4)   |
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>|                  |                  |                  |
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>| Revisar textos   | Montar o mapa    | Reservar a sala  |
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>| [Assumir]        | Resp.: Ana       | [Reabrir]        |
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>|                  | [Concluir]       |                  |
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>+------------------+------------------+------------------+
+</code></pre></div>
+<p>Para avaliar um desenho ou um sistema pronto, uma referência muito usada são as <a href="https://nngroup.com/articles/ten-usability-heuristics/">dez heurísticas de usabilidade</a> de Nielsen, desenvolvidas com Rolf Molich em 1990 e refinadas em 1994:</p>
+<table>
+<thead>
+<tr>
+<th>Heurística</th>
+<th>Pergunta para o quadro de tarefas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Visibilidade do estado do sistema</td>
+<td>Depois de clicar em "Concluir", dá para ver que funcionou?</td>
+</tr>
+<tr>
+<td>Correspondência com o mundo real</td>
+<td>A tela fala "tarefa" e "responsável", ou o jargão do banco de dados?</td>
+</tr>
+<tr>
+<td>Controle e liberdade do usuário</td>
+<td>Dá para desfazer uma ação feita por engano?</td>
+</tr>
+<tr>
+<td>Consistência e padrões</td>
+<td>A mesma ação tem o mesmo nome em todas as telas?</td>
+</tr>
+<tr>
+<td>Prevenção de erros</td>
+<td>A tela deixa de oferecer o que não é permitido?</td>
+</tr>
+<tr>
+<td>Reconhecer em vez de lembrar</td>
+<td>É preciso decorar códigos de uma tela para outra?</td>
+</tr>
+<tr>
+<td>Flexibilidade e eficiência</td>
+<td>Quem usa muito tem atalhos?</td>
+</tr>
+<tr>
+<td>Estética e projeto minimalista</td>
+<td>Há informação disputando atenção sem necessidade?</td>
+</tr>
+<tr>
+<td>Ajudar a reconhecer e corrigir erros</td>
+<td>A mensagem diz o que houve e o que fazer?</td>
+</tr>
+<tr>
+<td>Ajuda e documentação</td>
+<td>Quando for preciso, a ajuda é fácil de achar?</td>
+</tr>
+</tbody>
+</table>
+<p>Heurísticas encontram problemas cedo, mas não substituem observar pessoas usando: peça uma tarefa concreta, não ajude e anote onde elas hesitam.</p>
+<p><strong>Acessibilidade</strong> é permitir o uso também por pessoas com deficiência, por exemplo quem usa leitor de tela, navega só pelo teclado ou enxerga pouco contraste. As <a href="https://www.w3.org/WAI/standards-guidelines/wcag/">WCAG</a> (versão 2.2), do W3C, organizam o tema em quatro princípios, com critérios em três níveis de conformidade (A, AA e AAA):</p>
+<table>
+<thead>
+<tr>
+<th>Princípio</th>
+<th>Exemplo de critério</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Perceptível</strong></td>
+<td>Imagens têm texto alternativo; o texto comum tem contraste de pelo menos 4,5:1 (nível AA)</td>
+</tr>
+<tr>
+<td><strong>Operável</strong></td>
+<td>Tudo o que se faz com o mouse também se faz pelo teclado</td>
+</tr>
+<tr>
+<td><strong>Compreensível</strong></td>
+<td>Campos têm rótulo, e os erros são explicados em texto</td>
+</tr>
+<tr>
+<td><strong>Robusto</strong></td>
+<td>A marcação é interpretada corretamente por tecnologias assistivas</td>
+</tr>
+</tbody>
+</table>
+<p>No Brasil, a Lei Brasileira de Inclusão (Lei 13.146/2015, art. 63) torna obrigatória a acessibilidade nos sítios mantidos por empresas com sede ou representação comercial no País ou por órgãos de governo. Trate-a como requisito não funcional desde o início, com critérios verificáveis. Ferramentas automáticas ajudam, mas encontram só parte dos problemas.</p>
 <h3 id="requisito-em-formato-classico">Requisito em formato clássico<a class="headerlink" href="#requisito-em-formato-classico" title="Permanent link">&para;</a></h3>
 <p>Em processos dirigidos a planos, cada requisito costuma ser registrado em um documento, com identificador e campos definidos. Um exemplo:</p>
 <table>
@@ -1622,9 +1736,9 @@
 <p>O mesmo requisito aparece a seguir no formato ágil, o que permite comparar os dois.</p>
 <h3 id="historias-de-usuario-o-formato-agil-de-requisito">Histórias de usuário: o formato ágil de requisito<a class="headerlink" href="#historias-de-usuario-o-formato-agil-de-requisito" title="Permanent link">&para;</a></h3>
 <p>Em processos ágeis (Capítulo 2), requisitos funcionais são frequentemente escritos como <strong>histórias de usuário</strong> (<em>user stories</em>), um formato deliberadamente leve que adia detalhes de especificação para o momento em que a funcionalidade será de fato construída:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Como &lt;tipo de usuário&gt;,
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>quero &lt;realizar uma ação&gt;,
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>para que &lt;benefício/objetivo&gt;.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Como &lt;tipo de usuário&gt;,
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>quero &lt;realizar uma ação&gt;,
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>para que &lt;benefício/objetivo&gt;.
 </code></pre></div>
 <p><em>Exemplo:</em> "Como membro de um projeto, quero filtrar as tarefas pelo responsável, para ver o que está comigo sem percorrer a lista inteira."</p>
 <p>Ron Jeffries resumiu a ideia em <a href="https://ronjeffries.com/xprog/articles/expcardconversationconfirmation">três Cs</a>:</p>
@@ -1635,9 +1749,9 @@
 </ul>
 <p>O texto no cartão é a menor parte: a história é uma promessa de conversar.</p>
 <p>Uma história de usuário sozinha costuma ser incompleta demais para guiar o desenvolvimento — por isso ela é normalmente acompanhada de <strong>critérios de aceitação</strong>, que funcionam como uma especificação mínima e testável:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Dado que Bia e Caio têm tarefas no mesmo projeto,
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>quando Bia filtra a lista pelo próprio nome,
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>então aparecem apenas as tarefas de Bia.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Dado que Bia e Caio têm tarefas no mesmo projeto,
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>quando Bia filtra a lista pelo próprio nome,
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>então aparecem apenas as tarefas de Bia.
 </code></pre></div>
 <p>Esse formato <em>Dado/Quando/Então</em> (Gherkin) tem a vantagem de já nascer no formato usado por ferramentas de teste de aceitação automatizado (como Cucumber ou Behave) — aproximando requisito e teste, um tema que retomaremos no Capítulo 6.</p>
 <div class="admonition tip">
@@ -1868,14 +1982,14 @@
 <h3 id="historias-de-abuso">Histórias de abuso<a class="headerlink" href="#historias-de-abuso" title="Permanent link">&para;</a></h3>
 <p>Uma história de usuário descreve o que alguém quer fazer com o sistema. Uma <strong>história de abuso</strong> descreve o que não pode acontecer, do ponto de vista de quem tenta se aproveitar dele. A pergunta é: como esta funcionalidade pode ser usada de um jeito que não prevíamos?</p>
 <p>A primeira versão da API de tarefas, no <a href="../06_testes_validacao/">Capítulo 6</a>, passa em todos os seus testes e, mesmo assim, aceita um título de 10 milhões de caracteres, cria quantas tarefas pedirem e deixa qualquer pessoa que alcance o servidor ler e concluir todas elas. Os testes verificam o que foi pedido, e ninguém pediu o contrário.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Como alguém mal-intencionado,
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>quero enviar títulos enormes repetidas vezes,
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>para esgotar a memória do servidor e derrubar o serviço.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Como alguém mal-intencionado,
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>quero enviar títulos enormes repetidas vezes,
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>para esgotar a memória do servidor e derrubar o serviço.
 </code></pre></div>
 <p>A história de abuso só tem efeito quando vira <strong>critério de aceitação</strong> da funcionalidade que ela ameaça:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Dado um título com mais de 200 caracteres,
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>quando alguém tenta criar a tarefa,
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>então a API responde 422 e nada é armazenado.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Dado um título com mais de 200 caracteres,
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>quando alguém tenta criar a tarefa,
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>então a API responde 422 e nada é armazenado.
 </code></pre></div>
 <p>Esse critério trata o tamanho de cada tarefa, mas não a quantidade de requisições. Para isso é preciso outro, sobre limite de requisições por cliente. Registre também os riscos que o time decidiu aceitar por ora, com o motivo. Veja a <a href="https://cheatsheetseries.owasp.org/cheatsheets/Abuse_Case_Cheat_Sheet.html">folha de referência da OWASP sobre casos de abuso</a>, mantida como material histórico.</p>
 <h2 id="especificar-antes-de-pedir-codigo">🤖 Especificar antes de pedir código<a class="headerlink" href="#especificar-antes-de-pedir-codigo" title="Permanent link">&para;</a></h2>
@@ -1883,17 +1997,17 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Pedido vago</label><label for="__tabbed_2_2">Especificação</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Coloque um limite no título das tarefas.
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Coloque um limite no título das tarefas.
 </code></pre></div>
 Qual limite? Espaços contam? O que a API responde? Tarefas antigas são afetadas? Cada pergunta sem resposta será decidida por quem escreve o código.</p>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Em POST /tarefas, limitar o título a 200 caracteres.
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>- Remover espaços das pontas antes de contar.
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>- Vazio ou acima de 200: responder 422 e não armazenar.
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>- Exatamente 200: aceitar.
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>- Não alterar os outros endpoints nem adicionar dependências.
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>- Incluir testes com 200 e 201 caracteres e com título só de espaços.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Em POST /tarefas, limitar o título a 200 caracteres.
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>- Remover espaços das pontas antes de contar.
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>- Vazio ou acima de 200: responder 422 e não armazenar.
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>- Exatamente 200: aceitar.
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>- Não alterar os outros endpoints nem adicionar dependências.
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>- Incluir testes com 200 e 201 caracteres e com título só de espaços.
 </code></pre></div>
 </div>
 </div>
@@ -1922,12 +2036,16 @@ Qual limite? Espaços contam? O que a API responde? Tarefas antigas são afetada
 <li>Defina a dúvida que um MVP do aplicativo de biblioteca deveria responder e classifique os requisitos com MoSCoW.</li>
 <li>Desenhe no papel um protótipo de baixa fidelidade da devolução de um livro, mostre a um colega e registre o que mudou nos requisitos.</li>
 <li>Para o mesmo aplicativo, identifique as classes de análise e justifique dois candidatos que você rejeitou.</li>
+<li>Avalie uma tela de um sistema que você usa com três das heurísticas e tente cumprir a mesma tarefa só com o teclado. Escreva um requisito de acessibilidade verificável para o que falhou.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
 <li>SOMMERVILLE, Ian. <em>Engenharia de Software</em>. 10. ed. — Capítulo 4.</li>
 <li>COHN, Mike. <em>User Stories Applied: For Agile Software Development</em>. Addison-Wesley, 2004.</li>
 <li>SOMMERVILLE, Ian. <em>Engenharia de Software</em>. 10. ed. — Capítulo 2 (prototipação).</li>
+<li>NIELSEN, Jakob. <em>10 Usability Heuristics for User Interface Design</em> — <a href="https://nngroup.com/articles/ten-usability-heuristics/">nngroup.com</a></li>
+<li>W3C. <em>Web Content Accessibility Guidelines (WCAG) 2 Overview</em> — <a href="https://www.w3.org/WAI/standards-guidelines/wcag/">w3.org</a></li>
+<li>BRASIL. <em>Lei nº 13.146/2015</em> (Lei Brasileira de Inclusão); ver a <a href="https://www.gov.br/governodigital/pt-br/legislacao/acessibilidade">legislação de acessibilidade</a> no portal Governo Digital.</li>
 <li>NIELSEN, Jakob. <em>Usability Engineering</em>. Academic Press, 1993 (protótipos horizontais e verticais).</li>
 <li>OWASP <em>Application Security Verification Standard</em> — <a href="https://owasp.org/ASVS/">owasp.org/ASVS</a></li>
 <li>OWASP <em>Abuse Case Cheat Sheet</em> (material histórico) — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Abuse_Case_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
