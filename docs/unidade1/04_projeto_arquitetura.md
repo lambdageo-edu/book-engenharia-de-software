@@ -99,7 +99,7 @@ Para a primeira, basta um diagrama de por onde os dados passam, marcando as **fr
  API (FastAPI)  ----->  Armazenamento (hoje, um dicionário em memória)
 ```
 
-Para a segunda, o acrônimo **STRIDE** serve de lista de conferência. Aplicado à versão atual da API:
+Para a segunda, o acrônimo **STRIDE**, proposto na Microsoft por Kohnfelder e Garg em 1999, serve de lista de conferência. Aplicado à versão atual da API:
 
 | Ameaça | Propriedade violada | Na API de tarefas |
 |---|---|---|
@@ -152,6 +152,9 @@ Arquitetura só é útil se for compreendida por quem constrói o sistema. Algum
 * GAMMA, Erich et al. *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley, 1994.
 * FOWLER, Martin. *Patterns of Enterprise Application Architecture*. Addison-Wesley, 2002.
 * OWASP *Threat Modeling Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html)
+* KOHNFELDER, Loren; GARG, Praerit. *The Threats to Our Products*. Microsoft, 1999 (origem do STRIDE) — [cópia do documento](https://threatmodelingbook.com/files/microsoft/The-Threats-To-Our-Products.docx)
+* *Threat Modeling Manifesto* — [threatmodelingmanifesto.org](https://threatmodelingmanifesto.org/)
+* *OWASP API Security Top 10*, edição de 2023 — [owasp.org/API-Security](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/)
 * SALTZER, Jerome H.; SCHROEDER, Michael D. *The Protection of Information in Computer Systems*. Proceedings of the IEEE, 63(9), 1975.
 * Modelo C4 — [c4model.com](https://c4model.com/)
 * NEWMAN, Sam. *Building Microservices*. 2. ed. O'Reilly, 2021.

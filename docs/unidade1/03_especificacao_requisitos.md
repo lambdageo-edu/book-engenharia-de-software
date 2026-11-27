@@ -201,5 +201,7 @@ Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de doc
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 4.
 * COHN, Mike. *User Stories Applied: For Agile Software Development*. Addison-Wesley, 2004.
 * OWASP *Application Security Verification Standard* — [owasp.org/ASVS](https://owasp.org/ASVS/)
+* OWASP *Abuse Case Cheat Sheet* (material histórico) — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Abuse_Case_Cheat_Sheet.html)
+* GitHub *Spec Kit* — [github.github.com/spec-kit](https://github.github.com/spec-kit/)
 * Lei Geral de Proteção de Dados (Lei 13.709/2018) — [texto atualizado](https://www2.camara.leg.br/legin/fed/lei/2018/lei-13709-14-agosto-2018-787077-normaatualizada-pl.html)
 * Formato Gherkin (Cucumber) — [cucumber.io/docs/gherkin](https://cucumber.io/docs/gherkin/)
