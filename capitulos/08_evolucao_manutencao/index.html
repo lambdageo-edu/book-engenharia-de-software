@@ -1563,6 +1563,7 @@
 <a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="s2">"</span>
 <a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>docker<span class="w"> </span>compose<span class="w"> </span>start<span class="w"> </span>api
 </code></pre></div>
+<p>Para ler a cópia, o contêiner usa o usuário sem privilégios da imagem, que pode não ser o dono do arquivo no servidor. Por isso, restrinja o acesso pela <strong>pasta</strong> que guarda a cópia (<code>chmod 700</code>), mantendo no arquivo a permissão de leitura (<code>chmod 644</code>), e troque no comando <code>$PWD/copia.db</code> pelo caminho completo da cópia. Com <code>chmod 600</code> no arquivo, a restauração pode falhar com <code>unable to open database file</code>, já com a API parada.</p>
 <p>O que foi gravado depois da cópia se perde. Sessões encerradas depois dela voltam a existir; se isso importar, apague as linhas da tabela <code>sessoes</code> antes de religar a API.</p>
 <p>Ao planejar, decida:</p>
 <ul>
