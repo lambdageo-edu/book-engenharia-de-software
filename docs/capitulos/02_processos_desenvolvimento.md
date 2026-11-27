@@ -198,6 +198,32 @@ Relatórios anteriores a 2025 agrupavam as organizações em faixas de desempenh
 !!! tip "Ágil e DevOps não competem — se complementam"
     Ágil resolve "como planejamos e priorizamos o trabalho de desenvolvimento". DevOps resolve "como levamos esse trabalho até produção, com segurança e frequência". Um time pode ser ágil sem ser DevOps (sprints organizados, mas deploys manuais e raros) — e o contrário também é possível, embora menos comum na prática.
 
+## 🔐 Ciclo de vida e DevSecOps
+
+O conjunto de atividades que leva um software da ideia à operação e à evolução costuma ser chamado de **ciclo de vida de desenvolvimento de software** (*Software Development Life Cycle*, **SDLC**). Cascata, incremental, Scrum com DevOps: cada um é uma forma de organizar esse ciclo.
+
+O NIST observa que poucos modelos de ciclo de vida tratam a segurança em detalhe, e que por isso é preciso acrescentar práticas a eles. Seu *Secure Software Development Framework* (SSDF, versão 1.1) reúne essas práticas em quatro grupos, aplicáveis a qualquer modelo (SOUPPAYA; SCARFONE; DODSON, 2022):
+
+| Grupo do SSDF | Em uma frase |
+|---|---|
+| Preparar a organização (*PO*) | Pessoas, processos e ferramentas prontos para desenvolver com segurança |
+| Proteger o software (*PS*) | Evitar adulteração e acesso não autorizado ao código e aos seus componentes |
+| Produzir software bem protegido (*PW*) | Lançar versões com o mínimo de vulnerabilidades |
+| Responder a vulnerabilidades (*RV*) | Encontrar o que escapou, corrigir e evitar que se repita |
+
+**DevSecOps** leva essa preocupação para o DevOps: os passos de segurança entram no mesmo fluxo de desenvolvimento e entrega, automatizados sempre que possível ([OWASP DevSecOps Guideline](https://devguide.owasp.org/en/09-operations/01-devsecops/)). A ideia, muitas vezes chamada de *shift left* (antecipar), é não deixar a segurança para uma revisão no fim, quando corrigir custa mais. Neste livro ela aparece em cada etapa:
+
+| Momento | O que se faz | Onde |
+|---|---|---|
+| Requisitos | Histórias de abuso e requisitos de segurança | [Capítulo 3](03_especificacao_requisitos.md) |
+| Projeto | Modelagem de ameaças com STRIDE | [Capítulo 4](04_projeto_arquitetura.md) |
+| Código | Práticas de código seguro, revisão e análise estática | [Capítulo 5](05_implementacao_qualidade.md) |
+| Testes | Testar também o que o sistema deve recusar | [Capítulo 6](06_testes_validacao.md) |
+| Entrega | Verificações de segurança no pipeline | [Capítulo 7](07_integracao_entrega_continua.md) |
+| Evolução | Atualizar dependências e tratar vulnerabilidades | [Capítulo 8](08_evolucao_manutencao.md) |
+
+Rodar um verificador no pipeline não basta para fazer DevSecOps: alguém precisa ler o alerta, decidir e corrigir, e essa responsabilidade é do time inteiro.
+
 ## 📊 Escolhendo um processo
 
 Não existe processo universalmente superior — a escolha depende de fatores como:
@@ -222,6 +248,7 @@ A maioria das organizações de produto digital hoje adota variantes ágeis com 
 5. Faça em par uma pequena mudança, alternando quem escreve a cada 15 minutos. O que a segunda pessoa percebeu que passaria despercebido? Quanto custou?
 6. Em grupo, estimem cinco histórias com *planning poker*. Onde houve a maior diferença, o que ela revelou?
 7. Liste três riscos de um projeto seu, com chance, impacto, o que fazer e quem acompanha.
+8. Em um projeto seu, indique o que é feito pela segurança em cada momento do ciclo de vida. Onde há uma etapa sem nada, o que seria o primeiro passo?
 
 ## 📚 Para saber mais
 
@@ -240,3 +267,5 @@ A maioria das organizações de produto digital hoje adota variantes ágeis com 
 * SINGER, Ryan. *Shape Up: Stop Running in Circles and Ship Work that Matters*. Basecamp, 2019 — [basecamp.com/shapeup](https://basecamp.com/shapeup)
 * VOGELS, Werner. *A Conversation with Werner Vogels* (entrevista a Jim Gray). ACM Queue, 4(4), 2006 — [queue.acm.org](https://queue.acm.org/detail.cfm?id=1142065)
 * ALLSPAW, John. *Blameless PostMortems and a Just Culture*. Etsy, 2012 — [etsy.com/codeascraft](https://www.etsy.com/codeascraft/blameless-postmortems)
+* SOUPPAYA, Murugiah; SCARFONE, Karen; DODSON, Donna. *Secure Software Development Framework (SSDF) Version 1.1*. NIST SP 800-218, 2022 — [doi.org/10.6028/NIST.SP.800-218](https://doi.org/10.6028/NIST.SP.800-218). A revisão 1.2 estava em consulta pública (rascunho de dezembro de 2025).
+* OWASP Developer Guide, *DevSecOps* — [devguide.owasp.org](https://devguide.owasp.org/en/09-operations/01-devsecops/)
