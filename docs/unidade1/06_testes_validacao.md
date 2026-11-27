@@ -20,7 +20,7 @@ A **pirâmide de testes**, popularizada por Mike Cohn, organiza os testes automa
 
 ```
         /\
-       /  \      Testes de E2E / Aceitação
+       /  \      Testes de sistema (E2E)
       /----\     (poucos, lentos, alto valor de confiança)
      /      \
     /--------\   Testes de Integração
@@ -31,22 +31,41 @@ A **pirâmide de testes**, popularizada por Mike Cohn, organiza os testes automa
 ```
 
 * **Testes unitários** verificam uma unidade de código isolada (uma função, um método), sem dependências externas reais (banco de dados, rede). São rápidos, numerosos e baratos de manter — a base da pirâmide.
-* **Testes de componente/integração** verificam a colaboração entre algumas unidades reais, ou entre a aplicação e uma dependência externa real (um banco de dados de teste, por exemplo).
-* **Testes de sistema/aceitação** verificam o sistema completo, muitas vezes através de suas interfaces externas (API, UI), simulando um uso real de ponta a ponta. São os mais caros de escrever e manter, e os mais lentos de executar — por isso devem ser relativamente poucos, cobrindo os fluxos mais críticos.
+* **Testes de integração** verificam a colaboração entre algumas unidades reais, ou entre a aplicação e uma dependência externa real (um banco de dados de teste, por exemplo).
+* **Testes de sistema (ponta a ponta, ou E2E)** verificam o sistema completo, muitas vezes através de suas interfaces externas (API, UI), simulando um uso real de ponta a ponta. São os mais caros de escrever e manter, e os mais lentos de executar — por isso devem ser relativamente poucos, cobrindo os fluxos mais críticos.
 
 !!! warning "O antipadrão do 'cone de sorvete'"
     Um erro comum é ter muitos testes de ponta a ponta (lentos, frágeis, caros de manter) e poucos testes unitários — o oposto da pirâmide. Isso é chamado de "cone de sorvete", porque o formato é o da pirâmide virada de ponta-cabeça: a suíte de testes fica lenta, instável e cara de manter, exatamente o oposto do que se espera de uma boa suíte de testes.
+
+!!! note "Nível e objetivo são coisas diferentes"
+    Unitário, integração e sistema são **níveis**: dizem quanto do software o teste exercita. **Aceitação** é um **objetivo**: confirmar que o software atende ao que foi combinado. Um teste de aceitação pode ser escrito em mais de um nível.
 
 ## 🧪 Tipos de teste no ciclo de desenvolvimento
 
 Além da divisão por escopo, testes também se distinguem por **quem** os executa e **quando**, ao longo do ciclo de vida:
 
-* **Testes em desenvolvimento**: escritos e executados pelos próprios desenvolvedores, continuamente, enquanto o código é escrito — testes unitários, de componente e de sistema.
+* **Testes em desenvolvimento**: escritos e executados pelos próprios desenvolvedores, continuamente, enquanto o código é escrito — testes unitários, de integração e de sistema.
 * **Testes de release**: executados por um time (ou processo automatizado) separado, validando uma versão candidata a ser lançada antes de ir para produção.
 * **Testes de usuário**: envolvem usuários reais ou representantes do cliente, tipicamente perto do fim do ciclo:
     * **Teste alfa**: usuários selecionados testam o sistema no ambiente de desenvolvimento, com a equipe observando.
     * **Teste beta**: uma versão é liberada a um grupo maior de usuários reais, em seu próprio ambiente, coletando feedback antes do lançamento geral.
     * **Teste de aceitação**: o cliente (ou seu representante) valida formalmente que o sistema atende aos requisitos acordados — muitas vezes usando os próprios critérios de aceitação escritos junto com os requisitos (Capítulo 3).
+
+### De critério de aceitação a teste
+
+O formato *Dado/Quando/Então* (Gherkin), visto no Capítulo 3, descreve um cenário que pode ser automatizado. Para a API de tarefas usada neste capítulo:
+
+```gherkin
+# language: pt
+Funcionalidade: Conclusão de tarefas
+
+  Cenário: Concluir uma tarefa existente
+    Dado que existe a tarefa "Testar conclusão"
+    Quando eu concluo essa tarefa
+    Então ela aparece como concluída
+```
+
+Ferramentas como Behave ou pytest-bdd ligam cada linha do cenário a uma função. Sem elas, o mesmo roteiro pode organizar um teste comum, como faz `test_concluir_tarefa_muda_status` mais adiante.
 
 ## 🔴🟢🔵 Test-Driven Development (TDD)
 
@@ -57,6 +76,14 @@ TDD é uma prática (não apenas uma técnica de teste) em que o teste é escrit
 3. **🔵 Refactor**: com o teste passando como rede de segurança, melhore o código (Capítulo 5) sem mudar seu comportamento externo.
 
 A promessa do TDD não é "ter mais testes" — é que escrever o teste primeiro força a pensar na interface e no comportamento esperado antes dos detalhes de implementação, e garante que todo código de produção tenha, desde o nascimento, um teste que o cubra.
+
+### Praticando TDD nesta API
+
+Depois de montar a API no *hands-on* a seguir, volte aqui: como exercício de TDD, tente adicionar um endpoint `DELETE /tarefas/{tarefa_id}` seguindo o ciclo Red-Green-Refactor:
+
+1. **Red**: escreva `test_deletar_tarefa_remove_da_lista`, chamando um endpoint que ainda não existe.
+2. **Green**: implemente o `DELETE /tarefas/{tarefa_id}` da forma mais simples possível para o teste passar.
+3. **Refactor**: revise o código à luz das práticas de clean code do Capítulo 5.
 
 ---
 
@@ -137,11 +164,18 @@ Não deixe de criar um `app/__init__.py` vazio para que `app` seja reconhecido c
 ### Os testes: `test_main.py`
 
 ```python
+import pytest
 from fastapi.testclient import TestClient
 
-from app.main import app
+from app import main
 
-client = TestClient(app)
+client = TestClient(main.app)
+
+
+@pytest.fixture(autouse=True)
+def estado_limpo():
+    main._tarefas.clear()
+    main._proximo_id = 1
 
 
 def test_criar_tarefa_retorna_201_e_id():
@@ -172,13 +206,18 @@ def test_obter_tarefa_inexistente_retorna_404():
 
 
 def test_concluir_tarefa_muda_status():
+    # Dado que existe a tarefa
     criada = client.post("/tarefas", json={"titulo": "Testar conclusão"}).json()
+    # Quando eu concluo essa tarefa
     resposta = client.patch(f"/tarefas/{criada['id']}/concluir")
+    # Então ela aparece como concluída
     assert resposta.status_code == 200
     assert resposta.json()["concluida"] is True
 ```
 
 Repare que cada teste segue implicitamente o padrão **Arrange-Act-Assert**: prepara os dados de entrada, executa a ação sob teste, e verifica o resultado — uma estrutura que vale a pena manter explícita mesmo quando o código não a nomeia.
+
+Esses testes fazem requisições à API inteira, por meio do `TestClient`. São, portanto, **testes de API**, que atravessam rota, validação e regra juntas, e não testes unitários. Como a aplicação guarda as tarefas em memória, a *fixture* `estado_limpo` zera esse estado antes de cada teste, para que o resultado de um não dependa dos anteriores.
 
 ### Executando e medindo cobertura
 
@@ -186,7 +225,7 @@ Repare que cada teste segue implicitamente o padrão **Arrange-Act-Assert**: pre
 pytest -v --cov=app --cov-report=term-missing
 ```
 
-Saída esperada (validada neste material):
+Saída esperada (o tempo de execução e a largura das colunas variam):
 
 ```
 test_main.py::test_criar_tarefa_retorna_201_e_id PASSED
@@ -214,14 +253,6 @@ TOTAL                34      2    94%
 Assistentes de codificação são cada vez mais usados para gerar testes automaticamente a partir do código de produção — uma forma rápida de aumentar cobertura numérica. O alerta acima vale com ainda mais força nesse caso: um teste gerado a partir do código existente tende a **confirmar o que o código já faz**, inclusive quando o código tem um defeito, em vez de verificar o que o código **deveria** fazer segundo o requisito. É o oposto do espírito do TDD (seção anterior), em que o teste nasce do requisito, antes do código existir.
 
 Isso não invalida o uso de IA para gerar testes — apenas desloca a responsabilidade do desenvolvedor: ler e validar cada teste gerado contra o comportamento esperado (não contra o comportamento atual do código) continua sendo indispensável antes de aceitar a mudança na suíte.
-
-### Praticando TDD nesta API
-
-Como exercício de TDD, tente adicionar um endpoint `DELETE /tarefas/{tarefa_id}` seguindo o ciclo Red-Green-Refactor:
-
-1. **Red**: escreva `test_deletar_tarefa_remove_da_lista`, chamando um endpoint que ainda não existe.
-2. **Green**: implemente o `DELETE /tarefas/{tarefa_id}` da forma mais simples possível para o teste passar.
-3. **Refactor**: revise o código à luz das práticas de clean code do Capítulo 5.
 
 ---
 
