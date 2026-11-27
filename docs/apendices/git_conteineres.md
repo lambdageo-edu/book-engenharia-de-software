@@ -94,18 +94,18 @@ Abra o *pull request* pela interface do GitHub. Um bom *pull request*:
 
 * é pequeno o bastante para ser revisado com atenção;
 * explica o que muda, por quê e como foi testado;
-* só é incorporado depois que o [pipeline](../unidade1/07_integracao_entrega_continua.md) passa e alguém revisa — inclusive o código escrito com ajuda de IA.
+* só é incorporado depois que o [pipeline](../capitulos/07_integracao_entrega_continua.md) passa e alguém revisa — inclusive o código escrito com ajuda de IA.
 
 ## 🔑 Commitei um segredo. E agora?
 
 1. **Revogue ou troque o segredo.** É o primeiro passo, antes de mexer no histórico.
 2. Só então avalie reescrever a história. Isso sozinho não basta: o commit pode continuar em clones, *forks*, visualizações em cache e *pull requests* (GITHUB, *Removing sensitive data*).
 
-Apagar o arquivo em um commit novo não remove o segredo dos commits anteriores. Por isso o [Capítulo 7](../unidade1/07_integracao_entrega_continua.md) procura segredos no histórico inteiro.
+Apagar o arquivo em um commit novo não remove o segredo dos commits anteriores. Por isso o [Capítulo 7](../capitulos/07_integracao_entrega_continua.md) procura segredos no histórico inteiro.
 
 ## 📦 Contêineres: o mínimo
 
-Uma **imagem** é o pacote somente leitura com a aplicação e suas dependências; um **contêiner** é uma execução dessa imagem. Com o `Dockerfile` do [Capítulo 7](../unidade1/07_integracao_entrega_continua.md):
+Uma **imagem** é o pacote somente leitura com a aplicação e suas dependências; um **contêiner** é uma execução dessa imagem. Com o `Dockerfile` do [Capítulo 7](../capitulos/07_integracao_entrega_continua.md):
 
 ```bash
 docker build -t api-tarefas .

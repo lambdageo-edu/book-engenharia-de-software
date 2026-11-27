@@ -76,15 +76,18 @@ nav:
   - "⇦ Coleção LambdaGeo": https://lambdageo.github.io/ebooks/
   - Apresentação: index.md
 
-  - Desenvolvimento de Software:
-    - "Cap 1: Introdução à Engenharia de Software":       unidade1/01_introducao_engenharia_software.md
-    - "Cap 2: Processos: do Cascata ao Ágil e DevOps":    unidade1/02_processos_desenvolvimento.md
-    - "Cap 3: Especificação de Requisitos":               unidade1/03_especificacao_requisitos.md
-    - "Cap 4: Projeto e Arquitetura de Software":         unidade1/04_projeto_arquitetura.md
-    - "Cap 5: Implementação e Qualidade de Código":       unidade1/05_implementacao_qualidade.md
-    - "Cap 6: Testes e Validação":                        unidade1/06_testes_validacao.md
-    - "Cap 7: Integração e Entrega Contínua (CI/CD)":     unidade1/07_integracao_entrega_continua.md
-    - "Cap 8: Evolução, Manutenção e Débito Técnico":     unidade1/08_evolucao_manutencao.md
+  - "Parte I: Fundamentos":
+    - "Cap 1: Introdução à Engenharia de Software":       capitulos/01_introducao_engenharia_software.md
+    - "Cap 2: Processos: do Cascata ao Ágil e DevOps":    capitulos/02_processos_desenvolvimento.md
+  - "Parte II: Requisitos e projeto":
+    - "Cap 3: Especificação de Requisitos":               capitulos/03_especificacao_requisitos.md
+    - "Cap 4: Projeto e Arquitetura de Software":         capitulos/04_projeto_arquitetura.md
+  - "Parte III: Construção":
+    - "Cap 5: Implementação e Qualidade de Código":       capitulos/05_implementacao_qualidade.md
+    - "Cap 6: Testes e Validação":                        capitulos/06_testes_validacao.md
+  - "Parte IV: Entrega e evolução":
+    - "Cap 7: Integração e Entrega Contínua (CI/CD)":     capitulos/07_integracao_entrega_continua.md
+    - "Cap 8: Evolução, Manutenção e Débito Técnico":     capitulos/08_evolucao_manutencao.md
 
   - Apêndices:
     - "Git e contêineres na prática": apendices/git_conteineres.md
