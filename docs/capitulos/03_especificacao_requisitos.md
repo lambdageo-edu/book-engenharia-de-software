@@ -302,7 +302,7 @@ Para montar o diagrama:
 3. acrescente as alternativas da descrição textual;
 4. confira que o ator só conversa com a fronteira, e que a fronteira não vai direto às entidades.
 
-Cada mensagem recebida é uma responsabilidade da classe que a recebe. Aqui, a regra "só se conclui uma tarefa em andamento" fica em `Tarefa`, e a ordem das verificações, no controle. É um modelo de análise: não diz se haverá classes com esses nomes no código. O [Capítulo 4](04_projeto_arquitetura.md) mostra uma sequência de projeto, já com os elementos da implementação.
+Cada mensagem recebida é uma responsabilidade da classe que a recebe. Aqui, a regra "só se conclui uma tarefa em andamento" fica em `Tarefa`, e a ordem das verificações, no controle. É um modelo de análise: não diz se haverá classes com esses nomes no código, nem que cada seta será um passo separado. Na implementação, o dado verificado não pode mudar antes da gravação (veja [Concorrência](05_implementacao_qualidade.md#concorrencia)). O [Capítulo 4](04_projeto_arquitetura.md) mostra uma sequência de projeto, já com os elementos da implementação.
 
 ## ✅ Boas práticas de especificação
 
