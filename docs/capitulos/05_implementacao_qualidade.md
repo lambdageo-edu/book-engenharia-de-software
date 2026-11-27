@@ -43,7 +43,7 @@ Revisão de código é a prática de um ou mais colegas lerem e comentarem uma m
 Benefícios da revisão de código (um estudo na Microsoft mostra que, além de achar defeitos, ela serve à troca de conhecimento: [Bacchelli e Bird, 2013](https://www.microsoft.com/en-us/research/?p=164195)):
 
 * **Detecção de defeitos** antes que cheguem à produção — mais barata do que corrigir depois.
-* **Disseminação de conhecimento** sobre o sistema entre os membros do time, reduzindo o risco de conhecimento concentrado em uma única pessoa (*bus factor* baixo).
+* **Disseminação de conhecimento** sobre o sistema entre os membros do time, reduzindo o risco de conhecimento concentrado em uma única pessoa (*bus factor* baixo). Também apoia a **propriedade coletiva** do código, prática do XP ([Capítulo 2](02_processos_desenvolvimento.md)).
 * **Consistência de estilo e de decisões de projeto** ao longo do código.
 * **Aprendizado mútuo**, especialmente entre desenvolvedores mais e menos experientes.
 
@@ -207,7 +207,7 @@ def pode_concluir(servico, usuario_id, tarefa_id):
 
 ## 🔀 Concorrência
 
-Um servidor atende vários pedidos ao mesmo tempo. No FastAPI, por exemplo, uma rota declarada com `def` roda em um [conjunto de *threads*](https://fastapi.tiangolo.com/async/), e dois pedidos podem executar a mesma função lado a lado. Há uma **condição de corrida** quando o resultado depende de quem chega primeiro a um dado compartilhado.
+Um servidor atende vários pedidos ao mesmo tempo. No FastAPI, por exemplo, uma rota declarada com `def` roda em um [conjunto de *threads*](https://fastapi.tiangolo.com/async/), e dois pedidos podem executar a mesma função lado a lado. Há uma **condição de corrida** quando a **correção** do resultado depende de como se intercalam os passos de pedidos simultâneos sobre um dado compartilhado: em algumas ordens dá certo, em outras não.
 
 Suponha que um membro só possa assumir uma tarefa que ainda não tem responsável. O código óbvio consulta e depois grava. No programa abaixo, `corrida.py`, os passos de Ana e de Bruno são intercalados à mão, para o problema aparecer sempre:
 
@@ -362,7 +362,7 @@ Assistentes e agentes de codificação (GitHub Copilot, Claude Code, Cursor e eq
 * **Análise estática (próxima seção) se torna ainda mais importante** como primeira linha de defesa mecânica, liberando a revisão humana para focar em design, lógica de negócio e nas armadilhas acima — a mesma divisão entre máquina e pessoa explicada a seguir, agora com mais volume de código passando por ela.
 
 !!! tip "IA muda o \"como\", não o \"porquê\" da revisão"
-    Os benefícios de revisão de código listados no início desta seção — detecção de defeitos, disseminação de conhecimento, consistência, aprendizado — continuam os mesmos independentemente de quem (ou o quê) escreveu o código. O que muda é o volume e o tipo de atenção que o revisor precisa dedicar a cada mudança.
+    Os benefícios listados na seção [Revisão de código](#revisao-de-codigo-code-review) — detecção de defeitos, disseminação de conhecimento, consistência, aprendizado — continuam os mesmos independentemente de quem (ou o quê) escreveu o código. O que muda é o volume e o tipo de atenção que o revisor precisa dedicar a cada mudança.
 
 ### O que a pesquisa já mostrou
 

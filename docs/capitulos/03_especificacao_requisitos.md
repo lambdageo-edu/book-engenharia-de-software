@@ -133,7 +133,7 @@ Uma técnica simples de priorização é a **MoSCoW**, associada ao método DSDM
 
 | Categoria | Significado | Exemplo |
 |---|---|---|
-| ***Must have*** | Sem isso a entrega não serve | Criar tarefa, atribuir responsável, concluir; só membros acessam o projeto |
+| ***Must have*** | Sem isso a entrega não serve | Criar tarefa, atribuir responsável, iniciar, concluir; só membros acessam o projeto |
 | ***Should have*** | Importante, mas há como contornar por ora | Filtrar tarefas por responsável |
 | ***Could have*** | Desejável, se sobrar tempo | Ordenar por data de criação |
 | ***Won't have (this time)*** | Fica fora desta entrega, por decisão | Notificações, anexos, integrações |
