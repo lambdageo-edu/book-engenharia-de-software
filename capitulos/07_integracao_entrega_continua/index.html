@@ -835,6 +835,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#testar-a-aplicacao-em-execucao-dast-e-teste-de-invasao" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🎯 Testar a aplicação em execução: DAST e teste de invasão
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#agentes-de-codificacao-e-o-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1126,6 +1137,17 @@
     <span class="md-ellipsis">
       <span class="md-typeset">
         🛡️ Segurança no pipeline
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testar-a-aplicacao-em-execucao-dast-e-teste-de-invasao" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🎯 Testar a aplicação em execução: DAST e teste de invasão
       </span>
     </span>
   </a>
@@ -1437,6 +1459,48 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">permissions</span><span class="p">:</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span>
 </code></pre></div>
+<h2 id="testar-a-aplicacao-em-execucao-dast-e-teste-de-invasao">🎯 Testar a aplicação em execução: DAST e teste de invasão<a class="headerlink" href="#testar-a-aplicacao-em-execucao-dast-e-teste-de-invasao" title="Permanent link">&para;</a></h2>
+<p>As verificações acima examinam arquivos: código, dependências, histórico e imagem. O <strong>DAST</strong> (<em>Dynamic Application Security Testing</em>) faz o contrário: envia requisições à aplicação <strong>em execução</strong>, como alguém de fora, e observa as respostas. Pode encontrar problemas que só aparecem com tudo montado, como cabeçalhos de segurança ausentes ou erros que expõem detalhes internos.</p>
+<p>Uma ferramenta livre é o <a href="https://www.zaproxy.org/docs/docker/api-scan">ZAP</a>. Para uma API que publica a descrição OpenAPI, como as feitas com FastAPI, com a aplicação rodando na porta 8000 (comando para Linux):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span>zaproxy/zap-stable<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>zap-api-scan.py<span class="w"> </span>-t<span class="w"> </span>http://localhost:8000/openapi.json<span class="w"> </span>-f<span class="w"> </span>openapi
+</code></pre></div>
+<div class="admonition danger">
+<p class="admonition-title">Só em ambiente seu</p>
+<p>Essa varredura é <strong>ativa</strong>: envia ataques de verdade e pode criar ou alterar dados. Rode-a em um ambiente de teste, com banco descartável. Varrer um sistema alheio sem autorização por escrito pode ser crime.</p>
+</div>
+<p>Ler o resultado exige cuidado. Em um teste com o TaskFlow, em novembro de 2026, o ZAP não apontou falha, apenas um aviso sobre o cabeçalho <code>X-Content-Type-Options</code>. Mas cerca de metade das requisições foi recusada com 401: sem um <em>token</em>, a varredura não passou da porta nas rotas protegidas. "Nenhum alerta" não quer dizer "sem vulnerabilidades". Para ir além, é preciso configurar a autenticação na ferramenta, e a autorização entre usuários continua dependendo de testes escritos por quem conhece as regras (<a href="../06_testes_validacao/">Capítulo 6</a>).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Examina</th>
+<th>Quando é mais útil</th>
+<th>Limite</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SAST</strong></td>
+<td>O código</td>
+<td>A cada <em>commit</em></td>
+<td>Falsos alarmes; não vê o sistema montado</td>
+</tr>
+<tr>
+<td><strong>DAST</strong></td>
+<td>A aplicação rodando</td>
+<td>Em um ambiente de teste</td>
+<td>Só alcança o que consegue acessar</td>
+</tr>
+<tr>
+<td><strong>Teste de invasão</strong></td>
+<td>O sistema, com uma pessoa especializada</td>
+<td>Antes de lançamentos e mudanças importantes</td>
+<td>Caro, e retrata um momento</td>
+</tr>
+</tbody>
+</table>
+<p>O <strong>teste de invasão</strong> (<em>pentest</em>) é feito por pessoas autorizadas que combinam falhas e exploram a lógica do negócio, o que ferramentas automáticas fazem mal. O escopo, o período e o que é proibido são acertados antes, por escrito.</p>
 <h2 id="agentes-de-codificacao-e-o-pipeline">🤖 Agentes de codificação e o pipeline<a class="headerlink" href="#agentes-de-codificacao-e-o-pipeline" title="Permanent link">&para;</a></h2>
 <p>Uma tendência recente é a de agentes de codificação que não apenas sugerem trechos de código, mas abrem <em>pull requests</em> completos de forma autônoma — recebendo uma tarefa (ex: uma <em>issue</em> do GitHub), explorando o repositório, implementando a mudança, e submetendo-a para revisão. Do ponto de vista do pipeline de CI/CD, isso não muda a arquitetura discutida neste capítulo: um <em>pull request</em> aberto por um agente passa pelos mesmos portões de qualidade — lint, testes, cobertura mínima — que um <em>pull request</em> aberto por uma pessoa.</p>
 <p>O que muda é a importância desses portões automatizados como linha de defesa: se o volume de <em>pull requests</em> aumenta porque parte deles é gerada por agentes (Capítulo 5), o pipeline de CI se torna a garantia consistente de que nenhuma mudança — humana ou não — chega à branch principal sem passar pelos mesmos critérios mínimos de qualidade.</p>
@@ -1455,12 +1519,14 @@
 <li>Construa a imagem Docker localmente (<code>docker build -t api-tarefas .</code>) e rode um contêiner a partir dela (<code>docker run -p 8000:8000 api-tarefas</code>), acessando <code>http://localhost:8000/docs</code> para ver a documentação interativa gerada automaticamente pelo FastAPI.</li>
 <li>Descreva, para um sistema hipotético que você conheça, qual estratégia de deploy (blue-green, canary, feature flags) você usaria para lançar uma mudança arriscada, e por quê.</li>
 <li>Acrescente o job <code>seguranca</code> ao seu repositório. Depois, em uma branch de teste, grave um token <strong>falso</strong> em um arquivo e confira se o pipeline o aponta.</li>
+<li>Rode o ZAP contra a sua API, em um ambiente de teste. Quantas rotas ele realmente exercitou? O que mudaria se ele tivesse um <em>token</em>?</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
 <li>FOWLER, Martin. <em>Continuous Integration</em> — <a href="https://martinfowler.com/articles/continuousIntegration.html">martinfowler.com/articles/continuousIntegration.html</a></li>
 <li>HUMBLE, Jez; FARLEY, David. <em>Continuous Delivery</em>. Addison-Wesley, 2010.</li>
 <li>GitHub, <em>Secure use reference</em> (Actions) — <a href="https://docs.github.com/en/actions/reference/security/secure-use">docs.github.com</a></li>
+<li>ZAP, <em>API Scan</em> — <a href="https://www.zaproxy.org/docs/docker/api-scan">zaproxy.org</a></li>
 <li>Aqua Security. <em>Trivy supply chain attack: what you need to know</em>, 2026 — <a href="https://www.aquasec.com/blog/trivy-supply-chain-attack-what-you-need-to-know/">aquasec.com</a></li>
 <li><em>OWASP GenAI Top 10 for LLM Applications</em>, 2026 — <a href="https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/">genai.owasp.org</a></li>
 <li>Documentação oficial: <a href="https://docs.github.com/actions">GitHub Actions</a>, <a href="https://docs.docker.com/">Docker</a></li>

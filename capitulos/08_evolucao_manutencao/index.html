@@ -840,6 +840,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#resposta-a-incidentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🚨 Resposta a incidentes
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#evoluindo-o-banco-de-dados" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -880,6 +891,23 @@
       </span>
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="🔭 Observabilidade: entendendo um sistema vivo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registrar-e-monitorar-para-a-seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Registrar e monitorar para a segurança
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1122,6 +1150,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#resposta-a-incidentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🚨 Resposta a incidentes
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#evoluindo-o-banco-de-dados" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1162,6 +1201,23 @@
       </span>
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="🔭 Observabilidade: entendendo um sistema vivo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registrar-e-monitorar-para-a-seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Registrar e monitorar para a segurança
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1312,6 +1368,15 @@
 <p>No TaskFlow, um dos primeiros <em>pull requests</em> do Dependabot propôs uma versão mais nova do Python na imagem base. Os testes do pipeline, porém, continuavam rodando na versão anterior: o resultado verde mostrava que a imagem era construída, não que a aplicação funcionava nela. Antes de aceitar, atualize a versão do Python nos dois lugares e confira se o pipeline testa o que será publicado.</p>
 </div>
 <h3 id="quando-uma-vulnerabilidade-aparece">Quando uma vulnerabilidade aparece<a class="headerlink" href="#quando-uma-vulnerabilidade-aparece" title="Permanent link">&para;</a></h3>
+<p>Vulnerabilidades divulgadas publicamente costumam receber um identificador <a href="https://www.cve.org/about/overview"><strong>CVE</strong></a>, como <code>CVE-2024-3094</code>, que permite a ferramentas e pessoas falarem da mesma falha. A gravidade costuma ser expressa pelo <a href="https://www.first.org/cvss/v4.0/user-guide"><strong>CVSS</strong></a>, uma nota de 0 a 10.</p>
+<p>A nota básica mede <strong>gravidade, e não risco</strong> para o seu sistema, e o próprio guia do CVSS recomenda não usá-la sozinha. Para decidir a ordem das correções, combine-a com outras perguntas:</p>
+<ul>
+<li>a falha está sendo explorada? O catálogo <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">KEV</a>, da agência americana CISA, lista as que já foram;</li>
+<li>o trecho vulnerável é usado e está exposto no seu caso?</li>
+<li>que dados ou funções seriam atingidos?</li>
+</ul>
+<p>Uma nota 9 em uma função que o seu sistema nunca chama pode esperar mais do que uma nota 6 exposta na internet e em exploração. Registre a decisão, inclusive a de não corrigir agora, e quando revê-la.</p>
+<p>Um roteiro para cada alerta:</p>
 <ol>
 <li><strong>Confirmar</strong>: o alerta se aplica à versão que você usa?</li>
 <li><strong>Avaliar</strong>: o trecho vulnerável é alcançado? Está exposto? Que dados estão em risco?</li>
@@ -1320,6 +1385,49 @@
 <li><strong>Aprender</strong>: registrar o ocorrido e o que evitaria a repetição.</li>
 </ol>
 <p>Decida antes quem recebe o aviso e em quanto tempo responde. Em projetos abertos, um arquivo <code>SECURITY.md</code> diz como relatar uma falha sem expô-la numa <em>issue</em> pública. O <a href="https://csrc.nist.gov/pubs/sp/800/218/final">SSDF, do NIST</a>, reúne práticas de desenvolvimento seguro que incluem identificar e responder a vulnerabilidades.</p>
+<h2 id="resposta-a-incidentes">🚨 Resposta a incidentes<a class="headerlink" href="#resposta-a-incidentes" title="Permanent link">&para;</a></h2>
+<p>Uma vulnerabilidade é uma porta que pode ser aberta. Um <strong>incidente</strong> é quando algo de fato acontece ou há forte suspeita: um <em>token</em> publicado por engano, um acesso indevido, dados apagados. Nessa hora há pressa e pouca informação, e por isso o roteiro se escreve antes.</p>
+<table>
+<thead>
+<tr>
+<th>Momento</th>
+<th>O que fazer</th>
+<th>Exemplo: um <em>token</em> de sessão vazou</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Preparar</strong></td>
+<td>Definir quem decide, contatos, acessos e cópias de segurança</td>
+<td>Saber como encerrar sessões</td>
+</tr>
+<tr>
+<td><strong>Detectar e avaliar</strong></td>
+<td>Confirmar o que houve, desde quando e o que foi atingido</td>
+<td>Ver o que foi feito com aquela sessão</td>
+</tr>
+<tr>
+<td><strong>Conter</strong></td>
+<td>Impedir que o dano aumente, preservando as evidências</td>
+<td>Apagar a sessão (ou todas)</td>
+</tr>
+<tr>
+<td><strong>Corrigir e recuperar</strong></td>
+<td>Eliminar a causa e restaurar o serviço</td>
+<td>Retirar o <em>token</em> de onde apareceu e fechar a brecha</td>
+</tr>
+<tr>
+<td><strong>Aprender</strong></td>
+<td>Registrar e mudar o que permitiu o incidente</td>
+<td><em>Postmortem</em> sem culpa (<a href="../02_processos_desenvolvimento/">Capítulo 2</a>)</td>
+</tr>
+</tbody>
+</table>
+<p>Durante o incidente, anote horários e ações: a memória falha, e o registro será necessário depois. Evite apagar a máquina ou os <em>logs</em> antes de entender o que houve. O <a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final">NIST SP 800-61</a> (revisão 3, 2025) trata a resposta a incidentes como parte da gestão de riscos, e não como um evento isolado.</p>
+<div class="admonition warning">
+<p class="admonition-title">Dados pessoais trazem obrigação legal</p>
+<p>Pela LGPD, um incidente com dados pessoais que possa causar risco ou dano relevante aos titulares deve ser comunicado à ANPD e a eles. O <a href="https://www.gov.br/anpd/pt-br/canais_atendimento/agente-de-tratamento/comunicado-de-incidente-de-seguranca-cis">regulamento da ANPD</a> (Resolução CD/ANPD nº 15/2024) fixa, em regra, três dias úteis. Envolva quem responde pela proteção de dados desde o início.</p>
+</div>
 <h2 id="evoluindo-o-banco-de-dados">🗃️ Evoluindo o banco de dados<a class="headerlink" href="#evoluindo-o-banco-de-dados" title="Permanent link">&para;</a></h2>
 <p>Código antigo se substitui; dados antigos precisam continuar valendo. O <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a> cria as tabelas na inicialização com <a href="https://www.sqlite.org/lang_createtable.html"><code>CREATE TABLE IF NOT EXISTS</code></a>. Isso funciona em um banco vazio, mas, se uma versão nova acrescentar uma coluna ao comando, um banco que já tem a tabela <strong>não muda</strong>, e a aplicação falha quando tentar usar a coluna.</p>
 <p>A solução é uma <strong>migração</strong>: um passo versionado que transforma o esquema existente. No SQLite, um começo simples usa o número guardado em <a href="https://www.sqlite.org/pragma.html#pragma_user_version"><code>PRAGMA user_version</code></a>. O exemplo abaixo, que ainda não faz parte do TaskFlow, acrescenta um prazo às tarefas:</p>
@@ -1389,6 +1497,24 @@
 <li><strong>Tracing distribuído</strong>: rastreamento do caminho completo de uma requisição através de múltiplos serviços (especialmente relevante em arquiteturas de microsserviços — Capítulo 4), essencial para diagnosticar problemas de desempenho ou falhas que atravessam fronteiras de serviço.</li>
 </ul>
 <p>Sem observabilidade adequada, manutenção corretiva vira um exercício de tentativa e erro: descobrir o que está errado em produção depende de conseguir enxergar, com dados reais, o que o sistema está de fato fazendo.</p>
+<h3 id="registrar-e-monitorar-para-a-seguranca">Registrar e monitorar para a segurança<a class="headerlink" href="#registrar-e-monitorar-para-a-seguranca" title="Permanent link">&para;</a></h3>
+<p>Sem registro, não há como detectar um ataque nem responder, depois, quem fez o quê. O <a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">guia de <em>logging</em> da OWASP</a> recomenda registrar, entre outros:</p>
+<ul>
+<li><em>logins</em> bem-sucedidos e malsucedidos;</li>
+<li>acessos negados e entradas recusadas;</li>
+<li>mudanças de permissão e ações administrativas;</li>
+<li>erros e a inicialização e parada da aplicação.</li>
+</ul>
+<p>Cada registro precisa dizer <strong>quando, quem, o quê, sobre qual recurso e com que resultado</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">seguranca</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"seguranca"</span><span class="p">)</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">seguranca</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"acesso negado usuario=</span><span class="si">%s</span><span class="s2"> projeto=</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">usuario_id</span><span class="p">,</span> <span class="n">projeto_id</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Nunca registre</strong> senhas, <em>tokens</em>, chaves ou <em>strings</em> de conexão, e evite dados pessoais: o <em>log</em> costuma ter muito mais leitores que o banco. Cuidado também ao copiar texto do usuário para o registro, que pode conter quebras de linha e forjar entradas.</p>
+<p>Guardar não basta: alguém precisa ser avisado. Comece com poucos alertas que peçam ação, como muitas falhas de <em>login</em> seguidas. Proteja os registros contra alteração e defina por quanto tempo ficam.</p>
+<p>O <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a> ainda não faz esse registro: é a ameaça de repúdio que ficou em aberto no <a href="../04_projeto_arquitetura/">Capítulo 4</a>.</p>
 <hr />
 <h2 id="atividades">🎯 Atividades<a class="headerlink" href="#atividades" title="Permanent link">&para;</a></h2>
 <ol>
@@ -1398,10 +1524,16 @@
 <li>Configure o Dependabot em um repositório seu e analise o primeiro <em>pull request</em> que ele abrir: o que mudou na dependência e como você sabe que é seguro aceitar?</li>
 <li>No TaskFlow, acrescente o prazo às tarefas: escreva antes um teste que parta de um banco no esquema antigo, com uma tarefa, e confira que ela continua lá depois da migração.</li>
 <li>Peça a um colega que execute um projeto seu seguindo apenas o <code>README.md</code>. Anote onde ele travou e corrija o texto.</li>
+<li>Escreva o roteiro de resposta para este caso: uma senha do banco de dados foi publicada em um repositório público. Quem age, em que ordem, e o que se registra?</li>
+<li>No TaskFlow, registre os acessos negados e escreva um teste que confira o registro e garanta que nenhum <em>token</em> aparece nele.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
 <li>SOMMERVILLE, Ian. <em>Engenharia de Software</em>. 10. ed. — Capítulo 9.</li>
+<li>NIST SP 800-61 Rev. 3. <em>Incident Response Recommendations and Considerations for Cybersecurity Risk Management</em>, 2025 — <a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final">csrc.nist.gov</a></li>
+<li>CVE Program — <a href="https://www.cve.org/about/overview">cve.org</a>; FIRST, <em>CVSS v4.0 User Guide</em> — <a href="https://www.first.org/cvss/v4.0/user-guide">first.org</a>; CISA, catálogo KEV — <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">cisa.gov</a></li>
+<li>OWASP <em>Logging Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
+<li>ANPD, comunicação de incidente de segurança — <a href="https://www.gov.br/anpd/pt-br/canais_atendimento/agente-de-tratamento/comunicado-de-incidente-de-seguranca-cis">gov.br/anpd</a></li>
 <li>NIST SP 800-218. <em>Secure Software Development Framework (SSDF)</em>, versão 1.1, 2022 — <a href="https://csrc.nist.gov/pubs/sp/800/218/final">csrc.nist.gov</a></li>
 <li>PROCIDA, Daniele. <em>Diátaxis</em> — <a href="https://diataxis.fr/">diataxis.fr</a></li>
 <li>GitHub, referência de opções do Dependabot — <a href="https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference">docs.github.com</a></li>
