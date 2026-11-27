@@ -11,11 +11,72 @@ Alguns princípios atravessam décadas de engenharia de software e continuam ori
 * **Separação de responsabilidades (*separation of concerns*)**: cada componente deve ter uma responsabilidade bem definida, minimizando sobreposição.
 * **Baixo acoplamento, alta coesão**: componentes devem depender pouco uns dos outros (acoplamento) e cada componente deve agrupar responsabilidades fortemente relacionadas entre si (coesão).
 * **Abstração**: expor apenas o necessário através de interfaces, escondendo detalhes de implementação.
-* **Princípio da responsabilidade única (*Single Responsibility Principle*)**: um módulo deve ter apenas um motivo para mudar — o primeiro dos princípios **SOLID**, um conjunto de cinco diretrizes de projeto orientado a objetos (SRP, Open/Closed, Liskov, Interface Segregation, Dependency Inversion) amplamente usado como referência de projeto até hoje.
+* **Princípio da responsabilidade única (*Single Responsibility Principle*)**: um módulo deve ter apenas um motivo para mudar — o primeiro dos princípios **SOLID**, um conjunto de cinco diretrizes de projeto orientado a objetos (SRP, Open/Closed, Liskov, Interface Segregation, Dependency Inversion) amplamente usado como referência de projeto até hoje (veja adiante).
 * **[YAGNI](https://www.martinfowler.com/bliki/Yagni.html) (*You Aren't Gonna Need It*)**: não projete flexibilidade para requisitos hipotéticos que ainda não existem — complexidade antecipada tem custo real e nem sempre paga o benefício esperado.
 
 !!! warning "Arquitetura não é só sobre tecnologia"
     Decisões de arquitetura são, no fundo, decisões sobre **onde colocar a complexidade** e **quais mudanças futuras você quer que sejam baratas**. Trocar de banco de dados, adicionar um novo canal de acesso (app mobile), escalar um componente específico — uma boa arquitetura torna algumas dessas mudanças fáceis, ao custo de tornar outras mais difíceis. Não existe arquitetura sem trade-off.
+
+## 🧩 Orientação a objetos em poucas linhas
+
+SOLID, padrões de projeto e diagramas de classes pressupõem alguns conceitos:
+
+* **Classe** e **objeto**: a classe descreve; o objeto é um exemplar, com seu próprio estado;
+* **Mensagem**: um objeto pede algo a outro chamando um método;
+* **Encapsulamento**: quem usa o objeto depende do que ele oferece, não de como guarda os dados;
+* **Herança** ("é um") e **composição** ("tem um"): duas formas de reaproveitar comportamento;
+* **Polimorfismo**: objetos diferentes respondem à mesma mensagem, cada um a seu modo.
+
+Para revisar com calma, o livro [Paradigmas de Programação](https://lambdageo-edu.github.io/book-paradigmas-de-programacao/unidade2/01_classes_objetos/) trata de [classes e objetos](https://lambdageo-edu.github.io/book-paradigmas-de-programacao/unidade2/01_classes_objetos/), [relações e herança](https://lambdageo-edu.github.io/book-paradigmas-de-programacao/unidade2/02_relacoes/), [polimorfismo](https://lambdageo-edu.github.io/book-paradigmas-de-programacao/unidade2/03_polimorfismo/) e [interfaces](https://lambdageo-edu.github.io/book-paradigmas-de-programacao/unidade2/04_classes_abstratas_interfaces/). Os exemplos de lá são em Java: os conceitos são os mesmos, a forma muda. Em Python, por exemplo, o encapsulamento é uma convenção (nomes iniciados por `_`), e não é preciso declarar que uma classe implementa um `Protocol`.
+
+## 📏 SOLID na prática
+
+| Princípio | Em uma frase | Sinal de problema |
+|---|---|---|
+| **S**: responsabilidade única | Um motivo para mudar | A mesma classe calcula, grava e envia e-mail |
+| **O**: aberto/fechado | Acrescentar sem reescrever | Cada caso novo exige mais um `elif` |
+| **L**: substituição de Liskov | O subtipo cumpre o contrato do tipo | A subclasse recusa um método herdado |
+| **I**: segregação de interfaces | Interfaces pequenas | Quem implementa deixa métodos vazios |
+| **D**: inversão de dependência | Depender de abstrações | A regra de negócio cria sozinha o banco ou o serviço que usa |
+
+Suponha que se queira exportar as tarefas em mais de um formato (o TaskFlow não faz isso; é um exemplo). A primeira versão costuma ser assim:
+
+```python
+def exportar(titulos, formato):
+    if formato == "texto":
+        return "\n".join(titulos)
+    elif formato == "markdown":
+        return "\n".join(f"- [ ] {t}" for t in titulos)
+    raise ValueError(formato)
+```
+
+Cada formato novo modifica essa função. Com o padrão **Strategy**, cada variação vira um objeto, e a função depende apenas do que todos oferecem:
+
+```python
+from typing import Protocol
+
+
+class Formato(Protocol):
+    def gerar(self, titulos: list[str]) -> str: ...
+
+
+class Texto:
+    def gerar(self, titulos: list[str]) -> str:
+        return "\n".join(titulos)
+
+
+class Markdown:
+    def gerar(self, titulos: list[str]) -> str:
+        return "\n".join(f"- [ ] {t}" for t in titulos)
+
+
+def exportar(titulos: list[str], formato: Formato) -> str:
+    return formato.gerar(titulos)
+```
+
+Um formato CSV é uma classe nova, sem tocar em `exportar` (**O**). A função depende da abstração `Formato`, e quem chama escolhe a implementação (**D**). A interface tem um só método (**I**), e toda implementação deve devolver um texto com todos os títulos: uma que descartasse alguns quebraria o contrato (**L**).
+
+Com apenas dois formatos que não vão mudar, o `if` é melhor (YAGNI). Em Python, quando a estratégia é uma única operação, uma função costuma bastar no lugar da classe. E às vezes a variação cabe em dados: no TaskFlow, as mudanças de estado são um dicionário (`TRANSICOES`), e não uma sequência de `if`.
 
 ## 🧱 Estilos de arquitetura
 
@@ -67,6 +128,29 @@ Enquanto estilos de arquitetura organizam o sistema em larga escala, **padrões 
 | **Comportamentais** | Organizar responsabilidades e comunicação entre objetos | Strategy, Observer, Command |
 
 Esses padrões seguem relevantes, mas vale um alerta prático: padrões de projeto resolvem problemas de um contexto específico (sistemas orientados a objetos, em linguagens com certas limitações dos anos 1990). Aplicá-los de forma automática, sem que o problema realmente exista, é uma forma comum de complexidade desnecessária — o oposto do princípio YAGNI mencionado acima.
+
+### Adapter: encaixar o que não foi feito para você
+
+O **Adapter** converte a interface que existe na interface que o seu código espera. Imagine que o sistema precise avisar uma pessoa, e a biblioteca escolhida (fictícia, no exemplo) fale em canais:
+
+```python
+class BibliotecaDeMensagens:  # de terceiros: não se altera
+    def post(self, channel: str, text: str) -> None:
+        print(f"{channel}: {text}")
+
+
+class Notificador:  # o adaptador
+    def __init__(self, biblioteca: BibliotecaDeMensagens) -> None:
+        self._biblioteca = biblioteca
+
+    def avisar(self, login: str, mensagem: str) -> None:
+        self._biblioteca.post(f"@{login}", mensagem)
+```
+
+O restante do sistema conhece apenas `avisar`. Trocar de biblioteca significa escrever outro adaptador, e nos testes um objeto falso com o mesmo método ocupa o lugar do serviço real.
+
+!!! warning "Cuidado com o Singleton"
+    Ele garante uma única instância, acessível de qualquer lugar. Na prática, costuma funcionar como uma variável global: esconde dependências e faz um teste interferir no outro. Criar o objeto uma vez e passá-lo a quem precisa resolve a maioria dos casos.
 
 ## 📐 Modelando a estrutura e as interações
 
@@ -244,6 +328,7 @@ Arquitetura só é útil se for compreendida por quem constrói o sistema. Algum
 4. Faça a modelagem de ameaças de uma funcionalidade pequena (por exemplo, atribuir uma tarefa a outra pessoa): diagrama com a fronteira de confiança, ao menos quatro ameaças do STRIDE e a resposta escolhida para cada uma.
 5. Peça a um assistente de IA ameaças para a mesma funcionalidade. Separe as que acrescentam algo, as genéricas e as erradas.
 6. Inclua no diagrama de estados uma tarefa cancelada. De quais estados se chega a ela? É possível reativá-la? Escreva os testes que essas respostas sugerem.
+7. Acrescente o formato CSV ao exemplo de exportação, primeiro na versão com `if` e depois na versão com Strategy. Em cada uma, o que precisou mudar? Escreva um teste que valha para todos os formatos.
 
 ## 📚 Para saber mais
 
