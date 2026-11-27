@@ -21,7 +21,7 @@ O que diferencia software de outros produtos, por que a engenharia de software n
 Como descobrir, prototipar e registrar o que o sistema precisa fazer, cuidar da usabilidade e da acessibilidade, modelar seus conceitos, comportamento, estrutura e dados, aplicar princípios e padrões de projeto e tomar decisões de arquitetura, inclusive as de segurança.
 
 ### 📗 Parte III: Construção (Capítulos 5-6)
-Código legível e seguro, tratamento de erros, depuração, revisão, controle de versão, verificação e validação, e testes, dos unitários aos de aceitação, com projeto de casos de teste e TDD.
+Código legível e seguro, tratamento de erros, concorrência, depuração, revisão, controle de versão, verificação e validação, e testes, dos unitários aos de aceitação, com projeto de casos de teste e TDD.
 
 ### 📕 Parte IV: Entrega e evolução (Capítulos 7-8)
 Pipelines de integração e entrega contínuas, contêineres, testes de segurança, versionamento, implantação com HTTPS e a vida do software em produção: manutenção, dependências, resposta a incidentes, débito técnico, sistemas legados, cópias de segurança e observabilidade.
@@ -57,7 +57,12 @@ As etiquetas são retratos do passado e não recebem correções posteriores. Pa
 
 ## ⚖️ Licença
 
-© Sergio Souza Costa. Este livro, incluindo os exemplos de código, é distribuído sob a licença [Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br). Você pode copiar e adaptar o material para fins não comerciais, desde que dê o crédito e distribua as adaptações sob a mesma licença.
+© Sergio Souza Costa. O livro usa duas licenças:
+
+* **Texto**: [Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br). Você pode copiar e adaptar para fins não comerciais, desde que dê o crédito e distribua as adaptações sob a mesma licença.
+* **Código dos exemplos** (trechos de programas e de configuração escritos para o livro): [licença MIT](https://github.com/lambdageo-edu/book-engenharia-de-software/blob/main/LICENSE-CODIGO), a mesma do TaskFlow. Você pode usá-los em qualquer projeto, inclusive comercial, mantendo o aviso de autoria e a licença.
+
+Citações e trechos de terceiros continuam sob os termos de seus autores.
 
 ---
 

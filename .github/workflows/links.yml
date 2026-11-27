@@ -1,0 +1,52 @@
+name: Verificar links
+
+on:
+  schedule:
+    - cron: "17 9 * * 1" # segundas-feiras, 06h17 em Fortaleza
+  pull_request:
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - ".github/workflows/links.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Verificar os links dos arquivos Markdown
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          # Endereços de exemplo e locais ficam de fora.
+          # 429 (muitos pedidos) não indica link quebrado.
+          # Não verificados aqui (confira à mão de vez em quando):
+          # - queue.acm.org, etsy.com, scrum.org e oreilly.com recusam robôs (403);
+          # - planalto.gov.br não aceita a conexão a partir do GitHub;
+          # - ronjeffries.com não responde dentro do prazo;
+          # - arquivos desta main podem ainda não existir durante um pull request.
+          # Páginas de arquivo do GitHub (/blob/) podem responder 503 a robôs;
+          # o --remap confere o próprio arquivo, em raw.githubusercontent.com.
+          args: >-
+            --no-progress
+            --max-retries 3
+            --timeout 30
+            --accept 200..=299,429
+            --exclude "SEU_USUARIO"
+            --exclude "exemplo\."
+            --exclude "example\."
+            --exclude-loopback
+            --remap 'https://github\.com/([^/]+)/([^/]+)/blob/(.*) https://raw.githubusercontent.com/$1/$2/$3'
+            --exclude "queue\.acm\.org/detail\.cfm\?id=1142065"
+            --exclude "etsy\.com/codeascraft/blameless-postmortems"
+            --exclude "scrum\.org/resources/blog/myth-9"
+            --exclude "oreilly\.com/library/view/-/0131177052"
+            --exclude "planalto\.gov\.br/ccivil_03/Leis/L9609"
+            --exclude "ronjeffries\.com/xprog/articles/expcardconversationconfirmation"
+            --exclude "book-engenharia-de-software/(blob/)?main/"
+            "docs/**/*.md"
+          fail: true

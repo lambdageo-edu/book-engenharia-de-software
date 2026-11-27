@@ -205,6 +205,68 @@ def pode_concluir(servico, usuario_id, tarefa_id):
         return False
 ```
 
+## 🔀 Concorrência
+
+Um servidor atende vários pedidos ao mesmo tempo. No FastAPI, por exemplo, uma rota declarada com `def` roda em um [conjunto de *threads*](https://fastapi.tiangolo.com/async/), e dois pedidos podem executar a mesma função lado a lado. Há uma **condição de corrida** quando o resultado depende de quem chega primeiro a um dado compartilhado.
+
+Suponha que um membro só possa assumir uma tarefa que ainda não tem responsável. O código óbvio consulta e depois grava. No programa abaixo, `corrida.py`, os passos de Ana e de Bruno são intercalados à mão, para o problema aparecer sempre:
+
+```python
+import sqlite3
+
+banco = sqlite3.connect(":memory:", isolation_level=None)
+banco.execute("CREATE TABLE tarefas (id INTEGER PRIMARY KEY, responsavel TEXT)")
+banco.execute("INSERT INTO tarefas VALUES (1, NULL)")
+
+
+def esta_livre():
+    linha = banco.execute("SELECT responsavel FROM tarefas WHERE id = 1").fetchone()
+    return linha[0] is None
+
+
+def gravar(quem):
+    banco.execute("UPDATE tarefas SET responsavel = ? WHERE id = 1", (quem,))
+
+
+ana_viu_livre = esta_livre()
+bruno_viu_livre = esta_livre()  # Ana ainda não gravou
+
+if ana_viu_livre:
+    gravar("ana")
+if bruno_viu_livre:
+    gravar("bruno")  # apaga a escolha de Ana
+
+print(banco.execute("SELECT responsavel FROM tarefas").fetchone()[0])  # bruno
+```
+
+As duas consultas acharam a tarefa livre, as duas gravações deram certo e Ana acredita que a tarefa é dela. Entre **verificar** e **usar** o resultado, o dado mudou. Essa falha é conhecida como [TOCTOU](https://cwe.mitre.org/data/definitions/367.html) (*time-of-check to time-of-use*) e, quando está numa regra de permissão, é um problema de segurança.
+
+A correção é fazer a verificação e a gravação em **um só comando**, que o banco executa sem intercalar outra escrita, e depois perguntar quantas linhas mudaram:
+
+```python
+def assumir(quem):
+    cursor = banco.execute(
+        "UPDATE tarefas SET responsavel = ? WHERE id = 1 AND responsavel IS NULL",
+        (quem,),
+    )
+    return cursor.rowcount == 1
+
+
+banco.execute("UPDATE tarefas SET responsavel = NULL")  # libera de novo
+print(assumir("ana"))    # True
+print(assumir("bruno"))  # False: já tem responsável
+```
+
+O [TaskFlow](https://github.com/lambdageo-edu/taskflow) faz isso em `app/tarefas.py`: quando quem pede não é o dono do projeto, a condição entra no próprio `UPDATE` e, se nenhuma linha muda, a resposta é um erro. A mudança de estado da tarefa usa a mesma técnica.
+
+Algumas regras práticas:
+
+* **Desconfie de "consulta, decide, grava"** sobre um dado que outro pedido pode mudar.
+* **Deixe o banco garantir a regra** quando ele puder: um `UPDATE` condicional ou uma restrição como `UNIQUE`.
+* **Se a operação precisa de vários comandos**, use uma transação com o isolamento adequado. No SQLite, [`BEGIN IMMEDIATE`](https://www.sqlite.org/lang_transaction.html) reserva a escrita antes da primeira consulta, e quem chega depois pode receber um erro de banco ocupado, que o código precisa tratar.
+* **Um *lock* na memória** (`threading.Lock`) só protege um processo. Com duas instâncias da aplicação, cada uma tem o seu.
+* **Não conte com os testes comuns** para achar o problema: um pedido depois do outro não reproduz a corrida, e disparar vários ao mesmo tempo pode passar muitas vezes antes de falhar.
+
 ## 🐞 Depuração
 
 Um teste ou um usuário mostram que algo falhou. **Depurar** é encontrar o defeito que causou a falha ([Capítulo 6](06_testes_validacao.md)) e corrigi-lo. Mudar linhas ao acaso até o sintoma sumir costuma esconder o problema. Um roteiro:
@@ -361,6 +423,7 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 6. Escreva um teste para `pode_concluir` com um dublê que levanta `TimeoutError`. Depois procure, em um projeto seu, um `except` que esconda um erro.
 7. Reproduza o erro de `relatorio.py`, pare nele com `breakpoint()` e examine `membros`. Corrija e confira que o teste passa.
 8. Em um repositório de teste, introduza um defeito no meio de uma sequência de *commits* e encontre-o com `git bisect run`.
+9. Em `corrida.py`, troque o trecho intercalado por chamadas a `assumir` e confira que só a primeira devolve `True`. Depois procure, em um projeto seu, um "consulta, decide, grava" e diga o que acontece se dois pedidos chegarem juntos.
 
 ## 📚 Para saber mais
 
@@ -370,6 +433,9 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 * Documentação do `ruff` (linter/formatador Python) — [docs.astral.sh/ruff](https://docs.astral.sh/ruff/)
 * Documentação do Python, *pdb* — [docs.python.org](https://docs.python.org/3.14/library/pdb.html)
 * Git, *git-bisect* — [git-scm.com](https://git-scm.com/docs/git-bisect/2.52.0)
+* MITRE, *CWE-367: Time-of-check Time-of-use (TOCTOU) Race Condition* — [cwe.mitre.org](https://cwe.mitre.org/data/definitions/367.html)
+* SQLite, *Transaction* — [sqlite.org](https://www.sqlite.org/lang_transaction.html)
+* FastAPI, *Concurrency and async / await* — [fastapi.tiangolo.com](https://fastapi.tiangolo.com/async/)
 * ZELLER, Andreas. *Why Programs Fail: A Guide to Systematic Debugging*. 2. ed. Morgan Kaufmann, 2009.
 * OWASP *Error Handling Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html)
 * *OWASP Top 10:2025* — [owasp.org/Top10/2025](https://owasp.org/Top10/2025/0x00_2025-Introduction/)
