@@ -101,6 +101,31 @@ Sommerville complementa: *"a engenharia de software é uma disciplina de engenha
 !!! warning "Um mito comum"
     "Engenharia de software" não significa que exista uma única forma "certa" de desenvolver software, tampouco que processos rígidos sejam sempre superiores a processos ágeis. Como veremos no Capítulo 2, a escolha do processo é, ela própria, uma decisão de engenharia — depende do domínio, da criticidade do sistema e da estabilidade dos requisitos.
 
+## 🤝 Ética profissional
+
+Quem constrói software decide, muitas vezes sem perceber, quem consegue usá-lo, que dados são recolhidos e o que acontece quando algo falha. O [Código de Ética e Conduta Profissional da SBC](https://www.sbc.org.br/wp-content/uploads/2024/07/C-digo-de-tica-e-Conduta-Profissional_Resolucao_002-2024.pdf) (Resolução nº 2/2024) tem entre os seus princípios gerais: contribuir para a sociedade e o bem-estar humano; evitar danos; ser honesto e confiável; ser justo e não discriminar; respeitar o trabalho intelectual; respeitar a privacidade; e honrar a confidencialidade.
+
+No dia a dia, isso aparece em perguntas concretas:
+
+* o sistema recolhe só os dados de que precisa? ([Capítulo 3](03_especificacao_requisitos.md))
+* as limitações e os riscos conhecidos foram ditos a quem decide, mesmo quando atrapalham o prazo?
+* há quem fique de fora, por não enxergar, não ouvir ou ter uma conexão ruim?
+* o crédito de código, texto e ideias alheios foi dado?
+
+## 📜 Licenças de software
+
+No Brasil, programas de computador são protegidos por direitos autorais, sem necessidade de registro ([Lei 9.609/1998](https://planalto.gov.br/ccivil_03/Leis/L9609.htm)). A mesma lei trata da titularidade: salvo acordo em contrário, o que se desenvolve como parte das atribuições de um emprego ou estágio pertence a quem contrata.
+
+Código público **não é** código livre. Sem licença, vale a proteção padrão, e outras pessoas, em geral, [não têm permissão](https://choosealicense.com/no-permission/) para usar, modificar ou distribuir. Uma licença de código aberto concede essas permissões, sob condições:
+
+| Família | Exemplos | Condição principal |
+|---|---|---|
+| **Permissivas** | MIT, BSD, Apache 2.0 | Manter o aviso de autoria e a licença; o produto pode ser fechado (a Apache 2.0 também trata de patentes) |
+| **Recíprocas** (*copyleft*) | GPL | Quem distribui uma versão derivada a distribui sob a mesma licença, com o código-fonte |
+| **Recíprocas para serviços em rede** | AGPL | Estende a obrigação a quem oferece a versão modificada pela rede |
+
+Antes de adicionar uma dependência, confira a licença dela: ela passa a valer para o que você distribui. Trechos copiados de fóruns ou gerados por um assistente de IA também podem ter origem protegida. Esta seção é uma orientação inicial e não substitui assessoria jurídica.
+
 ---
 
 ## 🎯 Atividades
@@ -108,10 +133,15 @@ Sommerville complementa: *"a engenharia de software é uma disciplina de engenha
 1. Escolha um software que você usa diariamente (aplicativo, site, jogo). Liste evidências de que ele foi projetado pensando em manutenibilidade, confiabilidade, eficiência e aceitabilidade — ou evidências do contrário.
 2. Explique, com suas palavras, por que a curva de falhas do software tende a aumentar com o tempo, mesmo o software não se desgastando fisicamente.
 3. Compare um "produto genérico" e um "produto sob encomenda" que você conheça. Identifique elementos de configuração que tornam essa fronteira menos nítida hoje.
+4. Liste as dependências diretas de um projeto seu e a licença de cada uma. Alguma impõe condição que você não conhecia?
+5. Um gerente pede para publicar o sistema mesmo com uma falha conhecida que expõe dados de usuários. O que o código de ética da SBC sugere fazer?
 
 ## 📚 Para saber mais
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 1.
 * PRESSMAN, Roger S.; MAXIM, Bruce R. *Engenharia de Software: Uma Abordagem Profissional*. 9. ed. AMGH, 2021. — Capítulo 1.
 * NAUR, Peter; RANDELL, Brian (eds.). *Software Engineering: Report on a conference sponsored by the NATO Science Committee*, Garmisch, 7–11 out. 1968. NATO, 1969 — disponível em [homepages.cs.ncl.ac.uk/brian.randell/NATO](http://homepages.cs.ncl.ac.uk/brian.randell/NATO/).
+* SBC. *Código de Ética e Conduta Profissional* (Resolução nº 2/2024) — [sbc.org.br](https://www.sbc.org.br/wp-content/uploads/2024/07/C-digo-de-tica-e-Conduta-Profissional_Resolucao_002-2024.pdf)
+* BRASIL. *Lei nº 9.609/1998* (programas de computador) — [planalto.gov.br](https://planalto.gov.br/ccivil_03/Leis/L9609.htm)
+* GitHub, *Choose a License* — [choosealicense.com](https://choosealicense.com/licenses/)
 * IEEE Std 610.12-1990. *IEEE Standard Glossary of Software Engineering Terminology* (substituído) — [standards.ieee.org](https://standards.ieee.org/standard/610_12-1990.html)
