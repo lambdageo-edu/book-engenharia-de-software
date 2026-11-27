@@ -598,6 +598,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#o-que-entra-primeiro-mvp-e-priorizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        ✂️ O que entra primeiro: MVP e priorização
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#modelando-o-comportamento" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1210,6 +1221,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#o-que-entra-primeiro-mvp-e-priorizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        ✂️ O que entra primeiro: MVP e priorização
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#modelando-o-comportamento" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1474,6 +1496,41 @@
 <p class="admonition-title">História de usuário não é 'requisito ágil de baixa qualidade'</p>
 <p>Um erro comum é achar que histórias de usuário dispensam análise. Na verdade, elas deslocam o detalhamento para o momento certo (<em>just in time</em>), em vez de tentar prever tudo antecipadamente — mas ainda exigem elicitação cuidadosa, critérios de aceitação claros e refinamento contínuo do backlog.</p>
 </div>
+<h2 id="o-que-entra-primeiro-mvp-e-priorizacao">✂️ O que entra primeiro: MVP e priorização<a class="headerlink" href="#o-que-entra-primeiro-mvp-e-priorizacao" title="Permanent link">&para;</a></h2>
+<p>Há sempre mais requisitos do que tempo. Um <strong>produto mínimo viável</strong> (MVP, <em>Minimum Viable Product</em>), noção popularizada pelo movimento <em>Lean Startup</em>, é a versão que permite aprender o máximo sobre os usuários com o menor esforço (RIES, 2011). O ponto é o aprendizado: antes de definir o MVP, escreva qual dúvida ele deve responder. "Mínimo" também não é sinônimo de malfeito: se o MVP guarda dados de pessoas, os requisitos de segurança continuam valendo.</p>
+<p>Uma técnica simples de priorização é a <strong>MoSCoW</strong>, associada ao método DSDM, que classifica os requisitos <em>para uma entrega</em>. Aplicada à versão em equipe da API de tarefas, com a dúvida "uma equipe pequena consegue dividir o trabalho com ela?":</p>
+<table>
+<thead>
+<tr>
+<th>Categoria</th>
+<th>Significado</th>
+<th>Exemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><em>Must have</em></strong></td>
+<td>Sem isso a entrega não serve</td>
+<td>Criar tarefa, atribuir responsável, concluir; só membros acessam o projeto</td>
+</tr>
+<tr>
+<td><strong><em>Should have</em></strong></td>
+<td>Importante, mas há como contornar por ora</td>
+<td>Filtrar tarefas por responsável</td>
+</tr>
+<tr>
+<td><strong><em>Could have</em></strong></td>
+<td>Desejável, se sobrar tempo</td>
+<td>Ordenar por data de criação</td>
+</tr>
+<tr>
+<td><strong><em>Won't have (this time)</em></strong></td>
+<td>Fica fora desta entrega, por decisão</td>
+<td>Notificações, anexos, integrações</td>
+</tr>
+</tbody>
+</table>
+<p>A última linha é tão importante quanto a primeira: registra o que foi <strong>recusado agora</strong>, e evita que volte pela porta dos fundos. Se quase tudo virou <em>Must</em>, a priorização ainda não aconteceu.</p>
 <h2 id="modelando-o-comportamento">🧭 Modelando o comportamento<a class="headerlink" href="#modelando-o-comportamento" title="Permanent link">&para;</a></h2>
 <p>Um modelo é uma visão simplificada, feita para responder a uma pergunta. Aqui, a pergunta é o que o sistema faz e para quem. Os diagramas seguem a notação da UML (OMG, 2017) e imaginam a evolução da API de tarefas para uma <strong>equipe</strong>, com projetos, membros e donos. O código dos Capítulos 6 e 7 ainda não tem usuários: este é um modelo do que se quer construir.</p>
 <h3 id="casos-de-uso">Casos de uso<a class="headerlink" href="#casos-de-uso" title="Permanent link">&para;</a></h3>
@@ -1635,6 +1692,7 @@ Qual limite? Espaços contam? O que a API responde? Tarefas antigas são afetada
 <li>Escreva duas histórias de abuso para o aplicativo de biblioteca do item 1 e transforme cada uma em um critério de aceitação.</li>
 <li>Escreva a especificação de uma pequena mudança antes de pedi-la a um assistente de IA. Compare o resultado com o de um pedido de uma linha: o que foi suposto em cada caso?</li>
 <li>Para o aplicativo de biblioteca do item 1, desenhe o diagrama de casos de uso e descreva um dos casos, com pelo menos duas alternativas.</li>
+<li>Defina a dúvida que um MVP do aplicativo de biblioteca deveria responder e classifique os requisitos com MoSCoW.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1647,6 +1705,9 @@ Qual limite? Espaços contam? O que a API responde? Tarefas antigas são afetada
 <li>Formato Gherkin (Cucumber) — <a href="https://cucumber.io/docs/gherkin/">cucumber.io/docs/gherkin</a></li>
 <li>WAKE, Bill. <em>INVEST in Good Stories, and SMART Tasks</em>, 2003 — <a href="https://xp123.com/invest-in-good-stories-and-smart-tasks/">xp123.com</a></li>
 <li>PATTON, Jeff. <em>User Story Mapping</em>. O'Reilly, 2014.</li>
+<li>RIES, Eric. <em>The Lean Startup</em>. Crown Business, 2011.</li>
+<li>Agile Alliance, glossário: <em>Minimum Viable Product</em> — <a href="https://agilealliance.org/?p=8031702">agilealliance.org</a></li>
+<li>Agile Business Consortium. <em>MoSCoW Prioritization Template and Poster</em>, 2026 — <a href="https://www.agilebusiness.org/resource/moscow-prioritization-template/">agilebusiness.org</a></li>
 <li>BRANDOLINI, Alberto. <em>Introducing EventStorming</em> — <a href="https://leanpub.com/introducing_eventstorming">leanpub.com</a></li>
 <li>ISO/IEC/IEEE 29148:2018. <em>Systems and software engineering: Life cycle processes, Requirements engineering</em>.</li>
 <li>OMG. <em>Unified Modeling Language</em>, versão 2.5.1, 2017 — <a href="https://www.omg.org/spec/UML/About-UML/">omg.org/spec/UML</a></li>

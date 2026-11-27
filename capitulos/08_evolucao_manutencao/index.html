@@ -849,6 +849,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#documentacao-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        📖 Documentação de software
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#observabilidade-entendendo-um-sistema-vivo" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1109,6 +1120,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#documentacao-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        📖 Documentação de software
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#observabilidade-entendendo-um-sistema-vivo" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1273,6 +1295,47 @@
 <h2 id="debito-tecnico-em-codigo-gerado-por-ia">🤖 Débito técnico em código gerado por IA<a class="headerlink" href="#debito-tecnico-em-codigo-gerado-por-ia" title="Permanent link">&para;</a></h2>
 <p>Gerar código ficou rápido; entendê-lo e mantê-lo, não necessariamente. Quando um trecho entra no sistema sem que ninguém do time consiga explicá-lo, nasce uma dívida que não aparece em nenhum quadro. Alguns sinais: soluções diferentes para o mesmo problema em pontos diferentes, abstrações que ninguém pediu e testes que apenas repetem a implementação.</p>
 <p>O relatório DORA de 2025 descreve a IA como um <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report">amplificador do que a organização já tem</a>: associa seu uso a mais vazão de entregas, mas também a menos estabilidade, e aponta testes automatizados, controle de versão maduro e retorno rápido como proteção. Na prática: mudanças pequenas, revisão por quem vai manter, e refatoração como parte do trabalho, não como promessa.</p>
+<h2 id="documentacao-de-software">📖 Documentação de software<a class="headerlink" href="#documentacao-de-software" title="Permanent link">&para;</a></h2>
+<p>Quem mantém um sistema raramente é só quem o escreveu. A documentação registra o que o código não conta: como executar, como usar e por que as coisas são como são. O modelo <a href="https://diataxis.fr/">Diátaxis</a>, de Daniele Procida, separa quatro necessidades que costumam ser misturadas:</p>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Responde a</th>
+<th>Na API de tarefas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tutorial</strong></td>
+<td>"Quero aprender fazendo"</td>
+<td>Do clone à primeira tarefa criada</td>
+</tr>
+<tr>
+<td><strong>Guia prático</strong> (<em>how-to</em>)</td>
+<td>"Como resolvo este problema?"</td>
+<td>Como atualizar uma dependência vulnerável</td>
+</tr>
+<tr>
+<td><strong>Referência</strong></td>
+<td>"Quais são os detalhes exatos?"</td>
+<td>Endpoints, campos e códigos de resposta</td>
+</tr>
+<tr>
+<td><strong>Explicação</strong></td>
+<td>"Por que é assim?"</td>
+<td>Por que o armazenamento é em memória</td>
+</tr>
+</tbody>
+</table>
+<p>Um conjunto inicial suficiente para um projeto pequeno:</p>
+<ul>
+<li><strong><code>README.md</code></strong>: o que é, como instalar, rodar e testar;</li>
+<li><strong>referência da API</strong>: o FastAPI a gera a partir do código (<code>/docs</code>), o que reduz o risco de ficar desatualizada;</li>
+<li><strong>registros de decisão</strong> (ADRs, Capítulo 4): o porquê das escolhas;</li>
+<li><strong><code>SECURITY.md</code></strong>: como relatar uma vulnerabilidade.</li>
+</ul>
+<p>Mantenha a documentação no mesmo repositório e altere-a no mesmo <em>pull request</em> que muda o comportamento. Texto gerado por IA a partir do código descreve bem <em>o que</em> ele faz, mas pode inventar a intenção: o <em>porquê</em> precisa vir de quem decidiu.</p>
 <h2 id="observabilidade-entendendo-um-sistema-vivo">🔭 Observabilidade: entendendo um sistema vivo<a class="headerlink" href="#observabilidade-entendendo-um-sistema-vivo" title="Permanent link">&para;</a></h2>
 <p>Manter e evoluir um sistema em produção com segurança depende de conseguir <strong>observar</strong> seu comportamento real — não apenas assumir que ele funciona como planejado. Três pilares, hoje tratados como parte essencial da manutenção de qualquer sistema relevante:</p>
 <ul>
@@ -1288,11 +1351,13 @@
 <li>Descreva um exemplo de débito técnico "deliberado e prudente" que você tomaria conscientemente em um projeto real, explicando a troca de curto prazo por longo prazo envolvida.</li>
 <li>Escolha um trecho de código com pelo menos um <em>code smell</em> (duplicação, método longo, nome ruim) e refatore-o, garantindo que os testes existentes (ou novos testes que você escreva antes) continuem passando depois da mudança.</li>
 <li>Configure o Dependabot em um repositório seu e analise o primeiro <em>pull request</em> que ele abrir: o que mudou na dependência e como você sabe que é seguro aceitar?</li>
+<li>Peça a um colega que execute um projeto seu seguindo apenas o <code>README.md</code>. Anote onde ele travou e corrija o texto.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
 <li>SOMMERVILLE, Ian. <em>Engenharia de Software</em>. 10. ed. — Capítulo 9.</li>
 <li>NIST SP 800-218. <em>Secure Software Development Framework (SSDF)</em>, versão 1.1, 2022 — <a href="https://csrc.nist.gov/pubs/sp/800/218/final">csrc.nist.gov</a></li>
+<li>PROCIDA, Daniele. <em>Diátaxis</em> — <a href="https://diataxis.fr/">diataxis.fr</a></li>
 <li>GitHub, referência de opções do Dependabot — <a href="https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference">docs.github.com</a></li>
 <li>Google Cloud. <em>Announcing the 2025 DORA Report</em> — <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report">cloud.google.com</a></li>
 <li>FOWLER, Martin. <em>Refactoring: Improving the Design of Existing Code</em>. 2. ed. Addison-Wesley, 2018.</li>
