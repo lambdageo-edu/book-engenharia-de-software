@@ -19,6 +19,8 @@ Alguns princípios atravessam décadas de engenharia de software e continuam ori
 
 ## 🧱 Estilos de arquitetura
 
+Os estilos a seguir não são todos alternativas entre si, porque respondem a perguntas diferentes. **Camadas** trata da organização lógica do código. **Monólito** e **microsserviços** tratam de como o sistema é implantado. As duas escolhas se combinam: um monólito pode, e costuma, ser organizado em camadas.
+
 ### Arquitetura em camadas
 
 Organiza o sistema em camadas horizontais (ex: apresentação, lógica de negócio, acesso a dados), onde cada camada só se comunica com camadas adjacentes. É um dos estilos mais tradicionais e ainda muito comum em aplicações web e corporativas — simples de entender, mas pode se tornar rígida em sistemas grandes.
@@ -52,7 +54,7 @@ Decompõe o sistema em serviços pequenos, independentes, cada um responsável p
 
 ### Arquitetura orientada a eventos
 
-Componentes se comunicam produzindo e reagindo a eventos (ex: "pedido criado", "pagamento aprovado"), frequentemente através de um barramento de eventos ou fila de mensagens (Kafka, RabbitMQ, SQS). Favorece baixo acoplamento temporal — produtores não precisam saber quem consome seus eventos — mas dificulta rastrear o fluxo completo de um processo de negócio, o que aumenta a importância de boas práticas de observabilidade e *tracing* distribuído.
+Componentes se comunicam produzindo e reagindo a eventos (ex: "pedido criado", "pagamento aprovado"), frequentemente através de um barramento de eventos ou fila de mensagens (Kafka, RabbitMQ, SQS). Favorece o desacoplamento em dois sentidos: **referencial**, porque o produtor não precisa saber quem consome seus eventos, e **temporal**, quando o intermediário guarda as mensagens e o consumidor não precisa estar disponível no momento do envio. Em contrapartida, dificulta rastrear o fluxo completo de um processo de negócio, o que aumenta a importância de boas práticas de observabilidade e *tracing* distribuído.
 
 ## 🧩 Padrões de projeto
 

@@ -31,13 +31,15 @@ O termo **débito técnico**, cunhado por Ward Cunningham, é uma metáfora pode
 
 Débito técnico não é, por si só, um mal absoluto — times de alto desempenho tomam débito técnico deliberadamente o tempo todo, como uma escolha de compromisso consciente (ex: lançar rápido uma funcionalidade experimental, aceitando que uma versão mais robusta virá depois se a experiência validar a ideia de negócio). O problema não é a dívida em si; é a dívida **não intencional e não rastreada** — código que acumula complexidade silenciosamente, sem que ninguém decida conscientemente aceitar esse custo.
 
-!!! tip "Débito técnico consciente vs. inconsciente"
-    Vale distinguir dois tipos, numa matriz popularizada por Martin Fowler:
+!!! tip "O quadrante do débito técnico"
+    Martin Fowler cruza duas perguntas: a dívida foi assumida de propósito (**deliberada** ou **inadvertida**)? E houve cuidado na decisão (**prudente** ou **imprudente**)? O resultado são quatro situações:
 
-    * **Deliberado e prudente**: "sabemos que essa solução não é ideal, mas o prazo justifica, e vamos revisitar depois" — uma decisão de engenharia legítima, desde que o "depois" realmente aconteça.
-    * **Inadvertido**: descoberto só depois, quando o time percebe que uma abordagem antiga já não é mais adequada à luz do que se aprendeu — parte natural do aprendizado em qualquer projeto.
+    | | Prudente | Imprudente |
+    |---|---|---|
+    | **Deliberada** | "Sabemos que não é o ideal, mas o prazo justifica, e vamos revisitar." | "Não há tempo para pensar em projeto." |
+    | **Inadvertida** | "Só agora entendemos como deveríamos ter feito." | "O que é separação em camadas?" |
 
-    O problema recorrente na prática é a dívida **deliberada mas imprudente**: atalhos tomados sem qualquer intenção de revisitá-los, que se acumulam até o sistema se tornar difícil de evoluir com segurança.
+    A dívida deliberada e prudente é uma decisão de engenharia legítima, desde que o "revisitar" aconteça. A inadvertida e prudente é parte natural do aprendizado, mesmo em boas equipes. As duas imprudentes são as que mais acumulam juros: uma por descuido assumido, outra por desconhecimento.
 
 ## 🔨 Refatoração
 

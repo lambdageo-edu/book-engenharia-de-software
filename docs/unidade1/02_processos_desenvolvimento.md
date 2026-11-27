@@ -28,7 +28,7 @@ Essas categorias não são mutuamente excludentes — a maioria das equipes reai
 
 ### Modelo em cascata
 
-O modelo em cascata representa as atividades fundamentais do processo — especificação, projeto, implementação, validação e evolução — como **fases sequenciais e distintas**: análise e definição de requisitos, projeto do sistema e do software, implementação e teste unitário, integração e teste de sistema, operação e manutenção. É considerado o primeiro modelo de processo de desenvolvimento de software publicado (Royce, 1970), derivado de processos mais gerais de engenharia de sistemas.
+O modelo em cascata representa as atividades fundamentais do processo — especificação, projeto, implementação, validação e evolução — como **fases sequenciais e distintas**: análise e definição de requisitos, projeto do sistema e do software, implementação e teste unitário, integração e teste de sistema, operação e manutenção. É derivado de processos mais gerais de engenharia de sistemas e costuma ser associado ao artigo de Royce (1970). A associação pede cuidado: o artigo não usa o termo "cascata" e aponta como arriscada a sequência pura, com testes apenas no final, propondo passos adicionais para reduzir esse risco.
 
 **Vantagem:** o processo é visível — a documentação produzida em cada fase facilita o acompanhamento do progresso por gerentes, de forma similar a outras engenharias.
 

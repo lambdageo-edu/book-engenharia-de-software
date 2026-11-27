@@ -42,14 +42,14 @@ Assistentes e agentes de codificação (GitHub Copilot, Claude Code, Cursor e eq
 * **O volume de código por *pull request* tende a aumentar** quando parte dele é gerada por IA, o que reforça (não enfraquece) a boa prática de manter mudanças pequenas e focadas.
 * **Código gerado pode "parecer" correto sem ser**: sintaticamente limpo, bem nomeado, mas resolvendo um problema ligeiramente diferente do pedido, ou ignorando uma restrição de negócio que não estava explícita no prompt. Revisar significa validar a lógica contra o requisito real, não apenas a legibilidade do código.
 * **Rastreabilidade da autoria não substitui responsabilidade**: quem abre o *pull request* — humano ou agente supervisionado por um humano — continua responsável por entender e defender a mudança na revisão, não apenas por tê-la solicitado a uma ferramenta.
-* **Análise estática (próxima seção) se torna ainda mais importante** como primeira linha de defesa mecânica, liberando a revisão humana para focar em design, lógica de negócio e nas armadilhas acima — exatamente a divisão de trabalho que já discutimos, só que com mais volume de código passando por ela.
+* **Análise estática (próxima seção) se torna ainda mais importante** como primeira linha de defesa mecânica, liberando a revisão humana para focar em design, lógica de negócio e nas armadilhas acima — a mesma divisão entre máquina e pessoa explicada a seguir, agora com mais volume de código passando por ela.
 
 !!! tip "IA muda o \"como\", não o \"porquê\" da revisão"
     Os benefícios de revisão de código listados no início desta seção — detecção de defeitos, disseminação de conhecimento, consistência, aprendizado — continuam os mesmos independentemente de quem (ou o quê) escreveu o código. O que muda é o volume e o tipo de atenção que o revisor precisa dedicar a cada mudança.
 
 ## 🔍 Análise estática de código
 
-Ferramentas de **análise estática** examinam o código sem executá-lo, procurando por padrões problemáticos: bugs comuns, vulnerabilidades de segurança conhecidas, violações de estilo, complexidade excessiva. Elas complementam — não substituem — a revisão humana, automatizando a detecção de problemas mecânicos e liberando revisores para focar em design e lógica de negócio.
+Ferramentas de **análise estática** examinam o código sem executá-lo, procurando por padrões problemáticos: bugs comuns, padrões inseguros, violações de estilo, complexidade excessiva. Elas complementam — não substituem — a revisão humana, automatizando a detecção de problemas mecânicos e liberando revisores para focar em design e lógica de negócio. Quando o foco é segurança, esse tipo de análise é chamado de **SAST** (*Static Application Security Testing*).
 
 Categorias comuns de ferramentas, com exemplos do ecossistema Python:
 
@@ -58,7 +58,14 @@ Categorias comuns de ferramentas, com exemplos do ecossistema Python:
 | **Linters** | Estilo, convenções, erros óbvios | `ruff`, `flake8`, `pylint` |
 | **Formatadores** | Formatação automática e consistente | `black`, `ruff format` |
 | **Verificadores de tipo** | Consistência de tipos (em linguagens com tipagem gradual) | `mypy`, `pyright` |
-| **Análise de segurança** | Vulnerabilidades conhecidas em dependências e padrões inseguros | `bandit`, `pip-audit`, GitHub Dependabot |
+| **Análise de segurança do código (SAST)** | Padrões inseguros no seu próprio código | `bandit` |
+
+Duas outras verificações automáticas complementam a análise do código e não devem ser confundidas com ela:
+
+| Verificação | O que procura | Exemplos |
+|---|---|---|
+| **Análise de dependências (SCA)** | Vulnerabilidades conhecidas nas bibliotecas que o projeto usa | `pip-audit`, GitHub Dependabot |
+| **Varredura de segredos** | Senhas, tokens e chaves gravados no repositório | `gitleaks`, GitHub secret scanning |
 
 A maioria dos times integra essas ferramentas diretamente no pipeline de CI (Capítulo 7), rejeitando automaticamente mudanças que violem regras mínimas de qualidade — tirando a discussão de estilo (tabs vs. espaços, aspas simples vs. duplas) da revisão humana e deixando-a para a ferramenta decidir de forma consistente.
 

@@ -23,7 +23,7 @@ Restringem os serviços ou funções oferecidos pelo sistema — não dizem o qu
 
 | Categoria | Exemplos |
 |---|---|
-| **Requisitos de produto** | Desempenho, usabilidade, confiabilidade, portabilidade |
+| **Requisitos de produto** | Desempenho, usabilidade, confiabilidade, segurança, portabilidade |
 | **Requisitos organizacionais** | Padrões de processo da empresa, políticas de segurança da informação |
 | **Requisitos externos** | Regulamentações legais (LGPD, GDPR), interoperabilidade com sistemas de terceiros |
 
@@ -34,12 +34,15 @@ Restringem os serviços ou funções oferecidos pelo sistema — não dizem o qu
 
 ## 🔎 A engenharia de requisitos
 
-A engenharia de requisitos é o processo estruturado de descobrir, analisar, documentar e verificar esses serviços e restrições. Ela se organiza, tradicionalmente, em quatro grandes atividades:
+A engenharia de requisitos é o processo estruturado de descobrir, analisar, documentar e verificar esses serviços e restrições. Ela se organiza em três atividades principais, que se repetem ao longo do projeto em vez de acontecer uma única vez:
 
-1. **Elicitação de requisitos** — descoberta dos requisitos através da interação com stakeholders, documentos existentes e análise do domínio.
-2. **Classificação e organização** — agrupar requisitos relacionados e estruturá-los de forma coerente.
-3. **Priorização e negociação** — resolver conflitos entre requisitos e stakeholders, decidindo o que entra em cada versão.
-4. **Especificação** — documentar os requisitos de forma clara, verificável e (idealmente) testável.
+1. **Elicitação e análise** — descobrir os requisitos pela interação com stakeholders, documentos e análise do domínio. Inclui:
+    * descoberta dos requisitos;
+    * classificação e organização, agrupando requisitos relacionados;
+    * priorização e negociação, para resolver conflitos e decidir o que entra em cada versão;
+    * registro do que foi levantado, para alimentar a próxima rodada.
+2. **Especificação** — documentar os requisitos de forma clara, verificável e (idealmente) testável.
+3. **Validação** — checar se os requisitos representam o que o cliente de fato precisa.
 
 ### Elicitação: como descobrir requisitos
 

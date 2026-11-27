@@ -34,18 +34,30 @@ api-tarefas/
 │   └── main.py
 ├── test_main.py
 ├── requirements.txt
+├── requirements-dev.txt
 ├── Dockerfile
+├── .dockerignore
 └── .github/
     └── workflows/
         └── ci.yml
 ```
 
-### `requirements.txt`
+### Dependências
+
+Separe o que a aplicação precisa para **rodar** do que só é necessário para **desenvolver e testar**. Assim, as ferramentas de teste não vão parar na imagem de produção.
+
+`requirements.txt`:
 
 ```
 fastapi>=0.115
 uvicorn[standard]>=0.32
 pydantic>=2.9
+```
+
+`requirements-dev.txt`:
+
+```
+-r requirements.txt
 pytest>=8.3
 pytest-cov>=6.0
 httpx2>=2.9
@@ -76,9 +88,10 @@ jobs:
         with:
           python-version: "3.12"
           cache: "pip"
+          cache-dependency-path: requirements*.txt
 
       - name: Instalar dependências
-        run: pip install -r requirements.txt
+        run: pip install -r requirements-dev.txt
 
       - name: Rodar linter (ruff)
         run: ruff check .
@@ -106,8 +119,22 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app/ ./app/
 
+RUN useradd --create-home appuser
+USER appuser
+
 EXPOSE 8000
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+`.dockerignore`:
+
+```
+.venv/
+.git/
+__pycache__/
+.pytest_cache/
+.coverage
+.env
 ```
 
 Alguns cuidados de boas práticas embutidos neste `Dockerfile`:
@@ -115,6 +142,9 @@ Alguns cuidados de boas práticas embutidos neste `Dockerfile`:
 * **Imagem base `slim`**: reduz o tamanho da imagem final e a superfície de ataque, evitando pacotes desnecessários presentes na imagem completa.
 * **Copiar `requirements.txt` antes do código da aplicação**: aproveita o cache de camadas do Docker — se apenas o código muda (e não as dependências), a camada de instalação de dependências não precisa ser refeita a cada build.
 * **`--no-cache-dir`**: evita que o `pip` guarde um cache de pacotes dentro da imagem, mantendo-a menor.
+* **Usuário sem privilégios (`USER appuser`)**: por padrão o processo roda como `root` dentro do contêiner. Trocar o usuário limita o estrago caso a aplicação seja comprometida.
+* **Só as dependências de execução**: a imagem instala `requirements.txt`, sem `pytest` nem `ruff`.
+* **`.dockerignore`**: evita enviar ao *build* o ambiente virtual, o histórico do Git e arquivos locais como `.env`, que podem conter segredos.
 
 Para estender o pipeline com o passo de build da imagem, adicionaríamos um job (ou passo) adicional usando `docker/build-push-action`, publicando a imagem em um registro (GitHub Container Registry, Docker Hub, ECR) a cada merge na branch principal — o primeiro passo em direção à entrega contínua.
 
@@ -146,7 +176,7 @@ O que muda é a importância desses portões automatizados como linha de defesa:
 ## 🎯 Atividades
 
 1. Adicione o workflow `ci.yml` deste capítulo a um repositório GitHub contendo a API de tarefas do Capítulo 6 e confirme que ele roda com sucesso a cada `push`.
-2. Modifique o pipeline para falhar propositalmente (ex: reduza `--cov-fail-under` para um valor que seu código não atinja) e observe o comportamento do GitHub Actions.
+2. Modifique o pipeline para falhar propositalmente (ex: aumente `--cov-fail-under` para 100, acima da cobertura atual do seu código) e observe o comportamento do GitHub Actions.
 3. Construa a imagem Docker localmente (`docker build -t api-tarefas .`) e rode um container a partir dela (`docker run -p 8000:8000 api-tarefas`), acessando `http://localhost:8000/docs` para ver a documentação interativa gerada automaticamente pelo FastAPI.
 4. Descreva, para um sistema hipotético que você conheça, qual estratégia de deploy (blue-green, canary, feature flags) você usaria para lançar uma mudança arriscada, e por quê.
 

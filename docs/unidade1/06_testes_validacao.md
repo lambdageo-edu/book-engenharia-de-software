@@ -34,8 +34,8 @@ A **pirâmide de testes**, popularizada por Mike Cohn, organiza os testes automa
 * **Testes de componente/integração** verificam a colaboração entre algumas unidades reais, ou entre a aplicação e uma dependência externa real (um banco de dados de teste, por exemplo).
 * **Testes de sistema/aceitação** verificam o sistema completo, muitas vezes através de suas interfaces externas (API, UI), simulando um uso real de ponta a ponta. São os mais caros de escrever e manter, e os mais lentos de executar — por isso devem ser relativamente poucos, cobrindo os fluxos mais críticos.
 
-!!! warning "O antipadrão do 'sorvete invertido'"
-    Um erro comum é ter muitos testes de ponta a ponta (lentos, frágeis, caros de manter) e poucos testes unitários — o oposto da pirâmide. Isso é às vezes chamado de "cone de sorvete invertido": a suíte de testes fica lenta, instável e cara de manter, exatamente o oposto do que se espera de uma boa suíte de testes.
+!!! warning "O antipadrão do 'cone de sorvete'"
+    Um erro comum é ter muitos testes de ponta a ponta (lentos, frágeis, caros de manter) e poucos testes unitários — o oposto da pirâmide. Isso é chamado de "cone de sorvete", porque o formato é o da pirâmide virada de ponta-cabeça: a suíte de testes fica lenta, instável e cara de manter, exatamente o oposto do que se espera de uma boa suíte de testes.
 
 ## 🧪 Tipos de teste no ciclo de desenvolvimento
 
@@ -204,14 +204,14 @@ TOTAL                34      2    94%
 5 passed in 1.12s
 ```
 
-94% de cobertura é um bom resultado, mas repare que o relatório aponta exatamente **quais** linhas não foram exercitadas (`Missing: 41, 48`) — nesse caso, os caminhos de sucesso de `obter_tarefa` e `concluir_tarefa` quando a tarefa **existe**, que não estão diretamente cobertos por um teste isolado (embora sejam exercitados indiretamente por outros testes). Esse é o valor real de medir cobertura: não é uma meta a perseguir por si só, mas um mapa de quais partes do comportamento do sistema ainda não têm uma rede de segurança.
+94% de cobertura é um bom resultado, mas repare que o relatório aponta exatamente **quais** linhas não foram exercitadas (`Missing: 41, 48`). A linha 41 é o retorno de sucesso de `obter_tarefa`: nenhum teste busca por `id` uma tarefa que existe. A linha 48 é o erro 404 de `concluir_tarefa`: nenhum teste tenta concluir uma tarefa inexistente. A cobertura conta qualquer execução da linha, direta ou indireta, portanto uma linha listada como `Missing` não foi executada por teste algum. Esse é o valor de medir cobertura: não é uma meta a perseguir por si só, mas um mapa de quais partes do comportamento ainda não têm uma rede de segurança.
 
 !!! danger "Cobertura alta não é sinônimo de bons testes"
     100% de cobertura significa apenas que toda linha foi **executada** por algum teste — não que o comportamento foi **verificado** corretamente. É possível ter cobertura total com testes que não fazem nenhuma asserção significativa. Use cobertura para encontrar código não testado, nunca como meta isolada de qualidade.
 
 ## 🤖 Testes gerados por IA
 
-Assistentes de codificação são cada vez mais usados para gerar testes automaticamente a partir do código de produção — uma forma rápida de aumentar cobertura numérica. O alerta acima vale com ainda mais força nesse caso: um teste gerado a partir do código existente tende a **confirmar o que o código já faz**, inclusive quando o código tem um defeito, em vez de verificar o que o código **deveria** fazer segundo o requisito. É o oposto do espírito do TDD (próxima seção), em que o teste nasce do requisito, antes do código existir.
+Assistentes de codificação são cada vez mais usados para gerar testes automaticamente a partir do código de produção — uma forma rápida de aumentar cobertura numérica. O alerta acima vale com ainda mais força nesse caso: um teste gerado a partir do código existente tende a **confirmar o que o código já faz**, inclusive quando o código tem um defeito, em vez de verificar o que o código **deveria** fazer segundo o requisito. É o oposto do espírito do TDD (seção anterior), em que o teste nasce do requisito, antes do código existir.
 
 Isso não invalida o uso de IA para gerar testes — apenas desloca a responsabilidade do desenvolvedor: ler e validar cada teste gerado contra o comportamento esperado (não contra o comportamento atual do código) continua sendo indispensável antes de aceitar a mudança na suíte.
 
@@ -229,7 +229,7 @@ Como exercício de TDD, tente adicionar um endpoint `DELETE /tarefas/{tarefa_id}
 
 1. Rode a suíte de testes deste capítulo localmente e confirme os mesmos resultados de cobertura.
 2. Complete o exercício de TDD acima (endpoint `DELETE`) e verifique se a cobertura de `app/main.py` sobe.
-3. Escreva um teste que verifique explicitamente o caso de sucesso de `obter_tarefa` (uma tarefa que existe) — a linha que faltava na cobertura do exemplo.
+3. Escreva os dois testes que faltam, um para buscar uma tarefa existente (linha 41) e outro para concluir uma tarefa inexistente (linha 48), e confirme que a cobertura chega a 100%.
 4. Classifique um bug real que você já enfrentou (em qualquer projeto) em termos de defeito, erro e falha, conforme a distinção do início deste capítulo.
 
 ## 📚 Para saber mais
