@@ -114,7 +114,7 @@ Não existe processo universalmente superior — a escolha depende de fatores co
 |---|---|---|
 | Estabilidade dos requisitos | Requisitos bem compreendidos e estáveis | Requisitos incertos ou mutáveis |
 | Criticidade do sistema | Sistemas de segurança crítica, regulados | Produtos digitais, sistemas internos |
-| Tamanho e distribuição do time | Times grandes, múltiplas organizações | Times pequenos e colocados |
+| Tamanho e distribuição do time | Times grandes, múltiplas organizações | Times pequenos e co-localizados |
 | Necessidade de auditoria/contrato | Contratos de escopo fechado | Parcerias com clientes colaborativos |
 
 A maioria das organizações de produto digital hoje adota variantes ágeis com forte automação (DevOps), reservando processos mais dirigidos a planos para componentes de alto risco ou exigências regulatórias específicas dentro do mesmo sistema.

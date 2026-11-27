@@ -18,12 +18,12 @@ Um pipeline de CI/CD típico encadeia estágios, cada um servindo de "portão de
 1. **Build**: compilar o código (ou, em linguagens interpretadas como Python, instalar dependências e validar que o pacote pode ser construído).
 2. **Análise estática**: rodar linters, formatadores e verificadores de tipo (Capítulo 5).
 3. **Testes automatizados**: rodar a suíte de testes (Capítulo 6), tipicamente com um limite mínimo de cobertura.
-4. **Empacotamento**: construir um artefato de deploy — no ecossistema moderno, quase sempre uma imagem de container.
+4. **Empacotamento**: construir um artefato de deploy — no ecossistema moderno, quase sempre uma imagem de contêiner.
 5. **Deploy**: publicar o artefato em um ambiente (homologação, produção), com estratégia de rollout controlada.
 
 ## 🧑‍💻 Hands-on: pipeline de CI para a API de tarefas
 
-Vamos construir um pipeline de GitHub Actions para a API de tarefas do Capítulo 6, cobrindo lint, testes com cobertura mínima obrigatória, e build de uma imagem de container.
+Vamos construir um pipeline de GitHub Actions para a API de tarefas do Capítulo 6, cobrindo lint, formatação, verificação de tipos, testes com cobertura mínima obrigatória e build de uma imagem de contêiner.
 
 ### Estrutura do projeto
 
@@ -62,6 +62,7 @@ pytest>=8.3
 pytest-cov>=6.0
 httpx2>=2.9
 ruff>=0.7
+mypy>=1.10
 ```
 
 ### O workflow: `.github/workflows/ci.yml`
@@ -96,18 +97,32 @@ jobs:
       - name: Rodar linter (ruff)
         run: ruff check .
 
+      - name: Conferir formatação
+        run: ruff format --check .
+
+      - name: Verificar tipos
+        run: mypy app
+
       - name: Rodar testes com cobertura
         run: pytest -v --cov=app --cov-report=term-missing --cov-fail-under=80
+
+  imagem:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v7
+
+      - name: Construir a imagem
+        run: docker build -t api-tarefas .
 ```
 
-!!! note "Validação deste workflow"
-    O YAML acima foi validado neste material por *parsing* automatizado (`yaml.safe_load`), garantindo que sua sintaxe está correta. Ao adaptá-lo, atenção a um detalhe clássico de YAML: a chave `on:` pode ser interpretada por alguns parsers (não pelo GitHub Actions) como o booleano `true` — um problema puramente de ferramentas de terceiros que leem o arquivo, sem efeito no funcionamento real do workflow.
-
-Repare na estrutura: `on` define os gatilhos (aqui, todo `push` ou `pull_request` para `main`); `jobs.test.steps` é a sequência de passos executados em uma máquina virtual limpa do GitHub a cada execução. A *action* `actions/setup-python` com `cache: "pip"` acelera execuções futuras reaproveitando o cache de dependências entre pipelines.
+Repare na estrutura: `on` define os gatilhos (aqui, todo `push` ou `pull_request` para `main`); `jobs.test.steps` é a sequência de passos executados em uma máquina virtual limpa do GitHub a cada execução. O job `imagem` declara `needs: test`, portanto só roda se o job de testes passar. A *action* `actions/setup-python` com `cache: "pip"` acelera execuções futuras reaproveitando o cache de dependências entre pipelines.
 
 O parâmetro `--cov-fail-under=80` faz o próprio comando de teste **falhar** se a cobertura cair abaixo de 80% — transformando um limite de qualidade em um portão automático do pipeline, em vez de depender de alguém checar o relatório manualmente.
 
-### Empacotando em um container: `Dockerfile`
+### Empacotando em um contêiner: `Dockerfile`
 
 ```dockerfile
 FROM python:3.12-slim
@@ -146,7 +161,7 @@ Alguns cuidados de boas práticas embutidos neste `Dockerfile`:
 * **Só as dependências de execução**: a imagem instala `requirements.txt`, sem `pytest` nem `ruff`.
 * **`.dockerignore`**: evita enviar ao *build* o ambiente virtual, o histórico do Git e arquivos locais como `.env`, que podem conter segredos.
 
-Para estender o pipeline com o passo de build da imagem, adicionaríamos um job (ou passo) adicional usando `docker/build-push-action`, publicando a imagem em um registro (GitHub Container Registry, Docker Hub, ECR) a cada merge na branch principal — o primeiro passo em direção à entrega contínua.
+O job `imagem` apenas constrói a imagem, para garantir que o `Dockerfile` continua funcionando. O passo seguinte seria usar `docker/build-push-action` para publicá-la em um registro (GitHub Container Registry, Docker Hub, ECR) a cada merge na branch principal — o primeiro passo em direção à entrega contínua.
 
 === "Continuous Delivery"
     Após o build da imagem, o pipeline aguarda uma aprovação manual (ex: um ambiente protegido do GitHub com *reviewers* obrigatórios) antes do deploy em produção — útil quando há razões de negócio (janelas de manutenção, aprovação de compliance) para controlar o momento do deploy.
@@ -177,7 +192,7 @@ O que muda é a importância desses portões automatizados como linha de defesa:
 
 1. Adicione o workflow `ci.yml` deste capítulo a um repositório GitHub contendo a API de tarefas do Capítulo 6 e confirme que ele roda com sucesso a cada `push`.
 2. Modifique o pipeline para falhar propositalmente (ex: aumente `--cov-fail-under` para 100, acima da cobertura atual do seu código) e observe o comportamento do GitHub Actions.
-3. Construa a imagem Docker localmente (`docker build -t api-tarefas .`) e rode um container a partir dela (`docker run -p 8000:8000 api-tarefas`), acessando `http://localhost:8000/docs` para ver a documentação interativa gerada automaticamente pelo FastAPI.
+3. Construa a imagem Docker localmente (`docker build -t api-tarefas .`) e rode um contêiner a partir dela (`docker run -p 8000:8000 api-tarefas`), acessando `http://localhost:8000/docs` para ver a documentação interativa gerada automaticamente pelo FastAPI.
 4. Descreva, para um sistema hipotético que você conheça, qual estratégia de deploy (blue-green, canary, feature flags) você usaria para lançar uma mudança arriscada, e por quê.
 
 ## 📚 Para saber mais

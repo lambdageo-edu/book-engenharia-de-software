@@ -2,7 +2,7 @@
 
 ## 📋 O que são requisitos
 
-Requisitos descrevem **o que** um sistema deve fazer e **sob quais restrições** ele deve operar. Eles são, em geral, o produto mais difícil de acertar em um projeto de software: requisitos errados ou incompletos custam caro para corrigir quanto mais tarde forem descobertos, e a maioria dos problemas de projetos de software tem raiz em requisitos malentendidos, não em código malfeito.
+Requisitos descrevem **o que** um sistema deve fazer e **sob quais restrições** ele deve operar. Eles são, em geral, o produto mais difícil de acertar em um projeto de software: requisitos errados ou incompletos custam caro para corrigir quanto mais tarde forem descobertos, e a maioria dos problemas de projetos de software tem raiz em requisitos mal-entendidos, não em código malfeito.
 
 Requisitos costumam existir em diferentes níveis de abstração, e diferentes públicos leem diferentes níveis:
 
@@ -60,9 +60,24 @@ A elicitação de requisitos combina várias técnicas, cada uma com pontos fort
 === "Protótipos"
     Mostrar algo tangível — mesmo que simples — costuma gerar feedback muito mais preciso do que discutir requisitos de forma puramente verbal ou textual.
 
-### User stories: o formato ágil de requisito
+### Requisito em formato clássico
 
-Em processos ágeis (Capítulo 2), requisitos funcionais são frequentemente escritos como **user stories**, um formato deliberadamente leve que adia detalhes de especificação para o momento em que a funcionalidade será de fato construída:
+Em processos dirigidos a planos, cada requisito costuma ser registrado em um documento, com identificador e campos definidos. Um exemplo:
+
+| Campo | Conteúdo |
+|---|---|
+| **Identificador** | RF-012 |
+| **Descrição** | O sistema deve exibir ao assinante do plano gratuito o número de créditos restantes no mês corrente. |
+| **Origem** | Equipe de atendimento |
+| **Prioridade** | Média |
+| **Pré-condição** | O assinante está autenticado. |
+| **Critério de verificação** | O valor exibido no painel é igual ao saldo registrado para o assinante. |
+
+O mesmo requisito aparece a seguir no formato ágil, o que permite comparar os dois.
+
+### Histórias de usuário: o formato ágil de requisito
+
+Em processos ágeis (Capítulo 2), requisitos funcionais são frequentemente escritos como **histórias de usuário** (*user stories*), um formato deliberadamente leve que adia detalhes de especificação para o momento em que a funcionalidade será de fato construída:
 
 ```
 Como <tipo de usuário>,
@@ -72,7 +87,7 @@ para que <benefício/objetivo>.
 
 *Exemplo:* "Como assinante do plano gratuito, quero ver quantos créditos me restam no mês, para que eu possa planejar meu uso sem ser surpreendido."
 
-Uma user story sozinha costuma ser incompleta demais para guiar o desenvolvimento — por isso ela é normalmente acompanhada de **critérios de aceitação**, que funcionam como uma especificação mínima e testável:
+Uma história de usuário sozinha costuma ser incompleta demais para guiar o desenvolvimento — por isso ela é normalmente acompanhada de **critérios de aceitação**, que funcionam como uma especificação mínima e testável:
 
 ```
 Dado que o assinante está logado no plano gratuito,
@@ -82,12 +97,12 @@ então o sistema exibe o número de créditos restantes no mês corrente.
 
 Esse formato *Dado/Quando/Então* (Gherkin) tem a vantagem de já nascer no formato usado por ferramentas de teste de aceitação automatizado (como Cucumber ou Behave) — aproximando requisito e teste, um tema que retomaremos no Capítulo 6.
 
-!!! tip "User story não é 'requisito ágil de baixa qualidade'"
-    Um erro comum é achar que user stories dispensam análise. Na verdade, elas deslocam o detalhamento para o momento certo (*just in time*), em vez de tentar prever tudo antecipadamente — mas ainda exigem elicitação cuidadosa, critérios de aceitação claros e refinamento contínuo do backlog.
+!!! tip "História de usuário não é 'requisito ágil de baixa qualidade'"
+    Um erro comum é achar que histórias de usuário dispensam análise. Na verdade, elas deslocam o detalhamento para o momento certo (*just in time*), em vez de tentar prever tudo antecipadamente — mas ainda exigem elicitação cuidadosa, critérios de aceitação claros e refinamento contínuo do backlog.
 
 ## ✅ Boas práticas de especificação
 
-Independente do formato (documento formal ou user story), um bom requisito deve ser:
+Independente do formato (documento formal ou história de usuário), um bom requisito deve ser:
 
 * **Claro e não ambíguo** — evitar termos vagos como "rápido", "fácil de usar", "sempre" sem defini-los quantitativamente.
 * **Verificável/testável** — deve ser possível checar, objetivamente, se o requisito foi atendido.
@@ -114,8 +129,8 @@ Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de doc
 ## 🎯 Atividades
 
 1. Escreva três requisitos funcionais e três requisitos não funcionais para um aplicativo de biblioteca universitária (empréstimo de livros).
-2. Reescreva um dos requisitos funcionais do item anterior como uma user story com critérios de aceitação no formato Dado/Quando/Então.
-3. Avalie uma user story real (sua ou de um colega) usando o critério INVEST. Ela falha em algum dos critérios? Como você a melhoraria?
+2. Reescreva um dos requisitos funcionais do item anterior como uma história de usuário com critérios de aceitação no formato Dado/Quando/Então.
+3. Avalie uma história de usuário real (sua ou de um colega) usando o critério INVEST. Ela falha em algum dos critérios? Como você a melhoraria?
 
 ## 📚 Para saber mais
 

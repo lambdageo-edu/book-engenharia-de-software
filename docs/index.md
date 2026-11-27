@@ -18,10 +18,10 @@ Os capítulos seguem uma ordem progressiva, mas também podem ser consultados se
 O que diferencia software de outros produtos, por que a engenharia de software nasceu como disciplina, e como as organizações estruturam seu trabalho — do modelo em cascata, passando pelo desenvolvimento incremental, até o Manifesto Ágil, Scrum, Kanban e a cultura DevOps.
 
 ### 📙 Ciclo de desenvolvimento (Capítulos 3-6)
-Como transformar uma necessidade de negócio em software funcionando: elicitação e especificação de requisitos (em formato clássico e como *user stories*), projeto de arquitetura e padrões de projeto, práticas de implementação e qualidade de código, e a disciplina de testes — de unitários a testes de aceitação, passando por TDD.
+Como transformar uma necessidade de negócio em software funcionando: elicitação e especificação de requisitos (em formato clássico e como histórias de usuário, ou *user stories*), projeto de arquitetura e padrões de projeto, práticas de implementação e qualidade de código, e a disciplina de testes — de unitários a testes de sistema, além de testes de aceitação e TDD.
 
 ### 📗 Prática moderna e sustentação (Capítulos 7-8)
-Como entregar software com segurança e frequência: pipelines de integração e entrega contínua com GitHub Actions, containers, e como o software evolui depois de estar em produção — manutenção, débito técnico, refatoração e observabilidade.
+Como entregar software com frequência e confiança: pipelines de integração e entrega contínua com GitHub Actions, contêineres, e como o software evolui depois de estar em produção — manutenção, débito técnico, refatoração e observabilidade.
 
 ---
 
