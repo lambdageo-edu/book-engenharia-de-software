@@ -748,6 +748,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#depuracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🐞 Depuração
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐞 Depuração">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ler-o-traceback" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Ler o <em>traceback</em>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parar-o-programa-e-olhar" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Parar o programa e olhar
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quando-comecou" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quando começou?
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#revisando-codigo-gerado-por-ia" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1266,6 +1316,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#depuracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🐞 Depuração
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐞 Depuração">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ler-o-traceback" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Ler o <em>traceback</em>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parar-o-programa-e-olhar" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Parar o programa e olhar
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quando-comecou" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quando começou?
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#revisando-codigo-gerado-por-ia" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1576,6 +1676,95 @@
 <a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>        <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"serviço de permissões não respondeu"</span><span class="p">)</span>
 <a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>        <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>
+<h2 id="depuracao">🐞 Depuração<a class="headerlink" href="#depuracao" title="Permanent link">&para;</a></h2>
+<p>Um teste ou um usuário mostram que algo falhou. <strong>Depurar</strong> é encontrar o defeito que causou a falha (<a href="../06_testes_validacao/">Capítulo 6</a>) e corrigi-lo. Mudar linhas ao acaso até o sintoma sumir costuma esconder o problema. Um roteiro:</p>
+<ol>
+<li><strong>Reproduzir.</strong> Ache os passos e os dados que provocam a falha, de preferência no menor exemplo possível.</li>
+<li><strong>Ler a mensagem inteira.</strong></li>
+<li><strong>Formular uma hipótese</strong> e testá-la, mudando uma coisa de cada vez.</li>
+<li><strong>Corrigir a causa</strong>, e não só o sintoma.</li>
+<li><strong>Deixar um teste</strong> que falhava antes da correção e passa depois.</li>
+</ol>
+<h3 id="ler-o-traceback">Ler o <em>traceback</em><a class="headerlink" href="#ler-o-traceback" title="Permanent link">&para;</a></h3>
+<p>Este programa, em <code>relatorio.py</code>, tem um defeito:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">media_por_membro</span><span class="p">(</span><span class="n">tarefas</span><span class="p">,</span> <span class="n">membros</span><span class="p">):</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">tarefas</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">membros</span><span class="p">)</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">resumo</span><span class="p">(</span><span class="n">projeto</span><span class="p">):</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">media</span> <span class="o">=</span> <span class="n">media_por_membro</span><span class="p">(</span><span class="n">projeto</span><span class="p">[</span><span class="s2">"tarefas"</span><span class="p">],</span> <span class="n">projeto</span><span class="p">[</span><span class="s2">"membros"</span><span class="p">])</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">media</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> tarefas por membro"</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">resumo</span><span class="p">({</span><span class="s2">"tarefas"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Publicar"</span><span class="p">],</span> <span class="s2">"membros"</span><span class="p">:</span> <span class="p">[]}))</span>
+</code></pre></div>
+<p>Com Python 3.14, a saída é esta (o caminho do arquivo varia):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Traceback (most recent call last):
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  File "/app/relatorio.py", line 11, in &lt;module&gt;
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    print(resumo({"tarefas": ["Publicar"], "membros": []}))
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>          ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>  File "/app/relatorio.py", line 6, in resumo
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    media = media_por_membro(projeto["tarefas"], projeto["membros"])
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>  File "/app/relatorio.py", line 2, in media_por_membro
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    return len(tarefas) / len(membros)
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>           ~~~~~~~~~~~~~^~~~~~~~~~~~~~
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>ZeroDivisionError: division by zero
+</code></pre></div>
+<p>Comece pela última linha, que diz <strong>o que</strong> aconteceu. Acima dela está o <strong>caminho das chamadas</strong>, com a mais recente embaixo. A linha 2 é onde o erro apareceu, mas a decisão que falta é outra: o que o relatório deve dizer de um projeto sem membros? Respondida a pergunta, escreve-se o teste, em <code>test_resumo.py</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">relatorio</span><span class="w"> </span><span class="kn">import</span> <span class="n">resumo</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_projeto_sem_membros</span><span class="p">():</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="n">projeto</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"tarefas"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Publicar"</span><span class="p">],</span> <span class="s2">"membros"</span><span class="p">:</span> <span class="p">[]}</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="k">assert</span> <span class="n">resumo</span><span class="p">(</span><span class="n">projeto</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"projeto sem membros"</span>
+</code></pre></div>
+<p>Ele falha com o código atual. A correção entra em <code>resumo</code>, e o teste passa a protegê-la.</p>
+<h3 id="parar-o-programa-e-olhar">Parar o programa e olhar<a class="headerlink" href="#parar-o-programa-e-olhar" title="Permanent link">&para;</a></h3>
+<p>Quando a leitura não basta, o <strong>depurador</strong> interrompe a execução para examinar as variáveis. Em Python, escreva <code>breakpoint()</code> na linha onde quer parar e use o <a href="https://docs.python.org/3.14/library/pdb.html">pdb</a>:</p>
+<table>
+<thead>
+<tr>
+<th>Comando</th>
+<th>O que faz</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>p expressão</code></td>
+<td>Mostra um valor</td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td>Executa até a próxima linha da função atual</td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>Avança entrando na função chamada</td>
+</tr>
+<tr>
+<td><code>w</code></td>
+<td>Mostra onde se está na pilha de chamadas</td>
+</tr>
+<tr>
+<td><code>c</code></td>
+<td>Continua a execução</td>
+</tr>
+<tr>
+<td><code>q</code></td>
+<td>Encerra</td>
+</tr>
+</tbody>
+</table>
+<p>Com <code>pytest --pdb</code>, o depurador abre no ponto em que um teste falha. Editores costumam oferecer os mesmos recursos com uma interface gráfica. Remova os <code>breakpoint()</code> antes do <em>commit</em>. Em produção não se depura parando o programa: usam-se os <em>logs</em> (<a href="../08_evolucao_manutencao/">Capítulo 8</a>).</p>
+<h3 id="quando-comecou">Quando começou?<a class="headerlink" href="#quando-comecou" title="Permanent link">&para;</a></h3>
+<p>Se funcionava e deixou de funcionar, o <a href="https://git-scm.com/docs/git-bisect/2.52.0"><code>git bisect</code></a> procura, por busca binária, o <em>commit</em> que introduziu o problema:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>git<span class="w"> </span>bisect<span class="w"> </span>start<span class="w"> </span>HEAD<span class="w"> </span>v1.2.0<span class="w"> </span>--<span class="w">   </span><span class="c1"># HEAD tem o defeito; v1.2.0 não tinha</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>git<span class="w"> </span>bisect<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-q<span class="w"> </span>test_resumo.py
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>git<span class="w"> </span>bisect<span class="w"> </span>reset<span class="w">                  </span><span class="c1"># volta para onde você estava</span>
+</code></pre></div>
+<p>O teste precisa continuar disponível nos <em>commits</em> antigos. Um arquivo novo, ainda não adicionado ao Git, permanece no lugar durante a busca. <em>Commits</em> pequenos fazem o resultado apontar para poucas linhas.</p>
+<p>Um assistente de IA pode ajudar a interpretar um <em>traceback</em>. Antes de colá-lo, retire segredos e dados pessoais, e confirme a explicação reproduzindo o erro.</p>
 <h2 id="revisando-codigo-gerado-por-ia">🤖 Revisando código gerado por IA<a class="headerlink" href="#revisando-codigo-gerado-por-ia" title="Permanent link">&para;</a></h2>
 <p>Assistentes e agentes de codificação (GitHub Copilot, Claude Code, Cursor e equivalentes) já fazem parte do dia a dia de boa parte dos times de desenvolvimento, gerando desde trechos pontuais até <em>pull requests</em> inteiros. Isso não elimina a necessidade de revisão de código — pelo contrário, muda o que a revisão precisa verificar:</p>
 <ul>
@@ -1678,6 +1867,8 @@
 <li>Acrescente ao checklist três itens de segurança, cada um ligado a uma categoria do OWASP Top 10.</li>
 <li>Peça a um assistente de IA o código de um <em>login</em> simples e revise-o: como a senha é armazenada? Há segredo no código? As dependências sugeridas existem?</li>
 <li>Escreva um teste para <code>pode_concluir</code> com um dublê que levanta <code>TimeoutError</code>. Depois procure, em um projeto seu, um <code>except</code> que esconda um erro.</li>
+<li>Reproduza o erro de <code>relatorio.py</code>, pare nele com <code>breakpoint()</code> e examine <code>membros</code>. Corrija e confira que o teste passa.</li>
+<li>Em um repositório de teste, introduza um defeito no meio de uma sequência de <em>commits</em> e encontre-o com <code>git bisect run</code>.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1685,6 +1876,9 @@
 <li>MEYER, Bertrand. <em>Object-Oriented Software Construction</em>. 2. ed. Prentice Hall, 1997.</li>
 <li>FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. <em>Accelerate: The Science of Lean Software and DevOps</em>. IT Revolution, 2018.</li>
 <li>Documentação do <code>ruff</code> (linter/formatador Python) — <a href="https://docs.astral.sh/ruff/">docs.astral.sh/ruff</a></li>
+<li>Documentação do Python, <em>pdb</em> — <a href="https://docs.python.org/3.14/library/pdb.html">docs.python.org</a></li>
+<li>Git, <em>git-bisect</em> — <a href="https://git-scm.com/docs/git-bisect/2.52.0">git-scm.com</a></li>
+<li>ZELLER, Andreas. <em>Why Programs Fail: A Guide to Systematic Debugging</em>. 2. ed. Morgan Kaufmann, 2009.</li>
 <li>OWASP <em>Error Handling Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
 <li><em>OWASP Top 10:2025</em> — <a href="https://owasp.org/Top10/2025/0x00_2025-Introduction/">owasp.org/Top10/2025</a></li>
 <li>OWASP <em>Secrets Management Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
@@ -1767,8 +1961,6 @@
     
       <script src="../../assets/javascripts/bundle.9e76c64c.min.js"></script>
       
-      
-        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

@@ -1781,7 +1781,7 @@
 </code></pre></div>
 <p>A última restrição impede atribuir uma tarefa a quem não é membro do projeto. No SQLite, as chaves estrangeiras só são verificadas se a conexão executar <a href="https://www.sqlite.org/foreignkeys.html"><code>PRAGMA foreign_keys = ON</code></a>, o que o TaskFlow faz ao conectar.</p>
 <p>Quando uma operação grava em mais de um lugar, use uma <strong>transação</strong>: ou tudo é gravado, ou nada. Ao criar um projeto, o TaskFlow insere o projeto e o primeiro membro juntos. Mudar o esquema depois que há dados exige migração (<a href="../08_evolucao_manutencao/">Capítulo 8</a>).</p>
-<p>O modelo relacional é uma boa escolha inicial quando os dados têm relações e regras. Bancos de documentos, de chave e valor ou de grafos atendem a outras formas de acesso: decida pelas consultas e garantias de que o sistema precisa, e registre o porquê em um ADR.</p>
+<p>O modelo relacional é uma boa escolha inicial quando os dados têm relações e regras. Bancos de documentos, de chave e valor ou de grafos atendem a outras formas de acesso: decida pelas consultas e garantias de que o sistema precisa, e registre o porquê em um <a href="#documentando-e-comunicando-arquitetura">registro de decisão de arquitetura</a> (ADR).</p>
 <h2 id="seguranca-desde-o-projeto">🛡️ Segurança desde o projeto<a class="headerlink" href="#seguranca-desde-o-projeto" title="Permanent link">&para;</a></h2>
 <p>Uma falha de código se corrige com um <em>commit</em>. Uma falha de projeto, como não prever quem pode acessar o quê, costuma exigir mudar modelo de dados, interfaces e código já escrito. Por isso a segurança entra nas decisões de arquitetura. Alguns princípios antigos continuam válidos, vários deles formulados por Saltzer e Schroeder em 1975:</p>
 <ul>
@@ -2024,8 +2024,6 @@
     
       <script src="../../assets/javascripts/bundle.9e76c64c.min.js"></script>
       
-      
-        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

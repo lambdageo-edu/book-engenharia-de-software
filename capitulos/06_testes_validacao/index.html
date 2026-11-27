@@ -1514,7 +1514,7 @@
 <h2 id="inspecoes-e-revisoes">🔬 Inspeções e revisões<a class="headerlink" href="#inspecoes-e-revisoes" title="Permanent link">&para;</a></h2>
 <p>Nem todo defeito é encontrado executando o código. <strong>Inspeções</strong> e <strong>revisões</strong> (Capítulo 5) são técnicas de verificação estática — analisar o código sem executá-lo — e são complementares aos testes: uma inspeção pode encontrar um problema de lógica que um teste mal escrito não cobriria, e vice-versa. Times maduros combinam as duas abordagens: revisão de código para design e lógica, análise estática (Capítulo 5) para padrões mecânicos, e testes automatizados para comportamento em tempo de execução.</p>
 <h2 id="a-piramide-de-testes">🔺 A pirâmide de testes<a class="headerlink" href="#a-piramide-de-testes" title="Permanent link">&para;</a></h2>
-<p>A <strong>pirâmide de testes</strong>, popularizada por Mike Cohn, organiza os testes automatizados em camadas conforme seu escopo, velocidade e custo de manutenção:</p>
+<p>A <strong>pirâmide de testes</strong>, popularizada por Mike Cohn, organiza os testes automatizados em camadas conforme seu escopo, velocidade e custo de manutenção. No original de Cohn, as camadas se chamam <a href="https://martinfowler.com/articles/practical-test-pyramid.html"><em>unit</em>, <em>service</em> e <em>user interface</em></a>; o desenho usa os nomes por escopo:</p>
 <pre class="mermaid"><code>block-beta
     columns 6
     space:2 e2e["Sistema (E2E)&lt;br/&gt;poucos e lentos"]:2 space:2
@@ -1697,7 +1697,7 @@
 <h3 id="executando-e-medindo-cobertura">Executando e medindo cobertura<a class="headerlink" href="#executando-e-medindo-cobertura" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>pytest<span class="w"> </span>-v<span class="w"> </span>--cov<span class="o">=</span>app<span class="w"> </span>--cov-report<span class="o">=</span>term-missing
 </code></pre></div>
-<p>Saída esperada (o tempo de execução e a largura das colunas variam):</p>
+<p>Saída esperada com Python 3.14 (em outras versões a contagem de instruções pode mudar; o tempo e a largura das colunas também variam):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>test_main.py::test_criar_tarefa_retorna_201_e_id PASSED
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>test_main.py::test_criar_tarefa_com_titulo_vazio_retorna_422 PASSED
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>test_main.py::test_listar_tarefas_inclui_tarefa_criada PASSED
@@ -1706,11 +1706,12 @@
 <a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
 <a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>Name              Stmts   Miss  Cover   Missing
 <a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>-----------------------------------------------
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>app/main.py          32      2    94%   41, 48
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>-----------------------------------------------
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>TOTAL                32      2    94%
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
-<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>5 passed in 1.12s
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>app/__init__.py       0      0   100%
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>app/main.py          32      2    94%   41, 48
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>-----------------------------------------------
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>TOTAL                32      2    94%
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>5 passed in 1.12s
 </code></pre></div>
 <p>94% de cobertura é um bom resultado, mas repare que o relatório aponta exatamente <strong>quais</strong> linhas não foram exercitadas (<code>Missing: 41, 48</code>). A linha 41 é o retorno de sucesso de <code>obter_tarefa</code>: nenhum teste busca por <code>id</code> uma tarefa que existe. A linha 48 é o erro 404 de <code>concluir_tarefa</code>: nenhum teste tenta concluir uma tarefa inexistente. A cobertura conta qualquer execução da linha, direta ou indireta, portanto uma linha listada como <code>Missing</code> não foi executada por teste algum. Esse é o valor de medir cobertura: não é uma meta a perseguir por si só, mas um mapa de quais partes do comportamento ainda não têm uma rede de segurança.</p>
 <div class="admonition danger">
@@ -1876,7 +1877,7 @@
 <ol>
 <li>Rode a suíte de testes deste capítulo localmente e confirme os mesmos resultados de cobertura.</li>
 <li>Complete o exercício de TDD acima (endpoint <code>DELETE</code>) e verifique se a cobertura de <code>app/main.py</code> sobe.</li>
-<li>Escreva os dois testes que faltam, um para buscar uma tarefa existente (linha 41) e outro para concluir uma tarefa inexistente (linha 48), e confirme que a cobertura chega a 100%.</li>
+<li>Escreva os dois testes que faltam, um para buscar uma tarefa existente e outro para concluir uma tarefa inexistente, e confirme que essas linhas deixam de aparecer em <code>Missing</code>. (Os números das linhas mudam depois da correção do título.)</li>
 <li>Classifique um bug real que você já enfrentou (em qualquer projeto) em termos de defeito, erro e falha, conforme a distinção do início deste capítulo.</li>
 <li>Um cadastro exige senha de 15 a 128 caracteres. Liste as classes de equivalência e os valores-limite e escreva o teste parametrizado.</li>
 <li>Escreva um teste para as doze combinações de estado e ação do TaskFlow. Quantas devem responder 409?</li>
@@ -1891,6 +1892,7 @@
 <li>MYERS, Glenford J.; SANDLER, Corey; BADGETT, Tom. <em>The Art of Software Testing</em>. 3. ed. Wiley, 2011.</li>
 <li>FOWLER, Martin. <em>Test Double</em> — <a href="https://martinfowler.com/bliki/TestDouble.html">martinfowler.com</a></li>
 <li>MESZAROS, Gerard. <em>xUnit Test Patterns</em>. Addison-Wesley, 2007.</li>
+<li>VOCKE, Ham. <em>The Practical Test Pyramid</em> — <a href="https://martinfowler.com/articles/practical-test-pyramid.html">martinfowler.com</a></li>
 <li>Documentação oficial: <a href="https://docs.pytest.org/">pytest</a>, <a href="https://fastapi.tiangolo.com/tutorial/testing/">FastAPI Testing</a></li>
 <li>AVIZIENIS, Algirdas; LAPRIE, Jean-Claude; RANDELL, Brian; LANDWEHR, Carl. <em>Basic Concepts and Taxonomy of Dependable and Secure Computing</em>. IEEE Transactions on Dependable and Secure Computing, 1(1), 2004.</li>
 </ul>
@@ -1967,8 +1969,6 @@
     
       <script src="../../assets/javascripts/bundle.9e76c64c.min.js"></script>
       
-      
-        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>
