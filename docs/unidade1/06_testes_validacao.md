@@ -18,16 +18,12 @@ Nem todo defeito é encontrado executando o código. **Inspeções** e **revisõ
 
 A **pirâmide de testes**, popularizada por Mike Cohn, organiza os testes automatizados em camadas conforme seu escopo, velocidade e custo de manutenção:
 
-```
-        /\
-       /  \      Testes de sistema (E2E)
-      /----\     (poucos, lentos, alto valor de confiança)
-     /      \
-    /--------\   Testes de Integração
-   /          \  (moderados, verificam componentes juntos)
-  /------------\
- /              \ Testes Unitários
-/________________\ (muitos, rápidos, isolados)
+```mermaid
+block-beta
+    columns 6
+    space:2 e2e["Sistema (E2E)<br/>poucos e lentos"]:2 space:2
+    space:1 integ["Integração<br/>moderados"]:4 space:1
+    unit["Unitários<br/>muitos, rápidos e isolados"]:6
 ```
 
 * **Testes unitários** verificam uma unidade de código isolada (uma função, um método), sem dependências externas reais (banco de dados, rede). São rápidos, numerosos e baratos de manter — a base da pirâmide.

@@ -88,15 +88,17 @@ Uma falha de código se corrige com um *commit*. Uma falha de projeto, como não
 3. O que vamos fazer a respeito?
 4. Fizemos um trabalho bom o suficiente?
 
-Para a primeira, basta um diagrama de por onde os dados passam, marcando as **fronteiras de confiança**: os pontos em que um dado vem de alguém em quem o sistema não deve confiar. Na API de tarefas:
+Para a primeira, basta um diagrama de por onde os dados passam, marcando as **fronteiras de confiança**: os pontos em que um dado vem de alguém em quem o sistema não deve confiar. Na API de tarefas, a fronteira é a linha tracejada:
 
-```
- Cliente (navegador, script)
-        |
-        |  HTTP: título, identificador da tarefa
- - - - -|- - - - - - - - - - - -  fronteira de confiança
-        v
- API (FastAPI)  ----->  Armazenamento (hoje, um dicionário em memória)
+```mermaid
+flowchart TB
+    cliente["Cliente (navegador, script)"]
+    subgraph confiavel["Dentro da fronteira de confiança"]
+        direction LR
+        api["API (FastAPI)"] --> dados[("Armazenamento<br/>(hoje, um dicionário em memória)")]
+    end
+    cliente -- "HTTP: título, identificador da tarefa" --> api
+    style confiavel stroke-dasharray: 6 4
 ```
 
 Para a segunda, o acrônimo **STRIDE**, proposto na Microsoft por Kohnfelder e Garg em 1999, serve de lista de conferência. Aplicado à primeira versão da API:
