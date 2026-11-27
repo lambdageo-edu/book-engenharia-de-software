@@ -974,7 +974,7 @@
 <ul>
 <li><strong>Nomes que revelam intenção</strong>: <code>diasDesdeUltimoLogin</code> comunica mais que <code>d</code>. O tempo economizado por nomes ruins na hora de escrever é pago, com juros, por quem lê depois.</li>
 <li><strong>Funções pequenas e com um único propósito</strong>: uma função que faz "uma coisa" é mais fácil de testar, entender e reutilizar do que uma função de 200 linhas que faz cinco coisas.</li>
-<li><strong>Evitar duplicação (princípio DRY — <em>Don't Repeat Yourself</em>)</strong>: lógica duplicada em vários lugares significa que uma correção precisa ser lembrada e replicada em todos eles.</li>
+<li><strong>Evitar duplicação (princípio DRY — <em>Don't Repeat Yourself</em>, de Hunt e Thomas)</strong>: lógica duplicada em vários lugares significa que uma correção precisa ser lembrada e replicada em todos eles.</li>
 <li><strong>Comentários que explicam o "porquê", não o "o quê"</strong>: se o código precisa de um comentário para explicar o que ele faz, muitas vezes é sinal de que ele poderia ser reescrito de forma mais clara. Comentários são mais valiosos quando explicam uma decisão não óbvia ("usamos X em vez de Y por causa da limitação Z da API externa").</li>
 </ul>
 <div class="admonition warning">
@@ -983,7 +983,7 @@
 </div>
 <h2 id="revisao-de-codigo-code-review">👀 Revisão de código (code review)<a class="headerlink" href="#revisao-de-codigo-code-review" title="Permanent link">&para;</a></h2>
 <p>Revisão de código é a prática de um ou mais colegas lerem e comentarem uma mudança de código antes que ela seja integrada ao projeto principal. Hoje é quase universal em times profissionais, tipicamente formalizada através de <em>pull requests</em> (GitHub, GitLab) ou <em>merge requests</em>.</p>
-<p>Benefícios bem documentados da revisão de código:</p>
+<p>Benefícios da revisão de código (um estudo na Microsoft mostra que, além de achar defeitos, ela serve à troca de conhecimento: <a href="https://www.microsoft.com/en-us/research/?p=164195">Bacchelli e Bird, 2013</a>):</p>
 <ul>
 <li><strong>Detecção de defeitos</strong> antes que cheguem à produção — mais barata do que corrigir depois.</li>
 <li><strong>Disseminação de conhecimento</strong> sobre o sistema entre os membros do time, reduzindo o risco de conhecimento concentrado em uma única pessoa (<em>bus factor</em> baixo).</li>
@@ -1219,6 +1219,8 @@
 <li>PERRY, Neil; SRIVASTAVA, Megha; KUMAR, Deepak; BONEH, Dan. <em>Do Users Write More Insecure Code with AI Assistants?</em> ACM CCS, 2023 — <a href="https://arxiv.org/abs/2211.03622">arxiv.org/abs/2211.03622</a></li>
 <li>SPRACKLEN, Joseph et al. <em>We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by Code Generating LLMs</em>. USENIX Security, 2025 — <a href="https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen">usenix.org</a></li>
 <li>Guia de código semântico de commits — <a href="https://www.conventionalcommits.org/pt-br/">conventionalcommits.org</a></li>
+<li>HUNT, Andrew; THOMAS, David. <em>The Pragmatic Programmer</em>. Addison-Wesley, 1999.</li>
+<li>BACCHELLI, Alberto; BIRD, Christian. <em>Expectations, Outcomes, and Challenges of Modern Code Review</em>. ICSE, 2013 — <a href="https://www.microsoft.com/en-us/research/?p=164195">microsoft.com/research</a></li>
 </ul>
 
 

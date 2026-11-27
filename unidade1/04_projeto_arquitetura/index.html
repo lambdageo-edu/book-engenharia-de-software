@@ -967,7 +967,7 @@
 
 <h1 id="projeto-e-arquitetura-de-software">Projeto e Arquitetura de Software<a class="headerlink" href="#projeto-e-arquitetura-de-software" title="Permanent link">&para;</a></h1>
 <h2 id="do-requisito-a-estrutura-do-sistema">🏗️ Do requisito à estrutura do sistema<a class="headerlink" href="#do-requisito-a-estrutura-do-sistema" title="Permanent link">&para;</a></h2>
-<p>Depois de especificados os requisitos, é preciso decidir <strong>como</strong> o sistema será construído: quais componentes existirão, como se comunicam, onde os dados residem, e quais tecnologias sustentam cada peça. Essa é a atividade de <strong>projeto de software</strong>, cujo produto de mais alto nível é a <strong>arquitetura</strong>: a organização fundamental de um sistema, expressa em seus componentes, nas relações entre eles e entre eles e o ambiente, e nos princípios que orientam seu projeto e evolução.</p>
+<p>Depois de especificados os requisitos, é preciso decidir <strong>como</strong> o sistema será construído: quais componentes existirão, como se comunicam, onde os dados residem, e quais tecnologias sustentam cada peça. Essa é a atividade de <strong>projeto de software</strong>, cujo produto de mais alto nível é a <strong>arquitetura</strong>: a organização fundamental de um sistema, expressa em seus componentes, nas relações entre eles e entre eles e o ambiente, e nos princípios que orientam seu projeto e evolução (definição do padrão IEEE 1471-2000, depois incorporado à ISO/IEC/IEEE 42010).</p>
 <h2 id="principios-de-projeto">🎯 Princípios de projeto<a class="headerlink" href="#principios-de-projeto" title="Permanent link">&para;</a></h2>
 <p>Alguns princípios atravessam décadas de engenharia de software e continuam orientando decisões de projeto, independente da tecnologia usada:</p>
 <ul>
@@ -975,7 +975,7 @@
 <li><strong>Baixo acoplamento, alta coesão</strong>: componentes devem depender pouco uns dos outros (acoplamento) e cada componente deve agrupar responsabilidades fortemente relacionadas entre si (coesão).</li>
 <li><strong>Abstração</strong>: expor apenas o necessário através de interfaces, escondendo detalhes de implementação.</li>
 <li><strong>Princípio da responsabilidade única (<em>Single Responsibility Principle</em>)</strong>: um módulo deve ter apenas um motivo para mudar — o primeiro dos princípios <strong>SOLID</strong>, um conjunto de cinco diretrizes de projeto orientado a objetos (SRP, Open/Closed, Liskov, Interface Segregation, Dependency Inversion) amplamente usado como referência de projeto até hoje.</li>
-<li><strong>YAGNI (<em>You Aren't Gonna Need It</em>)</strong>: não projete flexibilidade para requisitos hipotéticos que ainda não existem — complexidade antecipada tem custo real e nem sempre paga o benefício esperado.</li>
+<li><strong><a href="https://www.martinfowler.com/bliki/Yagni.html">YAGNI</a> (<em>You Aren't Gonna Need It</em>)</strong>: não projete flexibilidade para requisitos hipotéticos que ainda não existem — complexidade antecipada tem custo real e nem sempre paga o benefício esperado.</li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Arquitetura não é só sobre tecnologia</p>
@@ -1013,7 +1013,7 @@
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Uma regra prática comum na indústria</p>
-<p>"Comece com um monólito bem modularizado; extraia microsserviços quando (e apenas quando) houver uma razão concreta de escala ou organização de times para justificar o custo operacional extra." Essa recomendação — associada a autores como Martin Fowler — reconhece que a decomposição em microsserviços é mais fácil de fazer a partir de um monólito bem estruturado do que de projetar corretamente desde o primeiro dia.</p>
+<p>"Comece com um monólito bem modularizado; extraia microsserviços quando (e apenas quando) houver uma razão concreta de escala ou organização de times para justificar o custo operacional extra." Essa recomendação — associada a autores como <a href="https://www.martinfowler.com/bliki/MonolithFirst.html">Martin Fowler</a> — reconhece que a decomposição em microsserviços é mais fácil de fazer a partir de um monólito bem estruturado do que de projetar corretamente desde o primeiro dia.</p>
 </div>
 <h3 id="arquitetura-orientada-a-eventos">Arquitetura orientada a eventos<a class="headerlink" href="#arquitetura-orientada-a-eventos" title="Permanent link">&para;</a></h3>
 <p>Componentes se comunicam produzindo e reagindo a eventos (ex: "pedido criado", "pagamento aprovado"), frequentemente através de um barramento de eventos ou fila de mensagens (Kafka, RabbitMQ, SQS). Favorece o desacoplamento em dois sentidos: <strong>referencial</strong>, porque o produtor não precisa saber quem consome seus eventos, e <strong>temporal</strong>, quando o intermediário guarda as mensagens e o consumidor não precisa estar disponível no momento do envio. Em contrapartida, dificulta rastrear o fluxo completo de um processo de negócio, o que aumenta a importância de boas práticas de observabilidade e <em>tracing</em> distribuído.</p>
@@ -1132,8 +1132,8 @@
 <h2 id="documentando-e-comunicando-arquitetura">🗺️ Documentando e comunicando arquitetura<a class="headerlink" href="#documentando-e-comunicando-arquitetura" title="Permanent link">&para;</a></h2>
 <p>Arquitetura só é útil se for compreendida por quem constrói o sistema. Algumas ferramentas práticas:</p>
 <ul>
-<li><strong>Diagramas C4</strong> (Contexto, Contêineres, Componentes, Código): um modelo de diagramação em quatro níveis de zoom, do mais abstrato (como o sistema se encaixa no mundo) ao mais detalhado (classes de um componente específico) — mais leve e mais usado atualmente do que notações formais completas como UML.</li>
-<li><strong>Registros de Decisão de Arquitetura (<em>Architecture Decision Records</em> — ADRs)</strong>: pequenos documentos versionados junto ao código, registrando uma decisão de arquitetura, o contexto que levou a ela, e as alternativas consideradas — úteis para que decisões antigas não pareçam arbitrárias para quem chega depois no time.</li>
+<li><strong>Diagramas C4</strong> (Contexto, Contêineres, Componentes, Código): um modelo proposto por Simon Brown, de diagramação em quatro níveis de zoom, do mais abstrato (como o sistema se encaixa no mundo) ao mais detalhado (classes de um componente específico) — mais leve e mais usado atualmente do que notações formais completas como UML.</li>
+<li><strong>Registros de Decisão de Arquitetura (<em>Architecture Decision Records</em> — ADRs)</strong>, <a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions">popularizados por Michael Nygard</a>: pequenos documentos versionados junto ao código, registrando uma decisão de arquitetura, o contexto que levou a ela, e as alternativas consideradas — úteis para que decisões antigas não pareçam arbitrárias para quem chega depois no time.</li>
 <li><strong>UML</strong>, ainda útil para diagramas específicos (classes, sequência) quando o nível de detalhe compensa o custo de mantê-los atualizados — mas raramente usado hoje como especificação completa e exaustiva de um sistema, como se popularizou nos anos 1990/2000.</li>
 </ul>
 <hr />
@@ -1157,6 +1157,10 @@
 <li>SALTZER, Jerome H.; SCHROEDER, Michael D. <em>The Protection of Information in Computer Systems</em>. Proceedings of the IEEE, 63(9), 1975.</li>
 <li>Modelo C4 — <a href="https://c4model.com/">c4model.com</a></li>
 <li>NEWMAN, Sam. <em>Building Microservices</em>. 2. ed. O'Reilly, 2021.</li>
+<li>IEEE Std 1471-2000. <em>Recommended Practice for Architectural Description of Software-Intensive Systems</em> (substituído pela ISO/IEC/IEEE 42010).</li>
+<li>MARTIN, Robert C. <em>Agile Software Development: Principles, Patterns, and Practices</em>. Prentice Hall, 2002 (princípios SOLID).</li>
+<li>FOWLER, Martin. <em>Yagni</em> — <a href="https://www.martinfowler.com/bliki/Yagni.html">martinfowler.com</a>; <em>Monolith First</em>, 2015 — <a href="https://www.martinfowler.com/bliki/MonolithFirst.html">martinfowler.com</a></li>
+<li>NYGARD, Michael. <em>Documenting Architecture Decisions</em>, 2011 — <a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions">cognitect.com</a></li>
 </ul>
 
 

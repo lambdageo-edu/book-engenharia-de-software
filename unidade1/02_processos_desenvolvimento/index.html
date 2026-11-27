@@ -1019,7 +1019,7 @@
 </tbody>
 </table>
 <h3 id="kanban">Kanban<a class="headerlink" href="#kanban" title="Permanent link">&para;</a></h3>
-<p>Kanban tem origem no sistema de produção da Toyota e foi adaptado ao desenvolvimento de software por David J. Anderson. Em vez de iterações de tempo fixo, o trabalho flui continuamente por colunas em um quadro (ex: <em>A Fazer → Em Progresso → Em Revisão → Concluído</em>), com <strong>limites explícitos de trabalho em progresso (WIP)</strong> para evitar sobrecarga e destacar gargalos.</p>
+<p>Kanban tem origem no sistema de produção da Toyota e foi adaptado ao desenvolvimento de software por David J. Anderson (2010). Em vez de iterações de tempo fixo, o trabalho flui continuamente por colunas em um quadro (ex: <em>A Fazer → Em Progresso → Em Revisão → Concluído</em>), com <strong>limites explícitos de trabalho em progresso (WIP)</strong> para evitar sobrecarga e destacar gargalos.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Scrum</label><label for="__tabbed_1_2">Kanban</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1043,15 +1043,15 @@
 <p>Na prática, muitas equipes usam híbridos (às vezes chamados <em>Scrumban</em>): sprints para planejamento e alinhamento, com um quadro Kanban e limites de WIP para gerenciar o fluxo do dia a dia.</p>
 <div class="admonition note">
 <p class="admonition-title">Scrum não é a única resposta a processos ágeis</p>
-<p>Scrum continua sendo o framework ágil mais adotado no mercado, mas não é unânime: é comum times relatarem "fadiga de cerimônias" quando o ritmo de sprints, <em>dailies</em> e retrospectivas vira ritual repetitivo em vez de ferramenta útil — o que alguns autores chamam de "Scrum de fachada" (todas as cerimônias, nenhuma agilidade real). Como resposta, abordagens mais leves como o <strong>Shape Up</strong> (criado na Basecamp) vêm ganhando adoção real em alguns times e empresas: substituem sprints curtos e cerimônias diárias por ciclos mais longos (tipicamente 6 semanas) de trabalho focado, com um período de "resfriamento" entre ciclos. Isso não torna Scrum obsoleto — continua sendo uma escolha sólida, especialmente com múltiplos times que precisam de sincronização — mas reforça o ponto já feito neste capítulo: não existe processo universalmente superior, e vale conhecer alternativas ao framework mais popular.</p>
+<p>Scrum continua sendo o framework ágil mais adotado no mercado, mas não é unânime: é comum times relatarem "fadiga de cerimônias" quando o ritmo de sprints, <em>dailies</em> e retrospectivas vira ritual repetitivo em vez de ferramenta útil — o que alguns autores chamam de "Scrum de fachada" (todas as cerimônias, nenhuma agilidade real). Como resposta, abordagens mais leves como o <a href="https://basecamp.com/shapeup"><strong>Shape Up</strong></a> (criado na Basecamp e descrito por Ryan Singer) vêm ganhando adoção real em alguns times e empresas: substituem sprints curtos e cerimônias diárias por ciclos mais longos (tipicamente 6 semanas) de trabalho focado, com um período de "resfriamento" entre ciclos. Isso não torna Scrum obsoleto — continua sendo uma escolha sólida, especialmente com múltiplos times que precisam de sincronização — mas reforça o ponto já feito neste capítulo: não existe processo universalmente superior, e vale conhecer alternativas ao framework mais popular.</p>
 </div>
 <h2 id="devops-alem-do-processo-de-desenvolvimento">🛠️ DevOps: além do processo de desenvolvimento<a class="headerlink" href="#devops-alem-do-processo-de-desenvolvimento" title="Permanent link">&para;</a></h2>
 <p>Enquanto o Ágil trata principalmente de como uma equipe planeja e executa o trabalho de <em>desenvolvimento</em>, o <strong>DevOps</strong> ataca a fronteira histórica entre times de desenvolvimento (Dev) e operações/infraestrutura (Ops). O termo surgiu por volta de 2009, popularizado por conferências como a <em>DevOpsDays</em>, como resposta a um problema recorrente: times de desenvolvimento otimizados para entregar mudanças rápido, e times de operação otimizados para manter sistemas estáveis — com incentivos frequentemente opostos.</p>
 <p>DevOps propõe tratar essa fronteira como uma responsabilidade compartilhada, apoiada por automação e cultura, não apenas por ferramentas. Três ideias centrais:</p>
 <ul>
-<li><strong>"Você constrói, você opera" (<em>you build it, you run it</em>)</strong>: o mesmo time responsável por escrever o software é responsável por operá-lo em produção, o que cria incentivo direto para escrever software fácil de operar (bom logging, boas métricas, <em>rollback</em> simples).</li>
+<li><strong>"Você constrói, você opera" (<em>you build it, you run it</em>)</strong>, expressão de Werner Vogels, da Amazon, em <a href="https://queue.acm.org/detail.cfm?id=1142065">entrevista de 2006</a>: o mesmo time responsável por escrever o software é responsável por operá-lo em produção, o que cria incentivo direto para escrever software fácil de operar (bom logging, boas métricas, <em>rollback</em> simples).</li>
 <li><strong>Automação de ponta a ponta</strong>: infraestrutura como código, pipelines de integração e entrega contínua (Capítulo 7), testes automatizados (Capítulo 6) — tudo para reduzir trabalho manual e erro humano em processos repetitivos.</li>
-<li><strong>Cultura de aprendizado sem culpa (<em>blameless postmortems</em>)</strong>: falhas em produção são tratadas como oportunidades de melhorar o sistema e o processo, não como motivo para punir indivíduos — o que incentiva as pessoas a reportar problemas cedo, em vez de escondê-los.</li>
+<li><strong>Cultura de aprendizado sem culpa (<em>blameless postmortems</em>)</strong>, prática <a href="https://www.etsy.com/codeascraft/blameless-postmortems">descrita por John Allspaw</a>: falhas em produção são tratadas como oportunidades de melhorar o sistema e o processo, não como motivo para punir indivíduos — o que incentiva as pessoas a reportar problemas cedo, em vez de escondê-los.</li>
 </ul>
 <p>Um instrumento prático do DevOps são as <a href="https://dora.dev/guides/dora-metrics/history/">métricas de entrega de software da DORA</a> (<em>DevOps Research and Assessment</em>). Desde 2024 são cinco, em dois grupos:</p>
 <table>
@@ -1143,6 +1143,11 @@
 <li>Scrum Guide (oficial) — <a href="https://scrumguides.org/">scrumguides.org</a></li>
 <li>FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. <em>Accelerate: The Science of Lean Software and DevOps</em>. IT Revolution, 2018.</li>
 <li>Relatórios anuais da DORA (Google Cloud): <em>State of DevOps</em> até 2024 e <em>State of AI-assisted Software Development</em> em 2025 — <a href="https://dora.dev/">dora.dev</a>.</li>
+<li>ROYCE, Winston W. <em>Managing the Development of Large Software Systems</em>. Proceedings of IEEE WESCON, 1970.</li>
+<li>ANDERSON, David J. <em>Kanban: Successful Evolutionary Change for Your Technology Business</em>. Blue Hole Press, 2010.</li>
+<li>SINGER, Ryan. <em>Shape Up: Stop Running in Circles and Ship Work that Matters</em>. Basecamp, 2019 — <a href="https://basecamp.com/shapeup">basecamp.com/shapeup</a></li>
+<li>VOGELS, Werner. <em>A Conversation with Werner Vogels</em> (entrevista a Jim Gray). ACM Queue, 4(4), 2006 — <a href="https://queue.acm.org/detail.cfm?id=1142065">queue.acm.org</a></li>
+<li>ALLSPAW, John. <em>Blameless PostMortems and a Just Culture</em>. Etsy, 2012 — <a href="https://www.etsy.com/codeascraft/blameless-postmortems">etsy.com/codeascraft</a></li>
 </ul>
 
 

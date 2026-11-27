@@ -1060,9 +1060,9 @@
 <h2 id="estrategias-de-deploy-com-baixo-risco">🚦 Estratégias de deploy com baixo risco<a class="headerlink" href="#estrategias-de-deploy-com-baixo-risco" title="Permanent link">&para;</a></h2>
 <p>Automatizar o deploy não significa "publicar tudo de uma vez para todo mundo". Estratégias comuns para reduzir o risco de um deploy automatizado:</p>
 <ul>
-<li><strong>Blue-Green Deployment</strong>: mantém dois ambientes de produção idênticos (azul e verde); o tráfego é roteado para um deles enquanto o outro recebe a nova versão, e a troca de tráfego é uma operação quase instantânea — com rollback igualmente rápido, se necessário.</li>
-<li><strong>Canary Release</strong>: a nova versão é liberada para uma pequena fatia do tráfego real (ex: 5%) antes de ser expandida gradualmente para 100%, monitorando métricas de erro a cada passo.</li>
-<li><strong>Feature Flags</strong>: o código de uma nova funcionalidade já está em produção, mas desligado por uma configuração — permitindo separar o <strong>deploy</strong> do código (uma operação técnica) do <strong>lançamento</strong> da funcionalidade (uma decisão de produto), e habilitar a funcionalidade gradualmente ou apenas para usuários específicos.</li>
+<li><strong><a href="https://www.martinfowler.com/bliki/BlueGreenDeployment.html">Blue-Green Deployment</a></strong>: mantém dois ambientes de produção idênticos (azul e verde); o tráfego é roteado para um deles enquanto o outro recebe a nova versão, e a troca de tráfego é uma operação quase instantânea — com rollback igualmente rápido, se necessário.</li>
+<li><strong><a href="https://www.martinfowler.com/bliki/CanaryRelease.html">Canary Release</a></strong>: a nova versão é liberada para uma pequena fatia do tráfego real (ex: 5%) antes de ser expandida gradualmente para 100%, monitorando métricas de erro a cada passo.</li>
+<li><strong><a href="https://martinfowler.com/articles/feature-toggles.html">Feature Flags</a></strong>: o código de uma nova funcionalidade já está em produção, mas desligado por uma configuração — permitindo separar o <strong>deploy</strong> do código (uma operação técnica) do <strong>lançamento</strong> da funcionalidade (uma decisão de produto), e habilitar a funcionalidade gradualmente ou apenas para usuários específicos.</li>
 </ul>
 <div class="admonition tip">
 <p class="admonition-title">Deploy frequente reduz risco, não aumenta</p>
@@ -1177,6 +1177,9 @@
 <li><em>OWASP GenAI Top 10 for LLM Applications</em>, 2026 — <a href="https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/">genai.owasp.org</a></li>
 <li>Documentação oficial: <a href="https://docs.github.com/actions">GitHub Actions</a>, <a href="https://docs.docker.com/">Docker</a></li>
 <li>Relatórios anuais da DORA (Google Cloud): <em>State of DevOps</em> até 2024 e <em>State of AI-assisted Software Development</em> em 2025 — <a href="https://dora.dev/">dora.dev</a>.</li>
+<li>FOWLER, Martin. <em>Blue Green Deployment</em>, 2010 — <a href="https://www.martinfowler.com/bliki/BlueGreenDeployment.html">martinfowler.com</a></li>
+<li>SATO, Danilo. <em>Canary Release</em>, 2014 — <a href="https://www.martinfowler.com/bliki/CanaryRelease.html">martinfowler.com</a></li>
+<li>HODGSON, Pete. <em>Feature Toggles (aka Feature Flags)</em>, 2017 — <a href="https://martinfowler.com/articles/feature-toggles.html">martinfowler.com</a></li>
 </ul>
 
 
