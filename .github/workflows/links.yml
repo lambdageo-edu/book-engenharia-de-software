@@ -24,6 +24,10 @@ jobs:
         with:
           # Endereços de exemplo e locais ficam de fora.
           # 429 (muitos pedidos) não indica link quebrado.
+          # Não verificados aqui (confira à mão de vez em quando):
+          # - queue.acm.org, etsy.com, scrum.org e oreilly.com recusam robôs (403);
+          # - planalto.gov.br não aceita a conexão a partir do GitHub;
+          # - arquivos desta main podem ainda não existir durante um pull request.
           args: >-
             --no-progress
             --max-retries 3
@@ -33,5 +37,11 @@ jobs:
             --exclude "exemplo\."
             --exclude "example\."
             --exclude-loopback
+            --exclude "queue\.acm\.org/detail\.cfm\?id=1142065"
+            --exclude "etsy\.com/codeascraft/blameless-postmortems"
+            --exclude "scrum\.org/resources/blog/myth-9"
+            --exclude "oreilly\.com/library/view/-/0131177052"
+            --exclude "planalto\.gov\.br/ccivil_03/Leis/L9609"
+            --exclude "book-engenharia-de-software/blob/main/"
             "docs/**/*.md"
           fail: true
