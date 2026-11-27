@@ -76,6 +76,18 @@ Scrum é o framework ágil mais adotado no mercado. Organiza o trabalho em **spr
 | *Sprint Backlog* | Meta da sprint (*Sprint Goal*) |
 | Incremento | Definição de pronto (*Definition of Done*) |
 
+#### Definição de pronto
+
+A **definição de pronto** (*Definition of Done*) descreve o estado que um incremento precisa atingir para atender às medidas de qualidade do produto. Um item que não a cumpre não é entregue nem apresentado na revisão da *sprint*: volta para o *backlog* (SCHWABER; SUTHERLAND, 2020). Para a API de tarefas, uma primeira versão poderia ser:
+
+* os critérios de aceitação têm testes, e todos passam;
+* o pipeline está verde, incluindo as verificações de segurança (Capítulo 7);
+* outra pessoa revisou o *pull request*;
+* a documentação afetada foi atualizada;
+* nenhum segredo ou dado real foi incluído no repositório.
+
+Não confunda com os **critérios de aceitação** (Capítulo 3): eles mudam a cada história e dizem o que *aquela* funcionalidade deve fazer; a definição de pronto vale para *todas*. A ideia é útil mesmo fora do Scrum.
+
 ### Kanban
 
 Kanban tem origem no sistema de produção da Toyota e foi adaptado ao desenvolvimento de software por David J. Anderson (2010). Em vez de iterações de tempo fixo, o trabalho flui continuamente por colunas em um quadro (ex: *A Fazer → Em Progresso → Em Revisão → Concluído*), com **limites explícitos de trabalho em progresso (WIP)** para evitar sobrecarga e destacar gargalos.
@@ -142,12 +154,14 @@ A maioria das organizações de produto digital hoje adota variantes ágeis com 
 1. Descreva um cenário de projeto de software em que o modelo em cascata ainda seria a escolha mais razoável hoje, e justifique.
 2. Compare Scrum e Kanban usando um exemplo de equipe que você conhece (trabalho, estágio, projeto acadêmico). Qual se encaixaria melhor e por quê?
 3. Explique, com suas palavras, a diferença entre "ser ágil" e "fazer DevOps". Dê um exemplo de time que seria um, mas não o outro.
+4. Escreva a definição de pronto de um projeto em que você participa. Quais itens podem ser verificados automaticamente?
 
 ## 📚 Para saber mais
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 2.
 * Manifesto para Desenvolvimento Ágil de Software — [agilemanifesto.org/iso/ptbr/manifesto.html](https://agilemanifesto.org/iso/ptbr/manifesto.html)
 * Scrum Guide (oficial) — [scrumguides.org](https://scrumguides.org/)
+* SCHWABER, Ken; SUTHERLAND, Jeff. *The Scrum Guide*, 2020 — [scrumguides.org](https://www.scrumguides.org/scrum-guide.html)
 * FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. *Accelerate: The Science of Lean Software and DevOps*. IT Revolution, 2018.
 * Relatórios anuais da DORA (Google Cloud): *State of DevOps* até 2024 e *State of AI-assisted Software Development* em 2025 — [dora.dev](https://dora.dev/).
 * ROYCE, Winston W. *Managing the Development of Large Software Systems*. Proceedings of IEEE WESCON, 1970.
