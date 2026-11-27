@@ -143,7 +143,7 @@ docker compose -f compose.dev.yaml down         # remove os contêineres
 * `command` substitui o `CMD` do `Dockerfile` apenas neste ambiente;
 * mudou o `requirements.txt`? Rode de novo com `--build`.
 
-Se o servidor não reiniciar ao salvar, o que pode acontecer quando o sistema de arquivos não avisa o contêiner das mudanças, acrescente ao serviço `environment: ["WATCHFILES_FORCE_POLLING=true"]`.
+Se o servidor não reiniciar ao salvar, o que a documentação do Uvicorn relata no WSL, acrescente ao serviço `environment: ["WATCHFILES_FORCE_POLLING=true"]`.
 
 Este arquivo é para a sua máquina. Para implantar, o [Capítulo 7](../capitulos/07_integracao_entrega_continua.md) usa outro, sem recarga automática e com HTTPS.
 
@@ -163,4 +163,4 @@ Para praticar passo a passo (rede, volumes, Docker Compose e otimização de ima
 * GitHub. *Removing sensitive data from a repository* — [docs.github.com](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository)
 * Documentação oficial do Docker — [docs.docker.com](https://docs.docker.com/)
 * Docker. *Docker Compose* — [docs.docker.com/compose](https://docs.docker.com/compose/)
-* Uvicorn. *Settings* (recarga automática) — [uvicorn.org/settings](https://www.uvicorn.org/settings/)
+* Uvicorn. *Settings* (recarga automática) — [uvicorn.dev/settings](https://uvicorn.dev/settings/)
