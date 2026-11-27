@@ -167,6 +167,8 @@ Alguns cuidados de boas práticas embutidos neste `Dockerfile`:
 
 O job `imagem` apenas constrói a imagem, para garantir que o `Dockerfile` continua funcionando. O passo seguinte seria usar `docker/build-push-action` para publicá-la em um registro (GitHub Container Registry, Docker Hub, ECR) a cada merge na branch principal — o primeiro passo em direção à entrega contínua.
 
+Para ir além deste `Dockerfile`, veja o tutorial [Otimização de imagens: desenvolvimento e produção](https://lambdageo-edu.github.io/lambdageo-tutorials/docker/otimizacao-imagens-dev-vs-prod/). Os comandos básicos de Git e Docker estão no [apêndice](../apendices/git_conteineres.md).
+
 === "Continuous Delivery"
     Após o build da imagem, o pipeline aguarda uma aprovação manual (ex: um ambiente protegido do GitHub com *reviewers* obrigatórios) antes do deploy em produção — útil quando há razões de negócio (janelas de manutenção, aprovação de compliance) para controlar o momento do deploy.
 
