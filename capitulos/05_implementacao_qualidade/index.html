@@ -748,6 +748,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#concorrencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🔀 Concorrência
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#depuracao" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1316,6 +1327,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#concorrencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🔀 Concorrência
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#depuracao" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1676,6 +1698,58 @@
 <a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>        <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"serviço de permissões não respondeu"</span><span class="p">)</span>
 <a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>        <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>
+<h2 id="concorrencia">🔀 Concorrência<a class="headerlink" href="#concorrencia" title="Permanent link">&para;</a></h2>
+<p>Um servidor atende vários pedidos ao mesmo tempo. No FastAPI, por exemplo, uma rota declarada com <code>def</code> roda em um <a href="https://fastapi.tiangolo.com/async/">conjunto de <em>threads</em></a>, e dois pedidos podem executar a mesma função lado a lado. Há uma <strong>condição de corrida</strong> quando o resultado depende de quem chega primeiro a um dado compartilhado.</p>
+<p>Suponha que um membro só possa assumir uma tarefa que ainda não tem responsável. O código óbvio consulta e depois grava. No programa abaixo, <code>corrida.py</code>, os passos de Ana e de Bruno são intercalados à mão, para o problema aparecer sempre:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">banco</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">":memory:"</span><span class="p">,</span> <span class="n">isolation_level</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE tarefas (id INTEGER PRIMARY KEY, responsavel TEXT)"</span><span class="p">)</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO tarefas VALUES (1, NULL)"</span><span class="p">)</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">esta_livre</span><span class="p">():</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    <span class="n">linha</span> <span class="o">=</span> <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT responsavel FROM tarefas WHERE id = 1"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>    <span class="k">return</span> <span class="n">linha</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="k">def</span><span class="w"> </span><span class="nf">gravar</span><span class="p">(</span><span class="n">quem</span><span class="p">):</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>    <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"UPDATE tarefas SET responsavel = ? WHERE id = 1"</span><span class="p">,</span> <span class="p">(</span><span class="n">quem</span><span class="p">,))</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="n">ana_viu_livre</span> <span class="o">=</span> <span class="n">esta_livre</span><span class="p">()</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="n">bruno_viu_livre</span> <span class="o">=</span> <span class="n">esta_livre</span><span class="p">()</span>  <span class="c1"># Ana ainda não gravou</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="k">if</span> <span class="n">ana_viu_livre</span><span class="p">:</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>    <span class="n">gravar</span><span class="p">(</span><span class="s2">"ana"</span><span class="p">)</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="k">if</span> <span class="n">bruno_viu_livre</span><span class="p">:</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a>    <span class="n">gravar</span><span class="p">(</span><span class="s2">"bruno"</span><span class="p">)</span>  <span class="c1"># apaga a escolha de Ana</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="nb">print</span><span class="p">(</span><span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT responsavel FROM tarefas"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># bruno</span>
+</code></pre></div>
+<p>As duas consultas acharam a tarefa livre, as duas gravações deram certo e Ana acredita que a tarefa é dela. Entre <strong>verificar</strong> e <strong>usar</strong> o resultado, o dado mudou. Essa falha é conhecida como <a href="https://cwe.mitre.org/data/definitions/367.html">TOCTOU</a> (<em>time-of-check to time-of-use</em>) e, quando está numa regra de permissão, é um problema de segurança.</p>
+<p>A correção é fazer a verificação e a gravação em <strong>um só comando</strong>, que o banco executa sem intercalar outra escrita, e depois perguntar quantas linhas mudaram:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">assumir</span><span class="p">(</span><span class="n">quem</span><span class="p">):</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="n">cursor</span> <span class="o">=</span> <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>        <span class="s2">"UPDATE tarefas SET responsavel = ? WHERE id = 1 AND responsavel IS NULL"</span><span class="p">,</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>        <span class="p">(</span><span class="n">quem</span><span class="p">,),</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="p">)</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"UPDATE tarefas SET responsavel = NULL"</span><span class="p">)</span>  <span class="c1"># libera de novo</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">assumir</span><span class="p">(</span><span class="s2">"ana"</span><span class="p">))</span>    <span class="c1"># True</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">assumir</span><span class="p">(</span><span class="s2">"bruno"</span><span class="p">))</span>  <span class="c1"># False: já tem responsável</span>
+</code></pre></div>
+<p>O <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a> faz isso em <code>app/tarefas.py</code>: quando quem pede não é o dono do projeto, a condição entra no próprio <code>UPDATE</code> e, se nenhuma linha muda, a resposta é um erro. A mudança de estado da tarefa usa a mesma técnica.</p>
+<p>Algumas regras práticas:</p>
+<ul>
+<li><strong>Desconfie de "consulta, decide, grava"</strong> sobre um dado que outro pedido pode mudar.</li>
+<li><strong>Deixe o banco garantir a regra</strong> quando ele puder: um <code>UPDATE</code> condicional ou uma restrição como <code>UNIQUE</code>.</li>
+<li><strong>Se a operação precisa de vários comandos</strong>, use uma transação com o isolamento adequado. No SQLite, <a href="https://www.sqlite.org/lang_transaction.html"><code>BEGIN IMMEDIATE</code></a> reserva a escrita antes da primeira consulta, e quem chega depois pode receber um erro de banco ocupado, que o código precisa tratar.</li>
+<li><strong>Um <em>lock</em> na memória</strong> (<code>threading.Lock</code>) só protege um processo. Com duas instâncias da aplicação, cada uma tem o seu.</li>
+<li><strong>Não conte com os testes comuns</strong> para achar o problema: um pedido depois do outro não reproduz a corrida, e disparar vários ao mesmo tempo pode passar muitas vezes antes de falhar.</li>
+</ul>
 <h2 id="depuracao">🐞 Depuração<a class="headerlink" href="#depuracao" title="Permanent link">&para;</a></h2>
 <p>Um teste ou um usuário mostram que algo falhou. <strong>Depurar</strong> é encontrar o defeito que causou a falha (<a href="../06_testes_validacao/">Capítulo 6</a>) e corrigi-lo. Mudar linhas ao acaso até o sintoma sumir costuma esconder o problema. Um roteiro:</p>
 <ol>
@@ -1687,37 +1761,37 @@
 </ol>
 <h3 id="ler-o-traceback">Ler o <em>traceback</em><a class="headerlink" href="#ler-o-traceback" title="Permanent link">&para;</a></h3>
 <p>Este programa, em <code>relatorio.py</code>, tem um defeito:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">media_por_membro</span><span class="p">(</span><span class="n">tarefas</span><span class="p">,</span> <span class="n">membros</span><span class="p">):</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">tarefas</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">membros</span><span class="p">)</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">resumo</span><span class="p">(</span><span class="n">projeto</span><span class="p">):</span>
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">media</span> <span class="o">=</span> <span class="n">media_por_membro</span><span class="p">(</span><span class="n">projeto</span><span class="p">[</span><span class="s2">"tarefas"</span><span class="p">],</span> <span class="n">projeto</span><span class="p">[</span><span class="s2">"membros"</span><span class="p">])</span>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">media</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> tarefas por membro"</span>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">resumo</span><span class="p">({</span><span class="s2">"tarefas"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Publicar"</span><span class="p">],</span> <span class="s2">"membros"</span><span class="p">:</span> <span class="p">[]}))</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">media_por_membro</span><span class="p">(</span><span class="n">tarefas</span><span class="p">,</span> <span class="n">membros</span><span class="p">):</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">tarefas</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">membros</span><span class="p">)</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">resumo</span><span class="p">(</span><span class="n">projeto</span><span class="p">):</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="n">media</span> <span class="o">=</span> <span class="n">media_por_membro</span><span class="p">(</span><span class="n">projeto</span><span class="p">[</span><span class="s2">"tarefas"</span><span class="p">],</span> <span class="n">projeto</span><span class="p">[</span><span class="s2">"membros"</span><span class="p">])</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">media</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> tarefas por membro"</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">resumo</span><span class="p">({</span><span class="s2">"tarefas"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Publicar"</span><span class="p">],</span> <span class="s2">"membros"</span><span class="p">:</span> <span class="p">[]}))</span>
 </code></pre></div>
 <p>Com Python 3.14, a saída é esta (o caminho do arquivo varia):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Traceback (most recent call last):
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  File "/app/relatorio.py", line 11, in &lt;module&gt;
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    print(resumo({"tarefas": ["Publicar"], "membros": []}))
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>          ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>  File "/app/relatorio.py", line 6, in resumo
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    media = media_por_membro(projeto["tarefas"], projeto["membros"])
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>  File "/app/relatorio.py", line 2, in media_por_membro
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    return len(tarefas) / len(membros)
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>           ~~~~~~~~~~~~~^~~~~~~~~~~~~~
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>ZeroDivisionError: division by zero
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Traceback (most recent call last):
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  File "/app/relatorio.py", line 11, in &lt;module&gt;
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    print(resumo({"tarefas": ["Publicar"], "membros": []}))
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>          ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>  File "/app/relatorio.py", line 6, in resumo
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    media = media_por_membro(projeto["tarefas"], projeto["membros"])
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>  File "/app/relatorio.py", line 2, in media_por_membro
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    return len(tarefas) / len(membros)
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>           ~~~~~~~~~~~~~^~~~~~~~~~~~~~
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>ZeroDivisionError: division by zero
 </code></pre></div>
 <p>Comece pela última linha, que diz <strong>o que</strong> aconteceu. Acima dela está o <strong>caminho das chamadas</strong>, com a mais recente embaixo. A linha 2 é onde o erro apareceu, mas a decisão que falta é outra: o que o relatório deve dizer de um projeto sem membros? Respondida a pergunta, escreve-se o teste, em <code>test_resumo.py</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">relatorio</span><span class="w"> </span><span class="kn">import</span> <span class="n">resumo</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_projeto_sem_membros</span><span class="p">():</span>
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="n">projeto</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"tarefas"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Publicar"</span><span class="p">],</span> <span class="s2">"membros"</span><span class="p">:</span> <span class="p">[]}</span>
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="k">assert</span> <span class="n">resumo</span><span class="p">(</span><span class="n">projeto</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"projeto sem membros"</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">relatorio</span><span class="w"> </span><span class="kn">import</span> <span class="n">resumo</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_projeto_sem_membros</span><span class="p">():</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">projeto</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"tarefas"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Publicar"</span><span class="p">],</span> <span class="s2">"membros"</span><span class="p">:</span> <span class="p">[]}</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="k">assert</span> <span class="n">resumo</span><span class="p">(</span><span class="n">projeto</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"projeto sem membros"</span>
 </code></pre></div>
 <p>Ele falha com o código atual. A correção entra em <code>resumo</code>, e o teste passa a protegê-la.</p>
 <h3 id="parar-o-programa-e-olhar">Parar o programa e olhar<a class="headerlink" href="#parar-o-programa-e-olhar" title="Permanent link">&para;</a></h3>
@@ -1759,9 +1833,9 @@
 <p>Com <code>pytest --pdb</code>, o depurador abre no ponto em que um teste falha. Editores costumam oferecer os mesmos recursos com uma interface gráfica. Remova os <code>breakpoint()</code> antes do <em>commit</em>. Em produção não se depura parando o programa: usam-se os <em>logs</em> (<a href="../08_evolucao_manutencao/">Capítulo 8</a>).</p>
 <h3 id="quando-comecou">Quando começou?<a class="headerlink" href="#quando-comecou" title="Permanent link">&para;</a></h3>
 <p>Se funcionava e deixou de funcionar, o <a href="https://git-scm.com/docs/git-bisect/2.52.0"><code>git bisect</code></a> procura, por busca binária, o <em>commit</em> que introduziu o problema:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>git<span class="w"> </span>bisect<span class="w"> </span>start<span class="w"> </span>HEAD<span class="w"> </span>v1.2.0<span class="w"> </span>--<span class="w">   </span><span class="c1"># HEAD tem o defeito; v1.2.0 não tinha</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>git<span class="w"> </span>bisect<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-q<span class="w"> </span>test_resumo.py
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>git<span class="w"> </span>bisect<span class="w"> </span>reset<span class="w">                  </span><span class="c1"># volta para onde você estava</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>git<span class="w"> </span>bisect<span class="w"> </span>start<span class="w"> </span>HEAD<span class="w"> </span>v1.2.0<span class="w"> </span>--<span class="w">   </span><span class="c1"># HEAD tem o defeito; v1.2.0 não tinha</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>git<span class="w"> </span>bisect<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-q<span class="w"> </span>test_resumo.py
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>git<span class="w"> </span>bisect<span class="w"> </span>reset<span class="w">                  </span><span class="c1"># volta para onde você estava</span>
 </code></pre></div>
 <p>O teste precisa continuar disponível nos <em>commits</em> antigos. Um arquivo novo, ainda não adicionado ao Git, permanece no lugar durante a busca. <em>Commits</em> pequenos fazem o resultado apontar para poucas linhas.</p>
 <p>Um assistente de IA pode ajudar a interpretar um <em>traceback</em>. Antes de colá-lo, retire segredos e dados pessoais, e confirme a explicação reproduzindo o erro.</p>
@@ -1869,6 +1943,7 @@
 <li>Escreva um teste para <code>pode_concluir</code> com um dublê que levanta <code>TimeoutError</code>. Depois procure, em um projeto seu, um <code>except</code> que esconda um erro.</li>
 <li>Reproduza o erro de <code>relatorio.py</code>, pare nele com <code>breakpoint()</code> e examine <code>membros</code>. Corrija e confira que o teste passa.</li>
 <li>Em um repositório de teste, introduza um defeito no meio de uma sequência de <em>commits</em> e encontre-o com <code>git bisect run</code>.</li>
+<li>Em <code>corrida.py</code>, troque o trecho intercalado por chamadas a <code>assumir</code> e confira que só a primeira devolve <code>True</code>. Depois procure, em um projeto seu, um "consulta, decide, grava" e diga o que acontece se dois pedidos chegarem juntos.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1878,6 +1953,9 @@
 <li>Documentação do <code>ruff</code> (linter/formatador Python) — <a href="https://docs.astral.sh/ruff/">docs.astral.sh/ruff</a></li>
 <li>Documentação do Python, <em>pdb</em> — <a href="https://docs.python.org/3.14/library/pdb.html">docs.python.org</a></li>
 <li>Git, <em>git-bisect</em> — <a href="https://git-scm.com/docs/git-bisect/2.52.0">git-scm.com</a></li>
+<li>MITRE, <em>CWE-367: Time-of-check Time-of-use (TOCTOU) Race Condition</em> — <a href="https://cwe.mitre.org/data/definitions/367.html">cwe.mitre.org</a></li>
+<li>SQLite, <em>Transaction</em> — <a href="https://www.sqlite.org/lang_transaction.html">sqlite.org</a></li>
+<li>FastAPI, <em>Concurrency and async / await</em> — <a href="https://fastapi.tiangolo.com/async/">fastapi.tiangolo.com</a></li>
 <li>ZELLER, Andreas. <em>Why Programs Fail: A Guide to Systematic Debugging</em>. 2. ed. Morgan Kaufmann, 2009.</li>
 <li>OWASP <em>Error Handling Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
 <li><em>OWASP Top 10:2025</em> — <a href="https://owasp.org/Top10/2025/0x00_2025-Introduction/">owasp.org/Top10/2025</a></li>
@@ -1927,7 +2005,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      © Sergio Souza Costa · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br">CC BY-NC-SA 4.0</a>
+      © Sergio Souza Costa · Texto: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br">CC BY-NC-SA 4.0</a> · Código: <a href="https://github.com/lambdageo-edu/book-engenharia-de-software/blob/main/LICENSE-CODIGO">MIT</a>
 
     </div>
   
@@ -1956,7 +2034,9 @@
       
         
         
-      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["navigation.instant","navigation.tracking","navigation.sections","navigation.expand","navigation.top","search.highlight","search.share","content.code.annotate","content.code.copy","content.tabs.link","content.tooltips","toc.follow"],"redirect":null,"search":"../../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Copiado para área de transferência","clipboard.copy":"Copiar para área de transferência","clipboard.error":"Could not copy to clipboard","search.result.more.one":"Mais 1 nesta página","search.result.more.other":"Mais # nesta página","search.result.none":"Nenhum resultado encontrado","search.result.one":"1 resultado encontrado","search.result.other":"# resultados encontrados","search.result.placeholder":"Digite para iniciar a busca","search.result.term.missing":"Ausente","select.version":"Selecione a versão"},"version":null}</script>
+          
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["navigation.instant","navigation.tracking","navigation.sections","navigation.expand","navigation.top","search.highlight","search.share","content.code.annotate","content.code.copy","content.tabs.link","content.tooltips","toc.follow"],"redirect":"../../redirect.json","search":"../../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Copiado para área de transferência","clipboard.copy":"Copiar para área de transferência","clipboard.error":"Could not copy to clipboard","search.result.more.one":"Mais 1 nesta página","search.result.more.other":"Mais # nesta página","search.result.none":"Nenhum resultado encontrado","search.result.one":"1 resultado encontrado","search.result.other":"# resultados encontrados","search.result.placeholder":"Digite para iniciar a busca","search.result.term.missing":"Ausente","select.version":"Selecione a versão"},"version":null}</script>
     
     
       <script src="../../assets/javascripts/bundle.9e76c64c.min.js"></script>
