@@ -211,7 +211,7 @@ O NIST observa que poucos modelos de ciclo de vida tratam a segurança em detalh
 | Produzir software bem protegido (*PW*) | Lançar versões com o mínimo de vulnerabilidades |
 | Responder a vulnerabilidades (*RV*) | Encontrar o que escapou, corrigir e evitar que se repita |
 
-**DevSecOps** leva essa preocupação para o DevOps: os passos de segurança entram no mesmo fluxo de desenvolvimento e entrega, automatizados sempre que possível ([OWASP DevSecOps Guideline](https://devguide.owasp.org/09-operations/01-devsecops)). A ideia, muitas vezes chamada de *shift left* (antecipar), é não deixar a segurança para uma revisão no fim, quando corrigir custa mais. Neste livro ela aparece em cada etapa:
+**DevSecOps** leva essa preocupação para o DevOps: os passos de segurança entram no mesmo fluxo de desenvolvimento e entrega, automatizados sempre que possível ([OWASP DevSecOps Guideline](https://devguide.owasp.org/en/09-operations/01-devsecops/)). A ideia, muitas vezes chamada de *shift left* (antecipar), é não deixar a segurança para uma revisão no fim, quando corrigir custa mais. Neste livro ela aparece em cada etapa:
 
 | Momento | O que se faz | Onde |
 |---|---|---|
@@ -268,4 +268,4 @@ A maioria das organizações de produto digital hoje adota variantes ágeis com 
 * VOGELS, Werner. *A Conversation with Werner Vogels* (entrevista a Jim Gray). ACM Queue, 4(4), 2006 — [queue.acm.org](https://queue.acm.org/detail.cfm?id=1142065)
 * ALLSPAW, John. *Blameless PostMortems and a Just Culture*. Etsy, 2012 — [etsy.com/codeascraft](https://www.etsy.com/codeascraft/blameless-postmortems)
 * SOUPPAYA, Murugiah; SCARFONE, Karen; DODSON, Donna. *Secure Software Development Framework (SSDF) Version 1.1*. NIST SP 800-218, 2022 — [doi.org/10.6028/NIST.SP.800-218](https://doi.org/10.6028/NIST.SP.800-218). A revisão 1.2 estava em consulta pública (rascunho de dezembro de 2025).
-* OWASP Developer Guide, *DevSecOps* — [devguide.owasp.org](https://devguide.owasp.org/09-operations/01-devsecops)
+* OWASP Developer Guide, *DevSecOps* — [devguide.owasp.org](https://devguide.owasp.org/en/09-operations/01-devsecops/)
