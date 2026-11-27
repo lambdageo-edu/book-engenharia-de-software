@@ -1,7 +1,7 @@
-site_name: Engenharia de Software
+site_name: Desenvolvimento de Software
 site_description: >
-  Livro didático da disciplina de Engenharia de Software: processos,
-  requisitos, arquitetura, qualidade e práticas modernas de DevOps.
+  Livro aberto sobre desenvolvimento de software: processos, requisitos,
+  arquitetura, qualidade, testes, CI/CD e evolução.
 site_author: "Sergio Souza Costa"
 
 docs_dir: docs
@@ -68,8 +68,7 @@ nav:
   - "⇦ Coleção LambdaGeo": https://lambdageo.github.io/ebooks/
   - Apresentação: index.md
 
-  - Engenharia de Software:
-    - "Plano da Disciplina":                              unidade1/00_plano_unidade1.md
+  - Desenvolvimento de Software:
     - "Cap 1: Introdução à Engenharia de Software":       unidade1/01_introducao_engenharia_software.md
     - "Cap 2: Processos: do Cascata ao Ágil e DevOps":    unidade1/02_processos_desenvolvimento.md
     - "Cap 3: Especificação de Requisitos":               unidade1/03_especificacao_requisitos.md
