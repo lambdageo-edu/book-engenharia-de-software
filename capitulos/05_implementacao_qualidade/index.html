@@ -1519,7 +1519,7 @@
 <p>Benefícios da revisão de código (um estudo na Microsoft mostra que, além de achar defeitos, ela serve à troca de conhecimento: <a href="https://www.microsoft.com/en-us/research/?p=164195">Bacchelli e Bird, 2013</a>):</p>
 <ul>
 <li><strong>Detecção de defeitos</strong> antes que cheguem à produção — mais barata do que corrigir depois.</li>
-<li><strong>Disseminação de conhecimento</strong> sobre o sistema entre os membros do time, reduzindo o risco de conhecimento concentrado em uma única pessoa (<em>bus factor</em> baixo).</li>
+<li><strong>Disseminação de conhecimento</strong> sobre o sistema entre os membros do time, reduzindo o risco de conhecimento concentrado em uma única pessoa (<em>bus factor</em> baixo). Também apoia a <strong>propriedade coletiva</strong> do código, prática do XP (<a href="../02_processos_desenvolvimento/">Capítulo 2</a>).</li>
 <li><strong>Consistência de estilo e de decisões de projeto</strong> ao longo do código.</li>
 <li><strong>Aprendizado mútuo</strong>, especialmente entre desenvolvedores mais e menos experientes.</li>
 </ul>
@@ -1699,7 +1699,7 @@
 <a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>        <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>
 <h2 id="concorrencia">🔀 Concorrência<a class="headerlink" href="#concorrencia" title="Permanent link">&para;</a></h2>
-<p>Um servidor atende vários pedidos ao mesmo tempo. No FastAPI, por exemplo, uma rota declarada com <code>def</code> roda em um <a href="https://fastapi.tiangolo.com/async/">conjunto de <em>threads</em></a>, e dois pedidos podem executar a mesma função lado a lado. Há uma <strong>condição de corrida</strong> quando o resultado depende de quem chega primeiro a um dado compartilhado.</p>
+<p>Um servidor atende vários pedidos ao mesmo tempo. No FastAPI, por exemplo, uma rota declarada com <code>def</code> roda em um <a href="https://fastapi.tiangolo.com/async/">conjunto de <em>threads</em></a>, e dois pedidos podem executar a mesma função lado a lado. Há uma <strong>condição de corrida</strong> quando a <strong>correção</strong> do resultado depende de como se intercalam os passos de pedidos simultâneos sobre um dado compartilhado: em algumas ordens dá certo, em outras não.</p>
 <p>Suponha que um membro só possa assumir uma tarefa que ainda não tem responsável. O código óbvio consulta e depois grava. No programa abaixo, <code>corrida.py</code>, os passos de Ana e de Bruno são intercalados à mão, para o problema aparecer sempre:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
@@ -1849,7 +1849,7 @@
 </ul>
 <div class="admonition tip">
 <p class="admonition-title">IA muda o \"como\", não o \"porquê\" da revisão</p>
-<p>Os benefícios de revisão de código listados no início desta seção — detecção de defeitos, disseminação de conhecimento, consistência, aprendizado — continuam os mesmos independentemente de quem (ou o quê) escreveu o código. O que muda é o volume e o tipo de atenção que o revisor precisa dedicar a cada mudança.</p>
+<p>Os benefícios listados na seção <a href="#revisao-de-codigo-code-review">Revisão de código</a> — detecção de defeitos, disseminação de conhecimento, consistência, aprendizado — continuam os mesmos independentemente de quem (ou o quê) escreveu o código. O que muda é o volume e o tipo de atenção que o revisor precisa dedicar a cada mudança.</p>
 </div>
 <h3 id="o-que-a-pesquisa-ja-mostrou">O que a pesquisa já mostrou<a class="headerlink" href="#o-que-a-pesquisa-ja-mostrou" title="Permanent link">&para;</a></h3>
 <ul>
