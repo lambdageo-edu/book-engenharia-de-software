@@ -2,7 +2,7 @@
 
 ## 🧭 Defeito, erro e falha
 
-Antes de falar em testes, vale distinguir três termos que costumam ser usados de forma intercambiável, mas que têm significados técnicos distintos:
+Antes de falar em testes, vale distinguir três termos que costumam ser usados de forma intercambiável, mas que têm significados técnicos distintos (a distinção é detalhada por Avizienis e coautores, 2004):
 
 * **Defeito (*fault*/*bug*)**: uma característica estática e incorreta do código-fonte — uma linha escrita errada, uma condição invertida.
 * **Erro (*error*)**: um estado interno incorreto do sistema em tempo de execução, causado por um defeito ao ser exercitado.
@@ -306,3 +306,4 @@ O limite impede que um título enorme seja **armazenado**, mas o servidor ainda 
 * COHN, Mike. *Succeeding with Agile*. Addison-Wesley, 2009 (origem da pirâmide de testes).
 * BECK, Kent. *Test-Driven Development: By Example*. Addison-Wesley, 2002.
 * Documentação oficial: [pytest](https://docs.pytest.org/), [FastAPI Testing](https://fastapi.tiangolo.com/tutorial/testing/)
+* AVIZIENIS, Algirdas; LAPRIE, Jean-Claude; RANDELL, Brian; LANDWEHR, Carl. *Basic Concepts and Taxonomy of Dependable and Secure Computing*. IEEE Transactions on Dependable and Secure Computing, 1(1), 2004.

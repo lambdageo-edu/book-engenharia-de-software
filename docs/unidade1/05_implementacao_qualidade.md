@@ -12,7 +12,7 @@ Algumas práticas amplamente aceitas de código limpo:
 
 * **Nomes que revelam intenção**: `diasDesdeUltimoLogin` comunica mais que `d`. O tempo economizado por nomes ruins na hora de escrever é pago, com juros, por quem lê depois.
 * **Funções pequenas e com um único propósito**: uma função que faz "uma coisa" é mais fácil de testar, entender e reutilizar do que uma função de 200 linhas que faz cinco coisas.
-* **Evitar duplicação (princípio DRY — *Don't Repeat Yourself*)**: lógica duplicada em vários lugares significa que uma correção precisa ser lembrada e replicada em todos eles.
+* **Evitar duplicação (princípio DRY — *Don't Repeat Yourself*, de Hunt e Thomas)**: lógica duplicada em vários lugares significa que uma correção precisa ser lembrada e replicada em todos eles.
 * **Comentários que explicam o "porquê", não o "o quê"**: se o código precisa de um comentário para explicar o que ele faz, muitas vezes é sinal de que ele poderia ser reescrito de forma mais clara. Comentários são mais valiosos quando explicam uma decisão não óbvia ("usamos X em vez de Y por causa da limitação Z da API externa").
 
 !!! warning "Clean code não é dogma"
@@ -22,7 +22,7 @@ Algumas práticas amplamente aceitas de código limpo:
 
 Revisão de código é a prática de um ou mais colegas lerem e comentarem uma mudança de código antes que ela seja integrada ao projeto principal. Hoje é quase universal em times profissionais, tipicamente formalizada através de *pull requests* (GitHub, GitLab) ou *merge requests*.
 
-Benefícios bem documentados da revisão de código:
+Benefícios da revisão de código (um estudo na Microsoft mostra que, além de achar defeitos, ela serve à troca de conhecimento: [Bacchelli e Bird, 2013](https://www.microsoft.com/en-us/research/?p=164195)):
 
 * **Detecção de defeitos** antes que cheguem à produção — mais barata do que corrigir depois.
 * **Disseminação de conhecimento** sobre o sistema entre os membros do time, reduzindo o risco de conhecimento concentrado em uma única pessoa (*bus factor* baixo).
@@ -190,3 +190,5 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 * PERRY, Neil; SRIVASTAVA, Megha; KUMAR, Deepak; BONEH, Dan. *Do Users Write More Insecure Code with AI Assistants?* ACM CCS, 2023 — [arxiv.org/abs/2211.03622](https://arxiv.org/abs/2211.03622)
 * SPRACKLEN, Joseph et al. *We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by Code Generating LLMs*. USENIX Security, 2025 — [usenix.org](https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen)
 * Guia de código semântico de commits — [conventionalcommits.org](https://www.conventionalcommits.org/pt-br/)
+* HUNT, Andrew; THOMAS, David. *The Pragmatic Programmer*. Addison-Wesley, 1999.
+* BACCHELLI, Alberto; BIRD, Christian. *Expectations, Outcomes, and Challenges of Modern Code Review*. ICSE, 2013 — [microsoft.com/research](https://www.microsoft.com/en-us/research/?p=164195)

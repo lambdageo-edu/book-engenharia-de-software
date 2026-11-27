@@ -177,9 +177,9 @@ O job `imagem` apenas constrói a imagem, para garantir que o `Dockerfile` conti
 
 Automatizar o deploy não significa "publicar tudo de uma vez para todo mundo". Estratégias comuns para reduzir o risco de um deploy automatizado:
 
-* **Blue-Green Deployment**: mantém dois ambientes de produção idênticos (azul e verde); o tráfego é roteado para um deles enquanto o outro recebe a nova versão, e a troca de tráfego é uma operação quase instantânea — com rollback igualmente rápido, se necessário.
-* **Canary Release**: a nova versão é liberada para uma pequena fatia do tráfego real (ex: 5%) antes de ser expandida gradualmente para 100%, monitorando métricas de erro a cada passo.
-* **Feature Flags**: o código de uma nova funcionalidade já está em produção, mas desligado por uma configuração — permitindo separar o **deploy** do código (uma operação técnica) do **lançamento** da funcionalidade (uma decisão de produto), e habilitar a funcionalidade gradualmente ou apenas para usuários específicos.
+* **[Blue-Green Deployment](https://www.martinfowler.com/bliki/BlueGreenDeployment.html)**: mantém dois ambientes de produção idênticos (azul e verde); o tráfego é roteado para um deles enquanto o outro recebe a nova versão, e a troca de tráfego é uma operação quase instantânea — com rollback igualmente rápido, se necessário.
+* **[Canary Release](https://www.martinfowler.com/bliki/CanaryRelease.html)**: a nova versão é liberada para uma pequena fatia do tráfego real (ex: 5%) antes de ser expandida gradualmente para 100%, monitorando métricas de erro a cada passo.
+* **[Feature Flags](https://martinfowler.com/articles/feature-toggles.html)**: o código de uma nova funcionalidade já está em produção, mas desligado por uma configuração — permitindo separar o **deploy** do código (uma operação técnica) do **lançamento** da funcionalidade (uma decisão de produto), e habilitar a funcionalidade gradualmente ou apenas para usuários específicos.
 
 !!! tip "Deploy frequente reduz risco, não aumenta"
     É comum a intuição de que "fazer deploy com mais frequência é mais arriscado". A evidência das pesquisas da DORA (relatórios *State of DevOps*, até 2024) aponta o contrário: deploys pequenos e frequentes são mais fáceis de testar, mais fáceis de reverter e mais fáceis de depurar (menos mudanças acumuladas por deploy) do que grandes lançamentos espaçados — que concentram risco em vez de distribuí-lo.
@@ -285,3 +285,6 @@ Um agente com acesso ao repositório traz um risco novo. Ele lê *issues*, comen
 * *OWASP GenAI Top 10 for LLM Applications*, 2026 — [genai.owasp.org](https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/)
 * Documentação oficial: [GitHub Actions](https://docs.github.com/actions), [Docker](https://docs.docker.com/)
 * Relatórios anuais da DORA (Google Cloud): *State of DevOps* até 2024 e *State of AI-assisted Software Development* em 2025 — [dora.dev](https://dora.dev/).
+* FOWLER, Martin. *Blue Green Deployment*, 2010 — [martinfowler.com](https://www.martinfowler.com/bliki/BlueGreenDeployment.html)
+* SATO, Danilo. *Canary Release*, 2014 — [martinfowler.com](https://www.martinfowler.com/bliki/CanaryRelease.html)
+* HODGSON, Pete. *Feature Toggles (aka Feature Flags)*, 2017 — [martinfowler.com](https://martinfowler.com/articles/feature-toggles.html)

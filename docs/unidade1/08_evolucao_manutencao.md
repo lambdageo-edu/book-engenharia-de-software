@@ -14,7 +14,7 @@ Toda mudança em um sistema em produção começa, formal ou informalmente, como
 
 ## 🔧 Tipos de manutenção
 
-A classificação clássica de tipos de manutenção de software, ainda amplamente usada, distingue quatro categorias pela **motivação** da mudança:
+A classificação clássica de tipos de manutenção de software, ainda amplamente usada, distingue quatro categorias pela **motivação** da mudança. Ela tem raízes nos estudos de Lientz e Swanson (1980) e é tratada pela norma ISO/IEC/IEEE 14764:
 
 | Tipo | Motivação | Exemplo |
 |---|---|---|
@@ -122,5 +122,7 @@ Sem observabilidade adequada, manutenção corretiva vira um exercício de tenta
 * GitHub, referência de opções do Dependabot — [docs.github.com](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference)
 * Google Cloud. *Announcing the 2025 DORA Report* — [cloud.google.com](https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report)
 * FOWLER, Martin. *Refactoring: Improving the Design of Existing Code*. 2. ed. Addison-Wesley, 2018.
-* CUNNINGHAM, Ward. *The WyCash Portfolio Management System* (artigo original sobre débito técnico, 1992).
+* CUNNINGHAM, Ward. *The WyCash Portfolio Management System* (artigo original sobre débito técnico, 1992) — [c2.com](https://c2.com/doc/oopsla92.html)
 * Artigo *TechnicalDebtQuadrant* — [martinfowler.com/bliki/TechnicalDebtQuadrant.html](https://martinfowler.com/bliki/TechnicalDebtQuadrant.html)
+* LIENTZ, Bennet P.; SWANSON, E. Burton. *Software Maintenance Management*. Addison-Wesley, 1980.
+* ISO/IEC/IEEE 14764:2022. *Software engineering: Software life cycle processes, Maintenance* — [standards.ieee.org](https://standards.ieee.org/standard/14764-2021.html)

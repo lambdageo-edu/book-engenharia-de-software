@@ -88,7 +88,7 @@ No final da década de 1960, computadores se tornaram mais acessíveis a grandes
 
 Um marco histórico dessa época foi a **Conferência da OTAN sobre Engenharia de Software** (NATO Software Engineering Conference), realizada em outubro de 1968 em Garmisch, Alemanha. O encontro reuniu cientistas da computação para discutir como tornar o desenvolvimento de software tão rigoroso quanto as demais engenharias, e é considerado hoje o marco de nascimento da disciplina. O relatório produzido, com mais de 130 páginas, defendia que o software deveria ser construído sobre princípios práticos e teóricos sólidos — não apenas sobre a habilidade individual de bons programadores.
 
-De acordo com a definição do IEEE, engenharia de software é a aplicação de uma abordagem:
+De acordo com a definição do IEEE (padrão 610.12-1990, hoje substituído), engenharia de software é a aplicação de uma abordagem:
 
 * **sistemática** — existe um processo definido, com atividades explícitas;
 * **disciplinada** — os processos definidos são de fato seguidos;
@@ -113,4 +113,5 @@ Sommerville complementa: *"a engenharia de software é uma disciplina de engenha
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 1.
 * PRESSMAN, Roger S.; MAXIM, Bruce R. *Engenharia de Software: Uma Abordagem Profissional*. 9. ed. AMGH, 2021. — Capítulo 1.
-* Relatório da Conferência da OTAN de 1968 sobre Engenharia de Software (documento histórico, domínio público) — disponível em [homepages.cs.ncl.ac.uk/brian.randell/NATO](http://homepages.cs.ncl.ac.uk/brian.randell/NATO/).
+* NAUR, Peter; RANDELL, Brian (eds.). *Software Engineering: Report on a conference sponsored by the NATO Science Committee*, Garmisch, 7–11 out. 1968. NATO, 1969 — disponível em [homepages.cs.ncl.ac.uk/brian.randell/NATO](http://homepages.cs.ncl.ac.uk/brian.randell/NATO/).
+* IEEE Std 610.12-1990. *IEEE Standard Glossary of Software Engineering Terminology* (substituído) — [standards.ieee.org](https://standards.ieee.org/standard/610_12-1990.html)
