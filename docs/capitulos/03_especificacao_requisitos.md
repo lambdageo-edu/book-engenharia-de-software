@@ -77,50 +77,6 @@ Comece pela menor fidelidade que responda à dúvida: diante de um desenho com a
 !!! warning "Protótipo descartável não vai para produção"
     Ele foi feito sem testes, tratamento de erros nem segurança. Se há intenção de aproveitá-lo, trate-o como código de verdade desde o início. Vale o mesmo para a aplicação que um assistente de IA monta em minutos.
 
-### Usabilidade e acessibilidade
-
-**Usabilidade** é o quanto as pessoas conseguem fazer o que querem, com acerto e sem esforço desnecessário. Um ***wireframe*** é o lugar barato para começar a cuidar disso: mostra o que há em cada tela e para onde se vai, sem aparência final. Um quadro de tarefas, se o TaskFlow ganhasse uma interface:
-
-```text
-+--------------------------------------------------------+
-| Projeto: Site do evento              [+ Nova tarefa]   |
-+------------------+------------------+------------------+
-| Pendentes (2)    | Em andamento (1) | Concluídas (4)   |
-|                  |                  |                  |
-| Revisar textos   | Montar o mapa    | Reservar a sala  |
-| [Assumir]        | Resp.: Ana       | [Reabrir]        |
-|                  | [Concluir]       |                  |
-+------------------+------------------+------------------+
-```
-
-Para avaliar um desenho ou um sistema pronto, uma referência muito usada são as [dez heurísticas de usabilidade](https://nngroup.com/articles/ten-usability-heuristics/) de Nielsen, desenvolvidas com Rolf Molich em 1990 e refinadas em 1994:
-
-| Heurística | Pergunta para o quadro de tarefas |
-|---|---|
-| Visibilidade do estado do sistema | Depois de clicar em "Concluir", dá para ver que funcionou? |
-| Correspondência com o mundo real | A tela fala "tarefa" e "responsável", ou o jargão do banco de dados? |
-| Controle e liberdade do usuário | Dá para desfazer uma ação feita por engano? |
-| Consistência e padrões | A mesma ação tem o mesmo nome em todas as telas? |
-| Prevenção de erros | A tela deixa de oferecer o que não é permitido? |
-| Reconhecer em vez de lembrar | É preciso decorar códigos de uma tela para outra? |
-| Flexibilidade e eficiência | Quem usa muito tem atalhos? |
-| Estética e projeto minimalista | Há informação disputando atenção sem necessidade? |
-| Ajudar a reconhecer e corrigir erros | A mensagem diz o que houve e o que fazer? |
-| Ajuda e documentação | Quando for preciso, a ajuda é fácil de achar? |
-
-Heurísticas encontram problemas cedo, mas não substituem observar pessoas usando: peça uma tarefa concreta, não ajude e anote onde elas hesitam.
-
-**Acessibilidade** é permitir o uso também por pessoas com deficiência, por exemplo quem usa leitor de tela, navega só pelo teclado ou enxerga pouco contraste. As [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) (versão 2.2), do W3C, organizam o tema em quatro princípios, com critérios em três níveis de conformidade (A, AA e AAA):
-
-| Princípio | Exemplo de critério |
-|---|---|
-| **Perceptível** | Imagens têm texto alternativo; o texto comum tem contraste de pelo menos 4,5:1 (nível AA) |
-| **Operável** | Tudo o que se faz com o mouse também se faz pelo teclado |
-| **Compreensível** | Campos têm rótulo, e os erros são explicados em texto |
-| **Robusto** | A marcação é interpretada corretamente por tecnologias assistivas |
-
-No Brasil, a Lei Brasileira de Inclusão (Lei 13.146/2015, art. 63) torna obrigatória a acessibilidade nos sítios mantidos por empresas com sede ou representação comercial no País ou por órgãos de governo. Trate-a como requisito não funcional desde o início, com critérios verificáveis. Ferramentas automáticas ajudam, mas encontram só parte dos problemas.
-
 ### Requisito em formato clássico
 
 Em processos dirigidos a planos, cada requisito costuma ser registrado em um documento, com identificador e campos definidos. Um exemplo:
@@ -233,7 +189,7 @@ O diagrama é um índice. O conteúdo está na descrição textual de cada caso 
 | **Alternativa: estado inválido** | No passo 3, se a tarefa não está em andamento, o sistema responde 409, e nada muda. |
 | **Pós-condição** | A tarefa está concluída. |
 
-Repare que as alternativas vêm das perguntas que o fluxo principal não responde, e que uma delas é o requisito de segurança da seção anterior.
+Repare que as alternativas vêm das perguntas que o fluxo principal não responde, e que uma delas, a de quem não tem permissão, é um [requisito de segurança](#requisitos-de-seguranca), tratado mais adiante.
 
 ### Atividades
 
@@ -310,14 +266,58 @@ Independente do formato (documento formal ou história de usuário), um bom requ
 
 Um critério útil e amplamente usado para avaliar requisitos, especialmente em contexto ágil, é o acrônimo **INVEST**, [proposto por Bill Wake](https://xp123.com/invest-in-good-stories-and-smart-tasks/): Independente, Negociável, Valioso, Estimável, Pequeno (*Small*) e Testável.
 
+## ♿ Usabilidade e acessibilidade
+
+**Usabilidade** é o quanto as pessoas conseguem fazer o que querem, com acerto e sem esforço desnecessário. Um ***wireframe*** é o lugar barato para começar a cuidar disso: mostra o que há em cada tela e para onde se vai, sem aparência final. Um quadro de tarefas, se o TaskFlow ganhasse uma interface:
+
+```text
++--------------------------------------------------------+
+| Projeto: Site do evento              [+ Nova tarefa]   |
++------------------+------------------+------------------+
+| Pendentes (2)    | Em andamento (1) | Concluídas (4)   |
+|                  |                  |                  |
+| Revisar textos   | Montar o mapa    | Reservar a sala  |
+| [Assumir]        | Resp.: Ana       | [Reabrir]        |
+|                  | [Concluir]       |                  |
++------------------+------------------+------------------+
+```
+
+Para avaliar um desenho ou um sistema pronto, uma referência muito usada são as [dez heurísticas de usabilidade](https://nngroup.com/articles/ten-usability-heuristics/) de Nielsen, desenvolvidas com Rolf Molich em 1990 e refinadas em 1994:
+
+| Heurística | Pergunta para o quadro de tarefas |
+|---|---|
+| Visibilidade do estado do sistema | Depois de clicar em "Concluir", dá para ver que funcionou? |
+| Correspondência com o mundo real | A tela fala "tarefa" e "responsável", ou o jargão do banco de dados? |
+| Controle e liberdade do usuário | Dá para desfazer uma ação feita por engano? |
+| Consistência e padrões | A mesma ação tem o mesmo nome em todas as telas? |
+| Prevenção de erros | A tela deixa de oferecer o que não é permitido? |
+| Reconhecer em vez de lembrar | É preciso decorar códigos de uma tela para outra? |
+| Flexibilidade e eficiência | Quem usa muito tem atalhos? |
+| Estética e projeto minimalista | Há informação disputando atenção sem necessidade? |
+| Ajudar a reconhecer e corrigir erros | A mensagem diz o que houve e o que fazer? |
+| Ajuda e documentação | Quando for preciso, a ajuda é fácil de achar? |
+
+Heurísticas encontram problemas cedo, mas não substituem observar pessoas usando: peça uma tarefa concreta, não ajude e anote onde elas hesitam.
+
+**Acessibilidade** é permitir o uso também por pessoas com deficiência, por exemplo quem usa leitor de tela, navega só pelo teclado ou enxerga pouco contraste. As [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) (versão 2.2), do W3C, organizam o tema em quatro princípios, com critérios em três níveis de conformidade (A, AA e AAA):
+
+| Princípio | Exemplo de critério |
+|---|---|
+| **Perceptível** | Imagens têm texto alternativo; o texto comum tem contraste de pelo menos 4,5:1 (nível AA) |
+| **Operável** | Tudo o que se faz com o mouse também se faz pelo teclado |
+| **Compreensível** | Campos têm rótulo, e os erros são explicados em texto |
+| **Robusto** | A marcação é interpretada corretamente por tecnologias assistivas |
+
+No Brasil, a Lei Brasileira de Inclusão (Lei 13.146/2015, art. 63) torna obrigatória a acessibilidade nos sítios mantidos por empresas com sede ou representação comercial no País ou por órgãos de governo. Trate-a como requisito não funcional desde o início, com critérios verificáveis. Ferramentas automáticas ajudam, mas encontram só parte dos problemas.
+
 ## 🔐 Requisitos de segurança
 
 "O sistema deve ser seguro" não é um requisito: não diz contra o quê proteger nem permite verificar se a proteção existe. Um requisito de segurança útil nomeia o que se protege e o comportamento esperado, e pode ser testado como qualquer outro:
 
 | Vago | Verificável |
 |---|---|
-| O sistema deve ser seguro. | Somente o responsável por uma tarefa ou o dono do projeto pode concluí-la. As demais tentativas recebem 403. |
-| A API não pode ser sobrecarregada. | Títulos com mais de 200 caracteres são recusados com 422. |
+| O sistema deve ser seguro. | Somente o responsável por uma tarefa ou o dono do projeto pode concluí-la. Os outros membros recebem 403; quem não participa do projeto, 404; sem *login*, 401. |
+| A API não deve aceitar textos enormes. | Títulos com mais de 200 caracteres são recusados com 422. |
 | Os dados devem ser protegidos. | Senhas são armazenadas apenas como *hash* de uma função própria para senhas, nunca em texto puro. |
 
 Três fontes ajudam a descobrir esses requisitos:

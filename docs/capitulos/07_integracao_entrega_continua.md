@@ -352,6 +352,7 @@ Para publicar uma API na rede falta o **HTTPS**. Um caminho simples é colocar �
 services:
   api:
     build: .
+    image: ${IMAGEM:-taskflow:local}
     restart: unless-stopped
     volumes:
       - dados:/dados
@@ -374,13 +375,27 @@ volumes:
 ```
 
 ```bash
-docker compose up -d --build   # em um servidor: DOMINIO=tarefas.exemplo.org docker compose up -d --build
+docker compose up -d --build   # na sua máquina: constrói a imagem a partir do código
 curl -k https://localhost/docs
 ```
 
 Repare que a API não publica porta: só o *proxy* é alcançável de fora. Em `localhost`, o certificado é emitido por uma autoridade local, e por isso o `curl` precisa do `-k`. Com um domínio real, o DNS deve apontar para o servidor e as portas 80 e 443 devem estar abertas à internet. Logo depois de subir, o *proxy* pode responder 502 por alguns segundos, enquanto a API inicia. A imagem `caddy:2` é uma *tag*, pelo mesmo motivo da imagem base do `Dockerfile`.
 
-Voltar atrás (*rollback*) é implantar a imagem anterior, o que só funciona se o banco continuar compatível com ela ([Capítulo 8](08_evolucao_manutencao.md)). E o HTTPS não resolve tudo: continuam faltando [cópias de segurança](08_evolucao_manutencao.md), limite de requisições e monitoramento.
+No servidor não se reconstrói: usa-se a imagem que o pipeline testou, varreu e publicou. Por isso o serviço `api` tem também `image`, cujo nome vem da variável `IMAGEM`. Um arquivo `.env` ao lado do `compose.yaml`, fora do Git, a define no servidor:
+
+```text
+IMAGEM=ghcr.io/SEU_USUARIO/taskflow:IDENTIFICADOR_DO_COMMIT
+DOMINIO=tarefas.exemplo.org
+```
+
+```bash
+docker compose pull
+docker compose up -d --no-build
+```
+
+Um pacote novo no GHCR é [privado](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry). Para baixá-lo, o servidor precisa de `docker login ghcr.io` com um *personal access token (classic)* com a permissão `read:packages`, a menos que você torne o pacote público.
+
+Voltar atrás (*rollback*) é pôr em `IMAGEM` o identificador anterior e repetir os dois comandos, o que só funciona se o banco continuar compatível com ela ([Capítulo 8](08_evolucao_manutencao.md)). E o HTTPS não resolve tudo: continuam faltando [cópias de segurança](08_evolucao_manutencao.md), limite de requisições e monitoramento.
 
 ### Infraestrutura como código
 
@@ -422,6 +437,7 @@ Um agente com acesso ao repositório traz um risco novo. Ele lê *issues*, comen
 * *OWASP GenAI Top 10 for LLM Applications*, 2026 — [genai.owasp.org](https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/)
 * *Versionamento Semântico 2.0.0* — [semver.org](https://semver.org/lang/pt-BR/)
 * *Keep a Changelog* — [keepachangelog.com](https://keepachangelog.com/)
+* GitHub, *Working with the Container registry* — [docs.github.com](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
 * Caddy, *Reverse proxy quick-start* — [caddyserver.com](https://caddyserver.com/docs/quick-starts/reverse-proxy)
 * GitHub, *Publishing and installing a package with GitHub Actions* — [docs.github.com](https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions)
 * Documentação oficial: [GitHub Actions](https://docs.github.com/actions), [Docker](https://docs.docker.com/)

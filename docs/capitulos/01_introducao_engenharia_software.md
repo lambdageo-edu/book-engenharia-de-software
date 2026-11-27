@@ -124,7 +124,7 @@ Código público **não é** código livre. Sem licença, vale a proteção padr
 | **Recíprocas** (*copyleft*) | GPL | Quem distribui uma versão derivada a distribui sob a mesma licença, com o código-fonte |
 | **Recíprocas para serviços em rede** | AGPL | Estende a obrigação a quem oferece a versão modificada pela rede |
 
-Antes de adicionar uma dependência, confira a licença dela: ela passa a valer para o que você distribui. Trechos copiados de fóruns ou gerados por um assistente de IA também podem ter origem protegida. Esta seção é uma orientação inicial e não substitui assessoria jurídica.
+Antes de adicionar uma dependência, confira a licença dela: as condições que ela impõe precisam ser cumpridas no que você distribui. Trechos copiados de fóruns ou gerados por um assistente de IA também podem ter origem protegida. Esta seção é uma orientação inicial e não substitui assessoria jurídica.
 
 ---
 

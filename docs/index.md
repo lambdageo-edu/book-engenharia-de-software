@@ -21,7 +21,7 @@ O que diferencia software de outros produtos, por que a engenharia de software n
 Como descobrir, prototipar e registrar o que o sistema precisa fazer, cuidar da usabilidade e da acessibilidade, modelar seus conceitos, comportamento, estrutura e dados, aplicar princípios e padrões de projeto e tomar decisões de arquitetura, inclusive as de segurança.
 
 ### 📗 Parte III: Construção (Capítulos 5-6)
-Código legível e seguro, tratamento de erros, revisão, controle de versão, verificação e validação, e testes, dos unitários aos de aceitação, com projeto de casos de teste e TDD.
+Código legível e seguro, tratamento de erros, depuração, revisão, controle de versão, verificação e validação, e testes, dos unitários aos de aceitação, com projeto de casos de teste e TDD.
 
 ### 📕 Parte IV: Entrega e evolução (Capítulos 7-8)
 Pipelines de integração e entrega contínuas, contêineres, testes de segurança, versionamento, implantação com HTTPS e a vida do software em produção: manutenção, dependências, resposta a incidentes, débito técnico, sistemas legados, cópias de segurança e observabilidade.

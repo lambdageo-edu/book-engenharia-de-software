@@ -27,7 +27,7 @@ Nem todo defeito é encontrado executando o código. **Inspeções** e **revisõ
 
 ## 🔺 A pirâmide de testes
 
-A **pirâmide de testes**, popularizada por Mike Cohn, organiza os testes automatizados em camadas conforme seu escopo, velocidade e custo de manutenção:
+A **pirâmide de testes**, popularizada por Mike Cohn, organiza os testes automatizados em camadas conforme seu escopo, velocidade e custo de manutenção. No original de Cohn, as camadas se chamam [*unit*, *service* e *user interface*](https://martinfowler.com/articles/practical-test-pyramid.html); o desenho usa os nomes por escopo:
 
 ```mermaid
 block-beta
@@ -242,7 +242,7 @@ Esses testes fazem requisições à API inteira, por meio do `TestClient`. São,
 pytest -v --cov=app --cov-report=term-missing
 ```
 
-Saída esperada (o tempo de execução e a largura das colunas variam):
+Saída esperada com Python 3.14 (em outras versões a contagem de instruções pode mudar; o tempo e a largura das colunas também variam):
 
 ```
 test_main.py::test_criar_tarefa_retorna_201_e_id PASSED
@@ -253,6 +253,7 @@ test_main.py::test_concluir_tarefa_muda_status PASSED
 
 Name              Stmts   Miss  Cover   Missing
 -----------------------------------------------
+app/__init__.py       0      0   100%
 app/main.py          32      2    94%   41, 48
 -----------------------------------------------
 TOTAL                32      2    94%
@@ -424,7 +425,7 @@ Vale procurar também o caminho indireto: `test_nao_alcanca_tarefa_por_outro_pro
 
 1. Rode a suíte de testes deste capítulo localmente e confirme os mesmos resultados de cobertura.
 2. Complete o exercício de TDD acima (endpoint `DELETE`) e verifique se a cobertura de `app/main.py` sobe.
-3. Escreva os dois testes que faltam, um para buscar uma tarefa existente (linha 41) e outro para concluir uma tarefa inexistente (linha 48), e confirme que a cobertura chega a 100%.
+3. Escreva os dois testes que faltam, um para buscar uma tarefa existente e outro para concluir uma tarefa inexistente, e confirme que essas linhas deixam de aparecer em `Missing`. (Os números das linhas mudam depois da correção do título.)
 4. Classifique um bug real que você já enfrentou (em qualquer projeto) em termos de defeito, erro e falha, conforme a distinção do início deste capítulo.
 5. Um cadastro exige senha de 15 a 128 caracteres. Liste as classes de equivalência e os valores-limite e escreva o teste parametrizado.
 6. Escreva um teste para as doze combinações de estado e ação do TaskFlow. Quantas devem responder 409?
@@ -439,5 +440,6 @@ Vale procurar também o caminho indireto: `test_nao_alcanca_tarefa_por_outro_pro
 * MYERS, Glenford J.; SANDLER, Corey; BADGETT, Tom. *The Art of Software Testing*. 3. ed. Wiley, 2011.
 * FOWLER, Martin. *Test Double* — [martinfowler.com](https://martinfowler.com/bliki/TestDouble.html)
 * MESZAROS, Gerard. *xUnit Test Patterns*. Addison-Wesley, 2007.
+* VOCKE, Ham. *The Practical Test Pyramid* — [martinfowler.com](https://martinfowler.com/articles/practical-test-pyramid.html)
 * Documentação oficial: [pytest](https://docs.pytest.org/), [FastAPI Testing](https://fastapi.tiangolo.com/tutorial/testing/)
 * AVIZIENIS, Algirdas; LAPRIE, Jean-Claude; RANDELL, Brian; LANDWEHR, Carl. *Basic Concepts and Taxonomy of Dependable and Secure Computing*. IEEE Transactions on Dependable and Secure Computing, 1(1), 2004.

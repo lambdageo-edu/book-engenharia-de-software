@@ -114,7 +114,7 @@ docker logs api            # primeira parada quando algo falha
 docker stop api && docker rm api
 ```
 
-O `127.0.0.1` publica a porta só para a sua máquina: a API deste livro não tem HTTPS.
+O `127.0.0.1` publica a porta só para a sua máquina: a API deste livro, sozinha, não tem HTTPS (o [Capítulo 7](../capitulos/07_integracao_entrega_continua.md) põe um *proxy* à frente dela).
 
 O que é gravado dentro do contêiner se perde quando ele é removido; dados que precisam sobreviver vão para um *volume*.
 

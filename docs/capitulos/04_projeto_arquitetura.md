@@ -296,7 +296,7 @@ A última restrição impede atribuir uma tarefa a quem não é membro do projet
 
 Quando uma operação grava em mais de um lugar, use uma **transação**: ou tudo é gravado, ou nada. Ao criar um projeto, o TaskFlow insere o projeto e o primeiro membro juntos. Mudar o esquema depois que há dados exige migração ([Capítulo 8](08_evolucao_manutencao.md)).
 
-O modelo relacional é uma boa escolha inicial quando os dados têm relações e regras. Bancos de documentos, de chave e valor ou de grafos atendem a outras formas de acesso: decida pelas consultas e garantias de que o sistema precisa, e registre o porquê em um ADR.
+O modelo relacional é uma boa escolha inicial quando os dados têm relações e regras. Bancos de documentos, de chave e valor ou de grafos atendem a outras formas de acesso: decida pelas consultas e garantias de que o sistema precisa, e registre o porquê em um [registro de decisão de arquitetura](#documentando-e-comunicando-arquitetura) (ADR).
 
 ## 🛡️ Segurança desde o projeto
 
