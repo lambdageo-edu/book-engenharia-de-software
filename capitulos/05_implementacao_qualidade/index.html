@@ -737,6 +737,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#tratamento-de-erros" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🧯 Tratamento de erros
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#revisando-codigo-gerado-por-ia" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1244,6 +1255,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#tratamento-de-erros" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🧯 Tratamento de erros
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#revisando-codigo-gerado-por-ia" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1513,6 +1535,47 @@
 <li>o token de sessão é aleatório, expira, pode ser invalidado e só o seu <em>hash</em> vai para o banco.</li>
 </ul>
 <p>Isso não dispensa o que está fora do código, como HTTPS e limite de tentativas. Em um sistema real, considere também delegar a autenticação a um provedor de identidade.</p>
+<h2 id="tratamento-de-erros">🧯 Tratamento de erros<a class="headerlink" href="#tratamento-de-erros" title="Permanent link">&para;</a></h2>
+<p>Há erros <strong>esperados</strong>, parte do funcionamento normal, como um <em>login</em> já usado, e erros <strong>inesperados</strong>, como um defeito ou um disco cheio. Os primeiros merecem uma resposta específica; os segundos, uma resposta genérica ao cliente e um registro detalhado para quem mantém o sistema. Tratar mal as situações anormais é a categoria A10 da lista acima.</p>
+<p>O pior tratamento é o que esconde:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">salvar</span><span class="p">(</span><span class="n">banco</span><span class="p">,</span> <span class="n">titulo</span><span class="p">):</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO tarefas (titulo) VALUES (?)"</span><span class="p">,</span> <span class="p">(</span><span class="n">titulo</span><span class="p">,))</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        <span class="k">pass</span>  <span class="c1"># o erro some, e quem chamou acha que gravou</span>
+</code></pre></div>
+<p>Capture apenas o que você sabe tratar. O TaskFlow captura a violação de unicidade no cadastro e a traduz para o vocabulário da API (trecho de <code>app/auth.py</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">cursor</span> <span class="o">=</span> <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>        <span class="s2">"INSERT INTO usuarios (login, nome, senha_hash) VALUES (?, ?, ?)"</span><span class="p">,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        <span class="p">(</span><span class="n">dados</span><span class="o">.</span><span class="n">login</span><span class="p">,</span> <span class="n">dados</span><span class="o">.</span><span class="n">nome</span><span class="p">,</span> <span class="n">hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">dados</span><span class="o">.</span><span class="n">senha</span><span class="p">)),</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="p">)</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span><span class="p">:</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="mi">409</span><span class="p">,</span> <span class="s2">"Login já utilizado"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+</code></pre></div>
+<p>Qualquer outra exceção segue adiante e vira um 500. No FastAPI, fora do modo de depuração, o cliente recebe apenas <code>Internal Server Error</code>, e o detalhe vai para o terminal ou o <em>log</em> do servidor.</p>
+<p>Algumas regras práticas:</p>
+<ul>
+<li><strong>Na dúvida, negue.</strong> Se a verificação de permissão falhar por um erro, o acesso não deve ser liberado.</li>
+<li><strong>Não vaze detalhes.</strong> Pilha de execução, consulta SQL e caminhos de arquivos ajudam um atacante; guarde-os no <em>log</em>, sem senhas nem <em>tokens</em> (<a href="../08_evolucao_manutencao/">Capítulo 8</a>).</li>
+<li><strong>Libere os recursos</strong>, com <code>with</code> ou <code>finally</code>. Atenção: no <code>sqlite3</code>, <code>with conexao</code> encerra a transação, mas não fecha a conexão.</li>
+<li><strong>Não deixe gravação pela metade.</strong> Use transações quando a operação tem vários passos (<a href="../04_projeto_arquitetura/">Capítulo 4</a>).</li>
+<li><strong>Defina um prazo</strong> (<em>timeout</em>) para chamadas a outros serviços, e decida o que fazer quando ele estoura.</li>
+<li><strong>Teste o caminho do erro.</strong> É o que menos roda no dia a dia e o que menos se conhece.</li>
+</ul>
+<p>O primeiro item, em código (exemplo fora do TaskFlow, com um serviço de permissões externo):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">pode_concluir</span><span class="p">(</span><span class="n">servico</span><span class="p">,</span> <span class="n">usuario_id</span><span class="p">,</span> <span class="n">tarefa_id</span><span class="p">):</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>        <span class="k">return</span> <span class="n">servico</span><span class="o">.</span><span class="n">permite</span><span class="p">(</span><span class="n">usuario_id</span><span class="p">,</span> <span class="n">tarefa_id</span><span class="p">)</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="k">except</span> <span class="ne">TimeoutError</span><span class="p">:</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>        <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"serviço de permissões não respondeu"</span><span class="p">)</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>        <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
 <h2 id="revisando-codigo-gerado-por-ia">🤖 Revisando código gerado por IA<a class="headerlink" href="#revisando-codigo-gerado-por-ia" title="Permanent link">&para;</a></h2>
 <p>Assistentes e agentes de codificação (GitHub Copilot, Claude Code, Cursor e equivalentes) já fazem parte do dia a dia de boa parte dos times de desenvolvimento, gerando desde trechos pontuais até <em>pull requests</em> inteiros. Isso não elimina a necessidade de revisão de código — pelo contrário, muda o que a revisão precisa verificar:</p>
 <ul>
@@ -1614,6 +1677,7 @@
 <li>Escreva um checklist de code review com pelo menos 6 itens que você usaria como revisor em um projeto real.</li>
 <li>Acrescente ao checklist três itens de segurança, cada um ligado a uma categoria do OWASP Top 10.</li>
 <li>Peça a um assistente de IA o código de um <em>login</em> simples e revise-o: como a senha é armazenada? Há segredo no código? As dependências sugeridas existem?</li>
+<li>Escreva um teste para <code>pode_concluir</code> com um dublê que levanta <code>TimeoutError</code>. Depois procure, em um projeto seu, um <code>except</code> que esconda um erro.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1621,6 +1685,7 @@
 <li>MEYER, Bertrand. <em>Object-Oriented Software Construction</em>. 2. ed. Prentice Hall, 1997.</li>
 <li>FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. <em>Accelerate: The Science of Lean Software and DevOps</em>. IT Revolution, 2018.</li>
 <li>Documentação do <code>ruff</code> (linter/formatador Python) — <a href="https://docs.astral.sh/ruff/">docs.astral.sh/ruff</a></li>
+<li>OWASP <em>Error Handling Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
 <li><em>OWASP Top 10:2025</em> — <a href="https://owasp.org/Top10/2025/0x00_2025-Introduction/">owasp.org/Top10/2025</a></li>
 <li>OWASP <em>Secrets Management Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
 <li>PERRY, Neil; SRIVASTAVA, Megha; KUMAR, Deepak; BONEH, Dan. <em>Do Users Write More Insecure Code with AI Assistants?</em> ACM CCS, 2023 — <a href="https://arxiv.org/abs/2211.03622">arxiv.org/abs/2211.03622</a></li>
