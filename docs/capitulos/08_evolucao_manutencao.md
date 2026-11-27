@@ -209,6 +209,8 @@ copia.close()
 docker compose start api
 ```
 
+Para ler a cópia, o contêiner usa o usuário sem privilégios da imagem, que pode não ser o dono do arquivo no servidor. Por isso, restrinja o acesso pela **pasta** que guarda a cópia (`chmod 700`), mantendo no arquivo a permissão de leitura (`chmod 644`), e troque no comando `$PWD/copia.db` pelo caminho completo da cópia. Com `chmod 600` no arquivo, a restauração pode falhar com `unable to open database file`, já com a API parada.
+
 O que foi gravado depois da cópia se perde. Sessões encerradas depois dela voltam a existir; se isso importar, apague as linhas da tabela `sessoes` antes de religar a API.
 
 Ao planejar, decida:
