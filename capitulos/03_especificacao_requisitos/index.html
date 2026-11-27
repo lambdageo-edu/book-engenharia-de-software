@@ -683,6 +683,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#do-caso-de-uso-a-sequencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Do caso de uso à sequência
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1383,6 +1394,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#do-caso-de-uso-a-sequencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Do caso de uso à sequência
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1848,6 +1870,48 @@
 <li><strong>Entidade</strong>: guarda a informação e as regras do domínio (usuário, projeto, tarefa).</li>
 </ul>
 <p>Os substantivos são só um começo: nem todos viram classes, e alguns conceitos não aparecem no texto. Os <strong>cartões CRC</strong> (classe, responsabilidades, colaboradores) ajudam a testar o modelo em equipe: cada pessoa representa uma classe, e o grupo encena um caso de uso. O <a href="../04_projeto_arquitetura/">Capítulo 4</a> transforma este modelo em um diagrama de projeto.</p>
+<h3 id="do-caso-de-uso-a-sequencia">Do caso de uso à sequência<a class="headerlink" href="#do-caso-de-uso-a-sequencia" title="Permanent link">&para;</a></h3>
+<p>As classes dizem <em>quem existe</em>. Para saber quem faz o quê, percorre-se um caso de uso passo a passo e desenha-se um <strong>diagrama de sequência</strong>: cada coluna é um participante, o tempo corre de cima para baixo e cada seta é um pedido (cheia) ou uma resposta (tracejada). Este realiza o caso <em>Concluir tarefa</em>, descrito acima, com os três tipos de classe:</p>
+<pre class="mermaid"><code>sequenceDiagram
+    actor M as Membro
+    participant F as Fronteira
+    participant C as Controle
+    participant P as Projeto
+    participant T as Tarefa
+    M-&gt;&gt;F: concluir a tarefa
+    F-&gt;&gt;C: concluir(usuário, projeto, tarefa)
+    C-&gt;&gt;P: o usuário participa? qual é a tarefa?
+    P--&gt;&gt;C: participação e tarefa
+    break não participa ou a tarefa não existe
+        C--&gt;&gt;F: não encontrada
+        F--&gt;&gt;M: 404
+    end
+    C-&gt;&gt;P: o usuário é o dono?
+    P--&gt;&gt;C: sim ou não
+    C-&gt;&gt;T: o usuário é o responsável?
+    T--&gt;&gt;C: sim ou não
+    break não é dono nem responsável
+        C--&gt;&gt;F: sem permissão
+        F--&gt;&gt;M: 403
+    end
+    C-&gt;&gt;T: concluir()
+    break a tarefa não está em andamento
+        T--&gt;&gt;C: estado inválido
+        C--&gt;&gt;F: estado inválido
+        F--&gt;&gt;M: 409
+    end
+    T--&gt;&gt;C: concluída
+    C--&gt;&gt;F: tarefa
+    F--&gt;&gt;M: tarefa concluída</code></pre>
+<p>O bloco <code>break</code> indica uma alternativa que encerra o caso de uso: se a condição vale, o que está dentro acontece e o restante não.</p>
+<p>Para montar o diagrama:</p>
+<ol>
+<li>coloque o ator, uma fronteira, um controle e as entidades de que o caso fala;</li>
+<li>transforme cada passo do fluxo principal em mensagens;</li>
+<li>acrescente as alternativas da descrição textual;</li>
+<li>confira que o ator só conversa com a fronteira, e que a fronteira não vai direto às entidades.</li>
+</ol>
+<p>Cada mensagem recebida é uma responsabilidade da classe que a recebe. Aqui, a regra "só se conclui uma tarefa em andamento" fica em <code>Tarefa</code>, e a ordem das verificações, no controle. É um modelo de análise: não diz se haverá classes com esses nomes no código. O <a href="../04_projeto_arquitetura/">Capítulo 4</a> mostra uma sequência de projeto, já com os elementos da implementação.</p>
 <h2 id="boas-praticas-de-especificacao">✅ Boas práticas de especificação<a class="headerlink" href="#boas-praticas-de-especificacao" title="Permanent link">&para;</a></h2>
 <p>Independente do formato (documento formal ou história de usuário), um bom requisito deve ser:</p>
 <ul>
@@ -2037,6 +2101,7 @@ Qual limite? Espaços contam? O que a API responde? Tarefas antigas são afetada
 <li>Desenhe no papel um protótipo de baixa fidelidade da devolução de um livro, mostre a um colega e registre o que mudou nos requisitos.</li>
 <li>Para o mesmo aplicativo, identifique as classes de análise e justifique dois candidatos que você rejeitou.</li>
 <li>Avalie uma tela de um sistema que você usa com três das heurísticas e tente cumprir a mesma tarefa só com o teclado. Escreva um requisito de acessibilidade verificável para o que falhou.</li>
+<li>Desenhe o diagrama de sequência do caso de uso que você descreveu no item 6, com fronteira, controle e entidades, incluindo uma alternativa. Alguma mensagem revelou uma responsabilidade que faltava nas classes do item 9?</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>

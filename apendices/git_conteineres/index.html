@@ -933,6 +933,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="📦 Contêineres: o mínimo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compose-no-desenvolvimento" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Compose no desenvolvimento
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1066,6 +1083,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="📦 Contêineres: o mínimo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compose-no-desenvolvimento" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Compose no desenvolvimento
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1193,12 +1227,35 @@
 </code></pre></div>
 <p>O <code>127.0.0.1</code> publica a porta só para a sua máquina: a API deste livro, sozinha, não tem HTTPS (o <a href="../../capitulos/07_integracao_entrega_continua/">Capítulo 7</a> põe um <em>proxy</em> à frente dela).</p>
 <p>O que é gravado dentro do contêiner se perde quando ele é removido; dados que precisam sobreviver vão para um <em>volume</em>.</p>
+<h3 id="compose-no-desenvolvimento">Compose no desenvolvimento<a class="headerlink" href="#compose-no-desenvolvimento" title="Permanent link">&para;</a></h3>
+<p>O <strong>Docker Compose</strong> descreve em um arquivo os contêineres de um projeto, e a equipe inteira sobe o mesmo ambiente com um comando. Para desenvolver, com o <code>Dockerfile</code> e a estrutura de pastas do <a href="../../capitulos/07_integracao_entrega_continua/">Capítulo 7</a>, crie na raiz o <code>compose.dev.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">api</span><span class="p">:</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir app</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./app:/app/app:ro</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"127.0.0.1:8000:8000"</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>compose.dev.yaml<span class="w"> </span>up<span class="w"> </span>--build<span class="w">   </span><span class="c1"># sobe e mostra os logs; Ctrl+C para</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>compose.dev.yaml<span class="w"> </span>down<span class="w">         </span><span class="c1"># remove os contêineres</span>
+</code></pre></div>
+<ul>
+<li><code>volumes</code> monta a pasta <code>app</code> da sua máquina dentro do contêiner, só para leitura: o que você salva no editor aparece lá sem reconstruir a imagem;</li>
+<li><code>--reload</code> reinicia o servidor quando um arquivo muda. O que estava só na memória se perde;</li>
+<li><code>command</code> substitui o <code>CMD</code> do <code>Dockerfile</code> apenas neste ambiente;</li>
+<li>mudou o <code>requirements.txt</code>? Rode de novo com <code>--build</code>.</li>
+</ul>
+<p>Se o servidor não reiniciar ao salvar, o que a documentação do Uvicorn relata no WSL, acrescente ao serviço <code>environment: ["WATCHFILES_FORCE_POLLING=true"]</code>.</p>
+<p>Este arquivo é para a sua máquina. Para implantar, o <a href="../../capitulos/07_integracao_entrega_continua/">Capítulo 7</a> usa outro, sem recarga automática e com HTTPS.</p>
 <p>Para praticar passo a passo (rede, volumes, Docker Compose e otimização de imagens), siga os <a href="https://lambdageo-edu.github.io/lambdageo-tutorials/docker/">tutoriais de Docker da coleção LambdaGeo</a>.</p>
 <h2 id="atividades">🎯 Atividades<a class="headerlink" href="#atividades" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Reproduza o conflito acima e resolva-o com o editor.</li>
 <li>Abra um <em>pull request</em> em um repositório seu e peça a um colega para revisar.</li>
 <li>Grave um token <strong>falso</strong> em um arquivo, faça commit, apague o arquivo em outro commit e encontre o token com <code>git log -p</code>.</li>
+<li>Suba um projeto com o <code>compose.dev.yaml</code>, altere uma mensagem no código e confira a mudança sem reconstruir a imagem.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1206,6 +1263,8 @@
 <li>GitHub. <em>About pull requests</em> — <a href="https://docs.github.com/en/pull-requests/get-started/about-pull-requests">docs.github.com</a></li>
 <li>GitHub. <em>Removing sensitive data from a repository</em> — <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository">docs.github.com</a></li>
 <li>Documentação oficial do Docker — <a href="https://docs.docker.com/">docs.docker.com</a></li>
+<li>Docker. <em>Docker Compose</em> — <a href="https://docs.docker.com/compose/">docs.docker.com/compose</a></li>
+<li>Uvicorn. <em>Settings</em> (recarga automática) — <a href="https://uvicorn.dev/settings/">uvicorn.dev/settings</a></li>
 </ul>
 
 

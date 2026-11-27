@@ -1691,7 +1691,7 @@
     Usuario "0..1" --&gt; "0..*" Tarefa : é responsável por</code></pre>
 <p>Os números são as <strong>multiplicidades</strong>: um projeto tem zero ou mais tarefas, e uma tarefa pode ainda não ter responsável (<code>0..1</code>). O losango preenchido indica <strong>composição</strong>: a tarefa não existe fora do seu projeto. Cada uma dessas marcas é uma decisão que precisa ser confirmada com quem pediu o sistema. O diagrama também não diz tudo: no TaskFlow, o responsável precisa ser membro do projeto da tarefa, regra garantida por uma chave estrangeira no banco. O <code>concluir()</code> do desenho aparece no código como uma das ações de <code>POST .../tarefas/{tarefa_id}/{acao}</code>.</p>
 <h3 id="sequencia-quem-chama-quem-e-em-que-ordem">Sequência: quem chama quem, e em que ordem<a class="headerlink" href="#sequencia-quem-chama-quem-e-em-que-ordem" title="Permanent link">&para;</a></h3>
-<p>Este descreve o <code>POST /tarefas</code> com a validação do <a href="../06_testes_validacao/">Capítulo 6</a>:</p>
+<p>O <a href="../03_especificacao_requisitos/">Capítulo 3</a> usou a sequência na análise. Aqui ela está no nível de projeto: os participantes são elementos do código. O diagrama descreve o <code>POST /tarefas</code> com a validação do <a href="../06_testes_validacao/">Capítulo 6</a>:</p>
 <pre class="mermaid"><code>sequenceDiagram
     actor C as Cliente
     participant A as FastAPI
