@@ -690,6 +690,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#senhas-e-sessoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Senhas e sessões
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1131,6 +1142,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#senhas-e-sessoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Senhas e sessões
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1366,6 +1388,7 @@
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Seguro: o driver trata o título apenas como dado</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT * FROM tarefas WHERE titulo = ?"</span><span class="p">,</span> <span class="p">(</span><span class="n">titulo</span><span class="p">,))</span>
 </code></pre></div>
+<p>O <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a> usa parâmetros em todas as consultas que recebem dados e tem um teste que cadastra uma tarefa com o título <code>x'); DROP TABLE tarefas; --</code>: ele é guardado como texto, e nada é apagado.</p>
 <p>O marcador (<code>?</code> no <code>sqlite3</code>) varia conforme a biblioteca. A mesma ideia vale para comandos do sistema operacional e para HTML gerado a partir de dados.</p>
 <h3 id="segredos-fora-do-codigo">Segredos fora do código<a class="headerlink" href="#segredos-fora-do-codigo" title="Permanent link">&para;</a></h3>
 <p>Senhas, tokens e chaves não pertencem ao repositório, nem à imagem de contêiner. A aplicação os recebe do ambiente, por exemplo por variáveis de ambiente ou por um cofre de segredos:</p>
@@ -1378,6 +1401,22 @@
 <p class="admonition-title">Vazou um segredo? Apagar o arquivo não resolve</p>
 <p>O histórico do Git guarda as versões anteriores, e cópias do repositório podem já ter o segredo. A ordem recomendada pela <a href="https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html">OWASP</a> é: <strong>revogar</strong> o segredo exposto, <strong>substituí-lo</strong> por um novo, <strong>removê-lo</strong> de onde apareceu e <strong>registrar</strong> o que aconteceu e quem teve acesso.</p>
 </div>
+<h3 id="senhas-e-sessoes">Senhas e sessões<a class="headerlink" href="#senhas-e-sessoes" title="Permanent link">&para;</a></h3>
+<p>Senha não se guarda em texto puro, nem cifrada de forma reversível: guarda-se um <em>hash</em> feito para esse fim, lento e com <em>sal</em>, como o Argon2id (<a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">OWASP</a>). No <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a>, a biblioteca <code>argon2-cffi</code> cuida disso (trecho de <code>app/auth.py</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">argon2</span><span class="w"> </span><span class="kn">import</span> <span class="n">PasswordHasher</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">hasher</span> <span class="o">=</span> <span class="n">PasswordHasher</span><span class="p">()</span>  <span class="c1"># Argon2id, com sal aleatório</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">hash_guardado</span> <span class="o">=</span> <span class="n">hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">senha</span><span class="p">)</span>       <span class="c1"># no cadastro</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">hasher</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">hash_guardado</span><span class="p">,</span> <span class="n">tentativa</span><span class="p">)</span>  <span class="c1"># no login; levanta exceção se não conferir</span>
+</code></pre></div>
+<p>Outras decisões do mesmo arquivo merecem ser lidas:</p>
+<ul>
+<li>a senha tem no mínimo 15 caracteres, como pede o <a href="https://pages.nist.gov/800-63-4/sp800-63b/passwords">NIST SP 800-63B</a> para senhas usadas como único fator;</li>
+<li>o erro de <em>login</em> é o mesmo para usuário inexistente e senha errada (o cadastro, porém, ainda revela que um <em>login</em> já existe);</li>
+<li>o token de sessão é aleatório, expira, pode ser invalidado e só o seu <em>hash</em> vai para o banco.</li>
+</ul>
+<p>Isso não dispensa o que está fora do código, como HTTPS e limite de tentativas. Em um sistema real, considere também delegar a autenticação a um provedor de identidade.</p>
 <h2 id="revisando-codigo-gerado-por-ia">🤖 Revisando código gerado por IA<a class="headerlink" href="#revisando-codigo-gerado-por-ia" title="Permanent link">&para;</a></h2>
 <p>Assistentes e agentes de codificação (GitHub Copilot, Claude Code, Cursor e equivalentes) já fazem parte do dia a dia de boa parte dos times de desenvolvimento, gerando desde trechos pontuais até <em>pull requests</em> inteiros. Isso não elimina a necessidade de revisão de código — pelo contrário, muda o que a revisão precisa verificar:</p>
 <ul>

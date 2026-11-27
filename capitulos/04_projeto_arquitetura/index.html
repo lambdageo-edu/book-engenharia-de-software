@@ -691,6 +691,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#o-que-o-taskflow-respondeu" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        O que o TaskFlow respondeu
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1270,6 +1281,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#o-que-o-taskflow-respondeu" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        O que o TaskFlow respondeu
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1418,12 +1440,13 @@
 </table>
 <p>Esses padrões seguem relevantes, mas vale um alerta prático: padrões de projeto resolvem problemas de um contexto específico (sistemas orientados a objetos, em linguagens com certas limitações dos anos 1990). Aplicá-los de forma automática, sem que o problema realmente exista, é uma forma comum de complexidade desnecessária — o oposto do princípio YAGNI mencionado acima.</p>
 <h2 id="modelando-a-estrutura-e-as-interacoes">📐 Modelando a estrutura e as interações<a class="headerlink" href="#modelando-a-estrutura-e-as-interacoes" title="Permanent link">&para;</a></h2>
-<p>O Capítulo 3 modelou o que o sistema faz. Três diagramas da UML (OMG, 2017) ajudam a decidir como (FOWLER, 2003). Os exemplos de classes e estados descrevem a versão em equipe da API de tarefas, que ainda não está no código.</p>
+<p>O Capítulo 3 modelou o que o sistema faz. Três diagramas da UML (OMG, 2017) ajudam a decidir como (FOWLER, 2003). Os exemplos de classes e estados descrevem a versão em equipe da API de tarefas, implementada no <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a>.</p>
 <h3 id="classes-o-que-existe-e-como-se-relaciona">Classes: o que existe e como se relaciona<a class="headerlink" href="#classes-o-que-existe-e-como-se-relaciona" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>classDiagram
     direction TB
     class Usuario {
         +int id
+        +str login
         +str nome
     }
     class Projeto {
@@ -1440,7 +1463,7 @@
     Usuario "1..*" -- "0..*" Projeto : participa de
     Projeto "1" *-- "0..*" Tarefa : contém
     Usuario "0..1" --&gt; "0..*" Tarefa : é responsável por</code></pre>
-<p>Os números são as <strong>multiplicidades</strong>: um projeto tem zero ou mais tarefas, e uma tarefa pode ainda não ter responsável (<code>0..1</code>). O losango preenchido indica <strong>composição</strong>: a tarefa não existe fora do seu projeto. Cada uma dessas marcas é uma decisão que precisa ser confirmada com quem pediu o sistema.</p>
+<p>Os números são as <strong>multiplicidades</strong>: um projeto tem zero ou mais tarefas, e uma tarefa pode ainda não ter responsável (<code>0..1</code>). O losango preenchido indica <strong>composição</strong>: a tarefa não existe fora do seu projeto. Cada uma dessas marcas é uma decisão que precisa ser confirmada com quem pediu o sistema. O diagrama também não diz tudo: no TaskFlow, o responsável precisa ser membro do projeto da tarefa, regra garantida por uma chave estrangeira no banco. O <code>concluir()</code> do desenho aparece no código como uma das ações de <code>POST .../tarefas/{tarefa_id}/{acao}</code>.</p>
 <h3 id="sequencia-quem-chama-quem-e-em-que-ordem">Sequência: quem chama quem, e em que ordem<a class="headerlink" href="#sequencia-quem-chama-quem-e-em-que-ordem" title="Permanent link">&para;</a></h3>
 <p>Este descreve o <code>POST /tarefas</code> com a validação do <a href="../06_testes_validacao/">Capítulo 6</a>:</p>
 <pre class="mermaid"><code>sequenceDiagram
@@ -1461,7 +1484,7 @@
     end</code></pre>
 <p>No caminho de erro, a função <code>criar_tarefa</code> nem chega a ser chamada. É o tipo de informação que o diagrama mostra melhor do que o código lido isoladamente.</p>
 <h3 id="estados-o-ciclo-de-vida-de-um-objeto">Estados: o ciclo de vida de um objeto<a class="headerlink" href="#estados-o-ciclo-de-vida-de-um-objeto" title="Permanent link">&para;</a></h3>
-<p>Hoje a tarefa tem apenas o campo <code>concluida</code>. Na versão em equipe, uma decisão possível é:</p>
+<p>Na primeira API, a tarefa tem apenas o campo <code>concluida</code>. Na versão em equipe, a decisão foi:</p>
 <pre class="mermaid"><code>stateDiagram-v2
     direction TB
     [*] --&gt; Pendente : criar
@@ -1471,7 +1494,7 @@
     Concluida --&gt; EmAndamento : reabrir
     state "Em andamento" as EmAndamento
     state "Concluída" as Concluida</code></pre>
-<p>O que <strong>não</strong> está desenhado também é regra: neste modelo, uma tarefa pendente não pode ser concluída direto. Cada transição ausente pode virar um teste.</p>
+<p>O que <strong>não</strong> está desenhado também é regra: uma tarefa pendente não pode ser concluída direto. Cada transição ausente pode virar um teste; no TaskFlow, essa recebe a resposta 409.</p>
 <div class="admonition tip">
 <p class="admonition-title">Quando vale a pena</p>
 <p>Classes ajudam a discutir o domínio antes de criar o banco de dados. Sequência, quando vários componentes colaboram ou o tratamento de erro não é óbvio. Estados, quando um objeto muda de situação e nem toda mudança é permitida. Diagrama desatualizado engana: mantenha poucos, junto do código.</p>
@@ -1554,6 +1577,50 @@
 <p class="admonition-title">Quando houver usuários, confira o dono de cada objeto</p>
 <p>Autenticar não basta. Se <code>PATCH /tarefas/42/concluir</code> verifica apenas se há alguém conectado, qualquer usuário conclui a tarefa de outro trocando o número. Essa falha, a <em>autorização quebrada em nível de objeto</em>, é a <a href="https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/">primeira da lista OWASP de riscos em APIs</a> (edição de 2023).</p>
 </div>
+<h3 id="o-que-o-taskflow-respondeu">O que o TaskFlow respondeu<a class="headerlink" href="#o-que-o-taskflow-respondeu" title="Permanent link">&para;</a></h3>
+<p>Ao ganhar rede, usuários e banco de dados, o <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a> precisou revisitar a tabela:</p>
+<table>
+<thead>
+<tr>
+<th>Ameaça</th>
+<th>Resposta no código</th>
+<th>O que continua aberto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Falsificação de identidade</td>
+<td><em>Login</em> com senha e token de sessão que expira</td>
+<td>HTTPS e limite de tentativas de <em>login</em></td>
+</tr>
+<tr>
+<td>Adulteração</td>
+<td>Permissão conferida a cada requisição; consultas SQL com parâmetros</td>
+<td>Proteção do arquivo do banco no servidor</td>
+</tr>
+<tr>
+<td>Repúdio</td>
+<td>Nenhuma</td>
+<td>Registro de quem fez cada mudança</td>
+</tr>
+<tr>
+<td>Vazamento</td>
+<td>Quem não é membro recebe 404; o banco guarda só o <em>hash</em> da senha e do token</td>
+<td>HTTPS e proteção de cópias de segurança</td>
+</tr>
+<tr>
+<td>Negação de serviço</td>
+<td>Limite de tamanho do título, dos nomes e da senha</td>
+<td>Limite de requisições e do tamanho do corpo</td>
+</tr>
+<tr>
+<td>Elevação de privilégio</td>
+<td>Só o dono adiciona membros e atribui tarefas a outras pessoas</td>
+<td>Revisar a cada endpoint novo</td>
+</tr>
+</tbody>
+</table>
+<p>A coluna da direita é tão importante quanto a do meio: um risco escrito pode ser tratado ou aceito; um risco esquecido, não.</p>
 <p>A quarta pergunta lembra que o modelo não é um documento de uma vez só: revise-o quando surgir um novo endpoint, integração ou tipo de dado, e guarde-o no repositório, junto com os ADRs.</p>
 <h2 id="ia-nas-decisoes-de-projeto">🤖 IA nas decisões de projeto<a class="headerlink" href="#ia-nas-decisoes-de-projeto" title="Permanent link">&para;</a></h2>
 <p>Assistentes de IA são úteis como interlocutores: propõem alternativas, apontam <em>trade-offs</em>, rascunham um ADR e sugerem ameaças que o time não listou. Os limites também são claros:</p>

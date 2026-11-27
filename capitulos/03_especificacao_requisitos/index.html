@@ -1532,7 +1532,7 @@
 </table>
 <p>A última linha é tão importante quanto a primeira: registra o que foi <strong>recusado agora</strong>, e evita que volte pela porta dos fundos. Se quase tudo virou <em>Must</em>, a priorização ainda não aconteceu.</p>
 <h2 id="modelando-o-comportamento">🧭 Modelando o comportamento<a class="headerlink" href="#modelando-o-comportamento" title="Permanent link">&para;</a></h2>
-<p>Um modelo é uma visão simplificada, feita para responder a uma pergunta. Aqui, a pergunta é o que o sistema faz e para quem. Os diagramas seguem a notação da UML (OMG, 2017) e imaginam a evolução da API de tarefas para uma <strong>equipe</strong>, com projetos, membros e donos. O código dos Capítulos 6 e 7 ainda não tem usuários: este é um modelo do que se quer construir.</p>
+<p>Um modelo é uma visão simplificada, feita para responder a uma pergunta. Aqui, a pergunta é o que o sistema faz e para quem. Os diagramas seguem a notação da UML (OMG, 2017) e imaginam a evolução da API de tarefas para uma <strong>equipe</strong>, com projetos, membros e donos. A API dos Capítulos 6 e 7 ainda não tem usuários; quem implementa este modelo é o <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a>, o <a href="../../">projeto condutor</a> do livro.</p>
 <h3 id="casos-de-uso">Casos de uso<a class="headerlink" href="#casos-de-uso" title="Permanent link">&para;</a></h3>
 <p>Um <strong>ator</strong> é um papel externo ao sistema (uma pessoa ou outro sistema), e um <strong>caso de uso</strong> é um objetivo que o ator alcança com o sistema.</p>
 <pre class="mermaid"><code>flowchart LR
@@ -1565,19 +1565,23 @@
 </tr>
 <tr>
 <td><strong>Pré-condição</strong></td>
-<td>O membro está autenticado e participa do projeto.</td>
+<td>O membro está autenticado.</td>
 </tr>
 <tr>
 <td><strong>Fluxo principal</strong></td>
-<td>1. O membro pede a conclusão de uma tarefa. 2. O sistema verifica a permissão. 3. O sistema marca a tarefa como concluída e a devolve.</td>
+<td>1. O membro pede a conclusão de uma tarefa de um projeto. 2. O sistema verifica a participação no projeto, a existência da tarefa e a permissão. 3. O sistema marca a tarefa, que estava em andamento, como concluída e a devolve.</td>
 </tr>
 <tr>
-<td><strong>Alternativa: tarefa inexistente</strong></td>
-<td>No passo 1, o sistema responde 404.</td>
+<td><strong>Alternativa: fora do projeto ou tarefa inexistente</strong></td>
+<td>No passo 2, o sistema responde 404, sem revelar se o projeto existe.</td>
 </tr>
 <tr>
 <td><strong>Alternativa: sem permissão</strong></td>
-<td>No passo 2, quem não é o responsável nem o dono recebe 403, e nada muda.</td>
+<td>No passo 2, o membro que não é o responsável nem o dono recebe 403, e nada muda.</td>
+</tr>
+<tr>
+<td><strong>Alternativa: estado inválido</strong></td>
+<td>No passo 3, se a tarefa não está em andamento, o sistema responde 409, e nada muda.</td>
 </tr>
 <tr>
 <td><strong>Pós-condição</strong></td>
@@ -1589,11 +1593,15 @@
 <h3 id="atividades">Atividades<a class="headerlink" href="#atividades" title="Permanent link">&para;</a></h3>
 <p>O <strong>diagrama de atividades</strong> mostra a ordem dos passos e as decisões de um processo. Abaixo, o mesmo caso de uso, desenhado como fluxograma do Mermaid, que é próximo da notação da UML, mas não idêntico a ela:</p>
 <pre class="mermaid"><code>flowchart TD
-    inicio([Pedido de conclusão]) --&gt; existe{Tarefa existe?}
-    existe -- não --&gt; e404([Responde 404])
+    inicio([Pedido de conclusão]) --&gt; membro{Participa do projeto?}
+    membro -- não --&gt; e404([Responde 404])
+    membro -- sim --&gt; existe{Tarefa existe no projeto?}
+    existe -- não --&gt; e404
     existe -- sim --&gt; pode{É o responsável ou o dono?}
     pode -- não --&gt; e403([Responde 403])
-    pode -- sim --&gt; marca[Marca como concluída]
+    pode -- sim --&gt; estado{Está em andamento?}
+    estado -- não --&gt; e409([Responde 409])
+    estado -- sim --&gt; marca[Marca como concluída]
     marca --&gt; ok([Devolve a tarefa])</code></pre>
 <div class="admonition tip">
 <p class="admonition-title">Quando vale a pena</p>

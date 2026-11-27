@@ -812,6 +812,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#testes-com-banco-e-permissoes-o-taskflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🧱 Testes com banco e permissões: o TaskFlow
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#atividades" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1254,6 +1265,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#testes-com-banco-e-permissoes-o-taskflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🧱 Testes com banco e permissões: o TaskFlow
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#atividades" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1535,6 +1557,55 @@
 </code></pre></div>
 <p>Em <code>criar_tarefa</code>, as duas linhas do <code>if not dados.titulo.strip()</code> podem ser removidas, porque o modelo já recusa título vazio ou só com espaços. Os testes confirmam: os anteriores continuam passando e os dois novos também.</p>
 <p>O limite impede que um título enorme seja <strong>armazenado</strong>, mas o servidor ainda lê a requisição inteira antes de validá-la. Limitar o tamanho do corpo e a quantidade de requisições é tarefa do servidor ou do <em>proxy</em> à frente dele, e essa parte do risco continua aberta.</p>
+<h2 id="testes-com-banco-e-permissoes-o-taskflow">🧱 Testes com banco e permissões: o TaskFlow<a class="headerlink" href="#testes-com-banco-e-permissoes-o-taskflow" title="Permanent link">&para;</a></h2>
+<p>Quando a API ganha persistência e usuários, os testes mudam em dois pontos. O código abaixo é do <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a>.</p>
+<p><strong>Cada teste precisa do seu próprio banco.</strong> Se todos escrevem no mesmo arquivo, o resultado de um depende da ordem dos outros. A <em>fixture</em> de <code>tests/conftest.py</code> usa a pasta temporária do pytest (<code>tmp_path</code>) e já deixa o cliente autenticado:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="n">monkeypatch</span><span class="p">):</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="c1"># Cada teste usa um banco novo, em uma pasta temporária.</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setenv</span><span class="p">(</span><span class="s2">"TAREFAS_DB"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">"teste.db"</span><span class="p">))</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="k">with</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span> <span class="k">as</span> <span class="n">cliente</span><span class="p">:</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>        <span class="n">autenticar</span><span class="p">(</span><span class="n">cliente</span><span class="p">)</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>        <span class="k">yield</span> <span class="n">cliente</span>
+</code></pre></div>
+<p>O <code>with</code> executa o código de inicialização da aplicação, que cria as tabelas.</p>
+<p><strong>O que é proibido precisa de teste.</strong> Um teste só com o dono do projeto passaria mesmo que a API não conferisse permissão alguma. Por isso a <em>fixture</em> <code>equipe</code> cria quatro pessoas: Ana é dona de um projeto, Bia e Caio são membros e Davi está fora.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_quem_esta_fora_nao_ve_nem_altera</span><span class="p">(</span><span class="n">equipe</span><span class="p">):</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="n">como</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">tarefa</span> <span class="o">=</span> <span class="n">equipe</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="k">assert</span> <span class="n">como</span><span class="p">(</span><span class="s2">"davi"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="k">assert</span> <span class="n">como</span><span class="p">(</span><span class="s2">"davi"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tarefa</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="k">assert</span> <span class="n">como</span><span class="p">(</span><span class="s2">"davi"</span><span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"titulo"</span><span class="p">:</span> <span class="s2">"invadir"</span><span class="p">})</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="k">assert</span> <span class="n">como</span><span class="p">(</span><span class="s2">"davi"</span><span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">tarefa</span><span class="si">}</span><span class="s2">/iniciar"</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="k">assert</span> <span class="n">como</span><span class="p">(</span><span class="s2">"davi"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/projetos"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span> <span class="o">==</span> <span class="p">[]</span>
+</code></pre></div>
+<p>Cada código de erro responde a uma pergunta diferente, e cada um tem os seus testes:</p>
+<table>
+<thead>
+<tr>
+<th>Resposta</th>
+<th>Situação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>401</td>
+<td>Não se sabe quem está pedindo: sem token, com token inválido ou expirado</td>
+</tr>
+<tr>
+<td>404</td>
+<td>O recurso não existe <strong>para quem pede</strong></td>
+</tr>
+<tr>
+<td>403</td>
+<td>A pessoa é membro, mas não pode fazer isso</td>
+</tr>
+<tr>
+<td>409</td>
+<td>O pedido é permitido, mas não cabe no estado atual</td>
+</tr>
+</tbody>
+</table>
+<p>Vale procurar também o caminho indireto: <code>test_nao_alcanca_tarefa_por_outro_projeto</code> confere que Davi, dono do próprio projeto, não alcança a tarefa de Ana trocando o número na URL.</p>
 <hr />
 <h2 id="atividades">🎯 Atividades<a class="headerlink" href="#atividades" title="Permanent link">&para;</a></h2>
 <ol>
