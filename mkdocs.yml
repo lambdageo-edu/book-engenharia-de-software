@@ -85,3 +85,6 @@ nav:
     - "Cap 6: Testes e Validação":                        unidade1/06_testes_validacao.md
     - "Cap 7: Integração e Entrega Contínua (CI/CD)":     unidade1/07_integracao_entrega_continua.md
     - "Cap 8: Evolução, Manutenção e Débito Técnico":     unidade1/08_evolucao_manutencao.md
+
+  - Apêndices:
+    - "Git e contêineres na prática": apendices/git_conteineres.md
