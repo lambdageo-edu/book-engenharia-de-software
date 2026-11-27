@@ -490,10 +490,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#engenharia-orientada-a-reuso" class="md-nav__link">
+  <a href="#integracao-e-configuracao" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Engenharia orientada a reúso
+        Integração e configuração
       
     </span>
   </a>
@@ -855,10 +855,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#engenharia-orientada-a-reuso" class="md-nav__link">
+  <a href="#integracao-e-configuracao" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Engenharia orientada a reúso
+        Integração e configuração
       
     </span>
   </a>
@@ -1003,8 +1003,8 @@
 <li>É possível entregar valor rapidamente, mesmo antes de toda a funcionalidade estar pronta.</li>
 </ol>
 <p>Como desvantagens, o processo é menos visível para fins de gestão (entregas rápidas dificultam medir progresso via documentação), e a estrutura do sistema tende a se degradar a cada novo incremento, a menos que tempo seja investido em refatoração.</p>
-<h3 id="engenharia-orientada-a-reuso">Engenharia orientada a reúso<a class="headerlink" href="#engenharia-orientada-a-reuso" title="Permanent link">&para;</a></h3>
-<p>Baseia-se em um conjunto significativo de componentes reutilizáveis — o desenvolvimento se concentra em integrar componentes e sistemas já existentes, em vez de construir tudo do zero. Esse modelo é ainda mais relevante hoje do que era: bibliotecas <em>open source</em>, serviços gerenciados de nuvem (bancos de dados, filas, autenticação) e SaaS de terceiros (pagamento, e-mail transacional) tornaram o reúso a norma, não a exceção, no desenvolvimento moderno.</p>
+<h3 id="integracao-e-configuracao">Integração e configuração<a class="headerlink" href="#integracao-e-configuracao" title="Permanent link">&para;</a></h3>
+<p>Também chamado de desenvolvimento orientado a reúso, baseia-se em um conjunto significativo de componentes reutilizáveis — o desenvolvimento se concentra em integrar componentes e sistemas já existentes, em vez de construir tudo do zero. Esse modelo é ainda mais relevante hoje do que era: bibliotecas <em>open source</em>, serviços gerenciados de nuvem (bancos de dados, filas, autenticação) e SaaS de terceiros (pagamento, e-mail transacional) tornaram o reúso a norma, não a exceção, no desenvolvimento moderno.</p>
 <h2 id="o-manifesto-agil">🚀 O Manifesto Ágil<a class="headerlink" href="#o-manifesto-agil" title="Permanent link">&para;</a></h2>
 <p>No início dos anos 2000, a insatisfação com processos pesados e burocráticos levou um grupo de desenvolvedores a formalizar princípios que já vinham sendo praticados informalmente (Extreme Programming, Scrum, Crystal). O resultado foi o <strong>Manifesto para Desenvolvimento Ágil de Software</strong> (2001), que estabelece quatro valores centrais:</p>
 <blockquote>
@@ -1022,7 +1022,29 @@
 </div>
 <p>Esses valores se desdobram em 12 princípios, dos quais vale destacar alguns que resumem bem a mudança de mentalidade: entregar software funcionando com frequência (de poucas semanas a poucos meses, preferindo os períodos mais curtos); receber bem mudanças de requisito, mesmo tardias no desenvolvimento; medir progresso principalmente pelo software funcionando; e manter um ritmo sustentável de trabalho.</p>
 <h3 id="scrum">Scrum<a class="headerlink" href="#scrum" title="Permanent link">&para;</a></h3>
-<p>Scrum é o framework ágil mais adotado no mercado. Organiza o trabalho em <strong>sprints</strong> (iterações de tempo fixo, tipicamente 1 a 4 semanas), com três papéis (<em>Product Owner</em>, <em>Scrum Master</em>, time de desenvolvimento), três artefatos (<em>Product Backlog</em>, <em>Sprint Backlog</em>, Incremento) e cinco eventos (<em>Sprint Planning</em>, <em>Daily Scrum</em>, <em>Sprint Review</em>, <em>Sprint Retrospective</em>, e a própria Sprint).</p>
+<p>Scrum é o framework ágil mais adotado no mercado. Organiza o trabalho em <strong>sprints</strong>, iterações de duração fixa de um mês ou menos. A versão de 2020 do <a href="https://scrumguides.org/">Guia do Scrum</a> define um <em>Scrum Team</em> com três <strong>responsabilidades</strong> (<em>accountabilities</em>): <em>Product Owner</em>, <em>Scrum Master</em> e <em>Developers</em>. São cinco eventos (a própria Sprint, <em>Sprint Planning</em>, <em>Daily Scrum</em>, <em>Sprint Review</em> e <em>Sprint Retrospective</em>) e três artefatos, cada um com um <strong>compromisso</strong> que dá direção e transparência:</p>
+<table>
+<thead>
+<tr>
+<th>Artefato</th>
+<th>Compromisso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>Product Backlog</em></td>
+<td>Meta do produto (<em>Product Goal</em>)</td>
+</tr>
+<tr>
+<td><em>Sprint Backlog</em></td>
+<td>Meta da sprint (<em>Sprint Goal</em>)</td>
+</tr>
+<tr>
+<td>Incremento</td>
+<td>Definição de pronto (<em>Definition of Done</em>)</td>
+</tr>
+</tbody>
+</table>
 <h3 id="kanban">Kanban<a class="headerlink" href="#kanban" title="Permanent link">&para;</a></h3>
 <p>Kanban tem origem no sistema de produção da Toyota e foi adaptado ao desenvolvimento de software por David J. Anderson. Em vez de iterações de tempo fixo, o trabalho flui continuamente por colunas em um quadro (ex: <em>A Fazer → Em Progresso → Em Revisão → Concluído</em>), com <strong>limites explícitos de trabalho em progresso (WIP)</strong> para evitar sobrecarga e destacar gargalos.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Scrum</label><label for="__tabbed_1_2">Kanban</label></div>
@@ -1030,7 +1052,7 @@
 <div class="tabbed-block">
 <ul>
 <li>Trabalho organizado em sprints de duração fixa</li>
-<li>Papéis formais e cerimônias definidas</li>
+<li>Responsabilidades e eventos definidos</li>
 <li>Boa opção quando o time precisa de ritmo e previsibilidade de entrega</li>
 <li>Exige maturidade para não virar "cascata em fatias de 2 semanas"</li>
 </ul>
@@ -1058,7 +1080,44 @@
 <li><strong>Automação de ponta a ponta</strong>: infraestrutura como código, pipelines de integração e entrega contínua (Capítulo 7), testes automatizados (Capítulo 6) — tudo para reduzir trabalho manual e erro humano em processos repetitivos.</li>
 <li><strong>Cultura de aprendizado sem culpa (<em>blameless postmortems</em>)</strong>: falhas em produção são tratadas como oportunidades de melhorar o sistema e o processo, não como motivo para punir indivíduos — o que incentiva as pessoas a reportar problemas cedo, em vez de escondê-los.</li>
 </ul>
-<p>Um pilar prático do DevOps é a métrica <strong>DORA</strong> (<em>DevOps Research and Assessment</em>), que identifica quatro indicadores fortemente correlacionados com o desempenho de engenharia de uma organização: frequência de deploy, <em>lead time</em> para mudanças, taxa de falha em mudanças, e tempo de restauração após incidente. Times de alto desempenho fazem deploy sob demanda (múltiplas vezes ao dia), com <em>lead time</em> de horas, baixa taxa de falha e recuperação em minutos — contra deploys mensais/trimestrais, <em>lead time</em> de meses e recuperação em dias, típicos de organizações menos maduras.</p>
+<p>Um instrumento prático do DevOps são as <a href="https://dora.dev/guides/dora-metrics/history/">métricas de entrega de software da DORA</a> (<em>DevOps Research and Assessment</em>). Desde 2024 são cinco, em dois grupos:</p>
+<table>
+<thead>
+<tr>
+<th>Grupo</th>
+<th>Métrica</th>
+<th>O que mede</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vazão</td>
+<td>Tempo de espera das mudanças (<em>change lead time</em>)</td>
+<td>Do <em>commit</em> até a mudança em produção</td>
+</tr>
+<tr>
+<td>Vazão</td>
+<td>Frequência de implantação</td>
+<td>Com que frequência se implanta</td>
+</tr>
+<tr>
+<td>Vazão</td>
+<td>Tempo de recuperação de implantação com falha</td>
+<td>Quanto se leva para recuperar uma implantação que falhou</td>
+</tr>
+<tr>
+<td>Instabilidade</td>
+<td>Taxa de falha das mudanças</td>
+<td>Proporção de implantações que causam falha em produção</td>
+</tr>
+<tr>
+<td>Instabilidade</td>
+<td>Taxa de retrabalho de implantação</td>
+<td>Proporção de implantações não planejadas, feitas para corrigir problemas</td>
+</tr>
+</tbody>
+</table>
+<p>Relatórios anteriores a 2025 agrupavam as organizações em faixas de desempenho (de baixo a elite). O <a href="https://redmonk.com/rstephens/2025/12/18/dora2025/">relatório de 2025</a>, renomeado para <em>State of AI-assisted Software Development</em>, trocou essas faixas por sete perfis de equipe. Use as métricas para acompanhar a evolução do seu próprio time, e não como um placar entre times.</p>
 <div class="admonition tip">
 <p class="admonition-title">Ágil e DevOps não competem — se complementam</p>
 <p>Ágil resolve "como planejamos e priorizamos o trabalho de desenvolvimento". DevOps resolve "como levamos esse trabalho até produção, com segurança e frequência". Um time pode ser ágil sem ser DevOps (sprints organizados, mas deploys manuais e raros) — e o contrário também é possível, embora menos comum na prática.</p>
@@ -1110,7 +1169,7 @@
 <li>Manifesto para Desenvolvimento Ágil de Software — <a href="https://agilemanifesto.org/iso/ptbr/manifesto.html">agilemanifesto.org/iso/ptbr/manifesto.html</a></li>
 <li>Scrum Guide (oficial) — <a href="https://scrumguides.org/">scrumguides.org</a></li>
 <li>FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. <em>Accelerate: The Science of Lean Software and DevOps</em>. IT Revolution, 2018.</li>
-<li>Relatório <em>State of DevOps</em> (DORA/Google Cloud), publicado anualmente.</li>
+<li>Relatórios anuais da DORA (Google Cloud): <em>State of DevOps</em> até 2024 e <em>State of AI-assisted Software Development</em> em 2025 — <a href="https://dora.dev/">dora.dev</a>.</li>
 </ul>
 
 
@@ -1147,6 +1206,11 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © Sergio Souza Costa · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br">CC BY-NC-SA 4.0</a>
+
+    </div>
   
   
     Made with

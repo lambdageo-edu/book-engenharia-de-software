@@ -951,18 +951,19 @@
 <h3 id="dependencias">Dependências<a class="headerlink" href="#dependencias" title="Permanent link">&para;</a></h3>
 <p>Separe o que a aplicação precisa para <strong>rodar</strong> do que só é necessário para <strong>desenvolver e testar</strong>. Assim, as ferramentas de teste não vão parar na imagem de produção.</p>
 <p><code>requirements.txt</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>fastapi&gt;=0.115
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>uvicorn[standard]&gt;=0.32
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>pydantic&gt;=2.9
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>fastapi==0.165.0
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>uvicorn[standard]==0.54.0
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>pydantic==2.14.4
 </code></pre></div>
 <p><code>requirements-dev.txt</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>-r requirements.txt
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>pytest&gt;=8.3
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>pytest-cov&gt;=6.0
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>httpx2&gt;=2.9
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>ruff&gt;=0.7
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>mypy&gt;=1.10
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>pytest==9.2.0
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>pytest-cov==7.1.0
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>httpx2==2.16.2
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>ruff==0.17.6
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>mypy==2.4.1
 </code></pre></div>
+<p>As versões estão fixadas (<code>==</code>) para que o pipeline instale hoje o mesmo que instalará amanhã. São as versões testadas em novembro de 2026. Fixar não significa congelar: atualize de propósito, com os testes rodando, por exemplo a partir dos <em>pull requests</em> do Dependabot. Para fixar também as dependências indiretas, use um arquivo de <em>lock</em>, gerado por ferramentas como <code>uv</code> ou <code>pip-tools</code>.</p>
 <h3 id="o-workflow-githubworkflowsciyml">O workflow: <code>.github/workflows/ci.yml</code><a class="headerlink" href="#o-workflow-githubworkflowsciyml" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CI</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
@@ -983,7 +984,7 @@
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configurar Python</span>
 <a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v7</span>
 <a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
-<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">"3.12"</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">"3.14"</span>
 <a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">          </span><span class="nt">cache</span><span class="p">:</span><span class="w"> </span><span class="s">"pip"</span>
 <a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">          </span><span class="nt">cache-dependency-path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">requirements*.txt</span>
 <a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>
@@ -1016,7 +1017,7 @@
 <p>Repare na estrutura: <code>on</code> define os gatilhos (aqui, todo <code>push</code> ou <code>pull_request</code> para <code>main</code>); <code>jobs.test.steps</code> é a sequência de passos executados em uma máquina virtual limpa do GitHub a cada execução. O job <code>imagem</code> declara <code>needs: test</code>, portanto só roda se o job de testes passar. A <em>action</em> <code>actions/setup-python</code> com <code>cache: "pip"</code> acelera execuções futuras reaproveitando o cache de dependências entre pipelines.</p>
 <p>O parâmetro <code>--cov-fail-under=80</code> faz o próprio comando de teste <strong>falhar</strong> se a cobertura cair abaixo de 80% — transformando um limite de qualidade em um portão automático do pipeline, em vez de depender de alguém checar o relatório manualmente.</p>
 <h3 id="empacotando-em-um-conteiner-dockerfile">Empacotando em um contêiner: <code>Dockerfile</code><a class="headerlink" href="#empacotando-em-um-conteiner-dockerfile" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.12-slim</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.14-slim</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
@@ -1068,7 +1069,7 @@
 </ul>
 <div class="admonition tip">
 <p class="admonition-title">Deploy frequente reduz risco, não aumenta</p>
-<p>É comum a intuição de que "fazer deploy com mais frequência é mais arriscado". A evidência de pesquisas como o <em>State of DevOps</em> aponta o contrário: deploys pequenos e frequentes são mais fáceis de testar, mais fáceis de reverter e mais fáceis de depurar (menos mudanças acumuladas por deploy) do que grandes lançamentos espaçados — que concentram risco em vez de distribuí-lo.</p>
+<p>É comum a intuição de que "fazer deploy com mais frequência é mais arriscado". A evidência das pesquisas da DORA (relatórios <em>State of DevOps</em>, até 2024) aponta o contrário: deploys pequenos e frequentes são mais fáceis de testar, mais fáceis de reverter e mais fáceis de depurar (menos mudanças acumuladas por deploy) do que grandes lançamentos espaçados — que concentram risco em vez de distribuí-lo.</p>
 </div>
 <h2 id="agentes-de-codificacao-e-o-pipeline">🤖 Agentes de codificação e o pipeline<a class="headerlink" href="#agentes-de-codificacao-e-o-pipeline" title="Permanent link">&para;</a></h2>
 <p>Uma tendência recente é a de agentes de codificação que não apenas sugerem trechos de código, mas abrem <em>pull requests</em> completos de forma autônoma — recebendo uma tarefa (ex: uma <em>issue</em> do GitHub), explorando o repositório, implementando a mudança, e submetendo-a para revisão. Do ponto de vista do pipeline de CI/CD, isso não muda a arquitetura discutida neste capítulo: um <em>pull request</em> aberto por um agente passa pelos mesmos portões de qualidade — lint, testes, cobertura mínima — que um <em>pull request</em> aberto por uma pessoa.</p>
@@ -1086,7 +1087,7 @@
 <li>FOWLER, Martin. <em>Continuous Integration</em> — <a href="https://martinfowler.com/articles/continuousIntegration.html">martinfowler.com/articles/continuousIntegration.html</a></li>
 <li>HUMBLE, Jez; FARLEY, David. <em>Continuous Delivery</em>. Addison-Wesley, 2010.</li>
 <li>Documentação oficial: <a href="https://docs.github.com/actions">GitHub Actions</a>, <a href="https://docs.docker.com/">Docker</a></li>
-<li>Relatório <em>State of DevOps</em> (DORA/Google Cloud), publicado anualmente.</li>
+<li>Relatórios anuais da DORA (Google Cloud): <em>State of DevOps</em> até 2024 e <em>State of AI-assisted Software Development</em> em 2025 — <a href="https://dora.dev/">dora.dev</a>.</li>
 </ul>
 
 
@@ -1123,6 +1124,11 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © Sergio Souza Costa · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br">CC BY-NC-SA 4.0</a>
+
+    </div>
   
   
     Made with
