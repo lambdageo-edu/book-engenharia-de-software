@@ -655,6 +655,23 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modelando-os-conceitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🧱 Modelando os conceitos
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧱 Modelando os conceitos">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#classes-de-analise" class="md-nav__link">
     <span class="md-ellipsis">
@@ -1088,6 +1105,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../../apendices/http_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  HTTP e APIs em poucas linhas
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../apendices/git_conteineres/" class="md-nav__link">
         
   
@@ -1300,6 +1344,23 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modelando-os-conceitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🧱 Modelando os conceitos
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧱 Modelando os conceitos">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#classes-de-analise" class="md-nav__link">
     <span class="md-ellipsis">
@@ -1418,7 +1479,7 @@
 
 <h1 id="especificacao-de-requisitos">Especificação de Requisitos<a class="headerlink" href="#especificacao-de-requisitos" title="Permanent link">&para;</a></h1>
 <h2 id="o-que-sao-requisitos">📋 O que são requisitos<a class="headerlink" href="#o-que-sao-requisitos" title="Permanent link">&para;</a></h2>
-<p>Requisitos descrevem <strong>o que</strong> um sistema deve fazer e <strong>sob quais restrições</strong> ele deve operar. Eles são, em geral, o produto mais difícil de acertar em um projeto de software: requisitos errados ou incompletos custam caro para corrigir quanto mais tarde forem descobertos, e a maioria dos problemas de projetos de software tem raiz em requisitos mal-entendidos, não em código malfeito.</p>
+<p>Requisitos descrevem <strong>o que</strong> um sistema deve fazer e <strong>sob quais restrições</strong> ele deve operar. Eles são, em geral, o produto mais difícil de acertar em um projeto de software: requisitos errados ou incompletos custam caro para corrigir quanto mais tarde forem descobertos, e um requisito mal-entendido pode comprometer um projeto mesmo quando o código é bem feito.</p>
 <p>Requisitos costumam existir em diferentes níveis de abstração, e diferentes públicos leem diferentes níveis:</p>
 <ul>
 <li><strong>Requisitos de usuário</strong>: enunciados em linguagem natural (e às vezes diagramas), descrevendo os serviços que o sistema deve fornecer e as restrições sob as quais deve operar, voltados a clientes e usuários finais.</li>
@@ -1538,11 +1599,11 @@
 </tr>
 <tr>
 <td><strong>Descrição</strong></td>
-<td>O sistema deve exibir ao assinante do plano gratuito o número de créditos restantes no mês corrente.</td>
+<td>O sistema deve permitir que um membro filtre as tarefas de um projeto pelo responsável.</td>
 </tr>
 <tr>
 <td><strong>Origem</strong></td>
-<td>Equipe de atendimento</td>
+<td>Equipe que vai usar o sistema</td>
 </tr>
 <tr>
 <td><strong>Prioridade</strong></td>
@@ -1550,11 +1611,11 @@
 </tr>
 <tr>
 <td><strong>Pré-condição</strong></td>
-<td>O assinante está autenticado.</td>
+<td>O membro está autenticado e participa do projeto.</td>
 </tr>
 <tr>
 <td><strong>Critério de verificação</strong></td>
-<td>O valor exibido no painel é igual ao saldo registrado para o assinante.</td>
+<td>A lista filtrada traz todas as tarefas daquele responsável, e nenhuma outra.</td>
 </tr>
 </tbody>
 </table>
@@ -1565,7 +1626,7 @@
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>quero &lt;realizar uma ação&gt;,
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>para que &lt;benefício/objetivo&gt;.
 </code></pre></div>
-<p><em>Exemplo:</em> "Como assinante do plano gratuito, quero ver quantos créditos me restam no mês, para que eu possa planejar meu uso sem ser surpreendido."</p>
+<p><em>Exemplo:</em> "Como membro de um projeto, quero filtrar as tarefas pelo responsável, para ver o que está comigo sem percorrer a lista inteira."</p>
 <p>Ron Jeffries resumiu a ideia em <a href="https://ronjeffries.com/xprog/articles/expcardconversationconfirmation">três Cs</a>:</p>
 <ul>
 <li><strong>Cartão</strong>: a frase curta, que serve de lembrete e permite priorizar;</li>
@@ -1574,9 +1635,9 @@
 </ul>
 <p>O texto no cartão é a menor parte: a história é uma promessa de conversar.</p>
 <p>Uma história de usuário sozinha costuma ser incompleta demais para guiar o desenvolvimento — por isso ela é normalmente acompanhada de <strong>critérios de aceitação</strong>, que funcionam como uma especificação mínima e testável:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Dado que o assinante está logado no plano gratuito,
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>quando ele acessa o painel principal,
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>então o sistema exibe o número de créditos restantes no mês corrente.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Dado que Bia e Caio têm tarefas no mesmo projeto,
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>quando Bia filtra a lista pelo próprio nome,
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>então aparecem apenas as tarefas de Bia.
 </code></pre></div>
 <p>Esse formato <em>Dado/Quando/Então</em> (Gherkin) tem a vantagem de já nascer no formato usado por ferramentas de teste de aceitação automatizado (como Cucumber ou Behave) — aproximando requisito e teste, um tema que retomaremos no Capítulo 6.</p>
 <div class="admonition tip">
@@ -1628,15 +1689,23 @@
     subgraph api[API de tarefas]
         criar([Criar tarefa])
         listar([Listar tarefas])
+        assumir([Assumir tarefa])
+        iniciar([Iniciar tarefa])
         concluir([Concluir tarefa])
         convidar([Adicionar membro])
+        atribuir([Atribuir responsável])
     end
     membro --- criar
     membro --- listar
+    membro --- assumir
+    membro --- iniciar
     membro --- concluir
     dono --- convidar
+    dono --- atribuir
     dono -- é um --&gt; membro</code></pre>
 <p>As linhas ligam cada ator aos seus objetivos. A seta "é um" representa a <strong>generalização</strong>: o dono do projeto faz tudo o que o membro faz e mais. O desenho acima é um fluxograma que imita a notação: na UML, os atores são bonecos e a generalização é uma linha com triângulo vazado.</p>
+<p><em>Assumir</em> é o membro tomar para si uma tarefa sem responsável; <em>atribuir</em>, o dono escolher quem responde por ela. Só se conclui uma tarefa que foi iniciada. Devolver e reabrir ficaram de fora para não carregar o desenho.</p>
+<p>Os números das alternativas abaixo, como 404 e 409, são códigos de resposta do HTTP, explicados no <a href="../../apendices/http_api/">apêndice</a>.</p>
 <p>O diagrama é um índice. O conteúdo está na descrição textual de cada caso (COCKBURN, 2000):</p>
 <table>
 <thead>
@@ -1690,6 +1759,11 @@
     estado -- não --&gt; e409([Responde 409])
     estado -- sim --&gt; marca[Marca como concluída]
     marca --&gt; ok([Devolve a tarefa])</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Quando vale a pena</p>
+<p>Casos de uso ajudam a delimitar o escopo e a conversar com quem não programa. Um diagrama de atividades compensa quando há várias decisões ou vários participantes. Para um cadastro simples, uma história de usuário com critérios de aceitação basta.</p>
+</div>
+<h2 id="modelando-os-conceitos">🧱 Modelando os conceitos<a class="headerlink" href="#modelando-os-conceitos" title="Permanent link">&para;</a></h2>
 <h3 id="classes-de-analise">Classes de análise<a class="headerlink" href="#classes-de-analise" title="Permanent link">&para;</a></h3>
 <p>Antes de projetar o código, vale identificar os <strong>conceitos do problema</strong>: de que coisas os requisitos falam, o que cada uma precisa saber e como se relacionam. O resultado é um modelo de <strong>classes de análise</strong>, sem tipos de dados, métodos ou decisões de tecnologia.</p>
 <p>Um ponto de partida é sublinhar os substantivos das histórias e casos de uso, e então filtrar. Para a frase "o dono do projeto atribui a um membro uma tarefa com título":</p>
@@ -1741,6 +1815,7 @@
         titulo
         situação
     }
+    Usuario "1" -- "0..*" Projeto : é dono de
     Usuario "1..*" -- "0..*" Projeto : participa
     Projeto "1" -- "0..*" Tarefa : reúne
     Usuario "0..1" -- "0..*" Tarefa : responde por</code></pre>
@@ -1751,10 +1826,6 @@
 <li><strong>Entidade</strong>: guarda a informação e as regras do domínio (usuário, projeto, tarefa).</li>
 </ul>
 <p>Os substantivos são só um começo: nem todos viram classes, e alguns conceitos não aparecem no texto. Os <strong>cartões CRC</strong> (classe, responsabilidades, colaboradores) ajudam a testar o modelo em equipe: cada pessoa representa uma classe, e o grupo encena um caso de uso. O <a href="../04_projeto_arquitetura/">Capítulo 4</a> transforma este modelo em um diagrama de projeto.</p>
-<div class="admonition tip">
-<p class="admonition-title">Quando vale a pena</p>
-<p>Casos de uso ajudam a delimitar o escopo e a conversar com quem não programa. Um diagrama de atividades compensa quando há várias decisões ou vários participantes. Para um cadastro simples, uma história de usuário com critérios de aceitação basta.</p>
-</div>
 <h2 id="boas-praticas-de-especificacao">✅ Boas práticas de especificação<a class="headerlink" href="#boas-praticas-de-especificacao" title="Permanent link">&para;</a></h2>
 <p>Independente do formato (documento formal ou história de usuário), um bom requisito deve ser:</p>
 <ul>

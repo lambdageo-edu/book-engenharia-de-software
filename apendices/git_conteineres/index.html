@@ -20,7 +20,7 @@
       
       
       
-        <link rel="prev" href="../../capitulos/08_evolucao_manutencao/">
+        <link rel="prev" href="../http_api/">
       
       
       
@@ -779,6 +779,33 @@
                   
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../http_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  HTTP e APIs em poucas linhas
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
     
   
   
@@ -1160,10 +1187,11 @@
 <h2 id="conteineres-o-minimo">📦 Contêineres: o mínimo<a class="headerlink" href="#conteineres-o-minimo" title="Permanent link">&para;</a></h2>
 <p>Uma <strong>imagem</strong> é o pacote somente leitura com a aplicação e suas dependências; um <strong>contêiner</strong> é uma execução dessa imagem. Com o <code>Dockerfile</code> do <a href="../../capitulos/07_integracao_entrega_continua/">Capítulo 7</a>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>api-tarefas<span class="w"> </span>.
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>api<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>api-tarefas
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>api<span class="w"> </span>-p<span class="w"> </span><span class="m">127</span>.0.0.1:8000:8000<span class="w"> </span>api-tarefas
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>docker<span class="w"> </span>logs<span class="w"> </span>api<span class="w">            </span><span class="c1"># primeira parada quando algo falha</span>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>docker<span class="w"> </span>stop<span class="w"> </span>api<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>rm<span class="w"> </span>api
 </code></pre></div>
+<p>O <code>127.0.0.1</code> publica a porta só para a sua máquina: a API deste livro não tem HTTPS.</p>
 <p>O que é gravado dentro do contêiner se perde quando ele é removido; dados que precisam sobreviver vão para um <em>volume</em>.</p>
 <p>Para praticar passo a passo (rede, volumes, Docker Compose e otimização de imagens), siga os <a href="https://lambdageo-edu.github.io/lambdageo-tutorials/docker/">tutoriais de Docker da coleção LambdaGeo</a>.</p>
 <h2 id="atividades">🎯 Atividades<a class="headerlink" href="#atividades" title="Permanent link">&para;</a></h2>

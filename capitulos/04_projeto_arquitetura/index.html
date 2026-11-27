@@ -710,6 +710,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#modelando-os-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🗄️ Modelando os dados
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#seguranca-desde-o-projeto" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1099,6 +1110,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../../apendices/http_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  HTTP e APIs em poucas linhas
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../apendices/git_conteineres/" class="md-nav__link">
         
   
@@ -1339,6 +1377,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#modelando-os-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        🗄️ Modelando os dados
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#seguranca-desde-o-projeto" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1447,7 +1496,7 @@
 <li><strong>Separação de responsabilidades (<em>separation of concerns</em>)</strong>: cada componente deve ter uma responsabilidade bem definida, minimizando sobreposição.</li>
 <li><strong>Baixo acoplamento, alta coesão</strong>: componentes devem depender pouco uns dos outros (acoplamento) e cada componente deve agrupar responsabilidades fortemente relacionadas entre si (coesão).</li>
 <li><strong>Abstração</strong>: expor apenas o necessário através de interfaces, escondendo detalhes de implementação.</li>
-<li><strong>Princípio da responsabilidade única (<em>Single Responsibility Principle</em>)</strong>: um módulo deve ter apenas um motivo para mudar — o primeiro dos princípios <strong>SOLID</strong>, um conjunto de cinco diretrizes de projeto orientado a objetos (SRP, Open/Closed, Liskov, Interface Segregation, Dependency Inversion) amplamente usado como referência de projeto até hoje (veja adiante).</li>
+<li><strong>Responsabilidade única</strong>: um módulo deve ter apenas um motivo para mudar. É o primeiro dos cinco princípios <strong>SOLID</strong>, apresentados adiante.</li>
 <li><strong><a href="https://www.martinfowler.com/bliki/Yagni.html">YAGNI</a> (<em>You Aren't Gonna Need It</em>)</strong>: não projete flexibilidade para requisitos hipotéticos que ainda não existem — complexidade antecipada tem custo real e nem sempre paga o benefício esperado.</li>
 </ul>
 <div class="admonition warning">
@@ -1680,6 +1729,59 @@
 <p class="admonition-title">Diagramas gerados por IA</p>
 <p>Um assistente produz diagramas com boa aparência a partir de uma descrição curta. Confira cada multiplicidade e cada transição: o que a descrição não disse foi inventado.</p>
 </div>
+<h2 id="modelando-os-dados">🗄️ Modelando os dados<a class="headerlink" href="#modelando-os-dados" title="Permanent link">&para;</a></h2>
+<p>Código se reescreve; dados gravados ficam. Por isso o modelo de dados merece decisão própria. No modelo <strong>relacional</strong>, proposto por Codd (1970), os dados ficam em tabelas ligadas por valores. Partindo do diagrama de classes, o TaskFlow chegou a estas tabelas (a de sessões ficou de fora do desenho):</p>
+<pre class="mermaid"><code>erDiagram
+    usuarios ||--o{ projetos : "é dono de"
+    usuarios ||--o{ membros : "participa como"
+    projetos ||--o{ membros : tem
+    projetos ||--o{ tarefas : "contém"
+    membros |o--o{ tarefas : "responde por"
+    usuarios {
+        int id PK
+        text login UK
+        text nome
+        text senha_hash
+    }
+    projetos {
+        int id PK
+        text nome
+        int dono_id FK
+    }
+    membros {
+        int projeto_id PK, FK
+        int usuario_id PK, FK
+    }
+    tarefas {
+        int id PK
+        int projeto_id FK
+        text titulo
+        text status
+        int responsavel_id FK
+    }</code></pre>
+<p>Algumas regras de passagem:</p>
+<ul>
+<li>cada classe vira, em geral, uma <strong>tabela</strong>, e cada atributo, uma coluna;</li>
+<li>a <strong>chave primária</strong> identifica cada linha (<code>id</code>);</li>
+<li>uma relação "um para muitos" vira uma <strong>chave estrangeira</strong> no lado "muitos" (<code>tarefas.projeto_id</code>);</li>
+<li>uma relação "muitos para muitos", como a participação em projetos, vira uma <strong>tabela associativa</strong> (<code>membros</code>);</li>
+<li>o que é opcional vira coluna que aceita nulo (<code>responsavel_id</code>).</li>
+</ul>
+<p>Guarde cada fato em um só lugar. Se o nome do dono fosse copiado em cada projeto, uma correção teria de alterar várias linhas, e esquecer uma criaria duas versões. Organizar as tabelas para evitar esse tipo de redundância chama-se <strong>normalização</strong>.</p>
+<p>O banco também pode garantir regras, mesmo que o código tenha um defeito (trecho de <code>app/db.py</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">tarefas</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="n">id</span><span class="w">             </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="n">projeto_id</span><span class="w">     </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">projetos</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="n">titulo</span><span class="w">         </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="k">length</span><span class="p">(</span><span class="n">titulo</span><span class="p">)</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="mi">200</span><span class="p">),</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="n">status</span><span class="w">         </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'pendente'</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">                   </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'pendente'</span><span class="p">,</span><span class="w"> </span><span class="s1">'em_andamento'</span><span class="p">,</span><span class="w"> </span><span class="s1">'concluida'</span><span class="p">)),</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="n">responsavel_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">projeto_id</span><span class="p">,</span><span class="w"> </span><span class="n">responsavel_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">membros</span><span class="p">(</span><span class="n">projeto_id</span><span class="p">,</span><span class="w"> </span><span class="n">usuario_id</span><span class="p">)</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">);</span>
+</code></pre></div>
+<p>A última restrição impede atribuir uma tarefa a quem não é membro do projeto. No SQLite, as chaves estrangeiras só são verificadas se a conexão executar <a href="https://www.sqlite.org/foreignkeys.html"><code>PRAGMA foreign_keys = ON</code></a>, o que o TaskFlow faz ao conectar.</p>
+<p>Quando uma operação grava em mais de um lugar, use uma <strong>transação</strong>: ou tudo é gravado, ou nada. Ao criar um projeto, o TaskFlow insere o projeto e o primeiro membro juntos. Mudar o esquema depois que há dados exige migração (<a href="../08_evolucao_manutencao/">Capítulo 8</a>).</p>
+<p>O modelo relacional é uma boa escolha inicial quando os dados têm relações e regras. Bancos de documentos, de chave e valor ou de grafos atendem a outras formas de acesso: decida pelas consultas e garantias de que o sistema precisa, e registre o porquê em um ADR.</p>
 <h2 id="seguranca-desde-o-projeto">🛡️ Segurança desde o projeto<a class="headerlink" href="#seguranca-desde-o-projeto" title="Permanent link">&para;</a></h2>
 <p>Uma falha de código se corrige com um <em>commit</em>. Uma falha de projeto, como não prever quem pode acessar o quê, costuma exigir mudar modelo de dados, interfaces e código já escrito. Por isso a segurança entra nas decisões de arquitetura. Alguns princípios antigos continuam válidos, vários deles formulados por Saltzer e Schroeder em 1975:</p>
 <ul>
@@ -1811,20 +1913,21 @@
 <h2 id="documentando-e-comunicando-arquitetura">🗺️ Documentando e comunicando arquitetura<a class="headerlink" href="#documentando-e-comunicando-arquitetura" title="Permanent link">&para;</a></h2>
 <p>Arquitetura só é útil se for compreendida por quem constrói o sistema. Algumas ferramentas práticas:</p>
 <ul>
-<li><strong>Diagramas C4</strong> (Contexto, Contêineres, Componentes, Código): um modelo proposto por Simon Brown, de diagramação em quatro níveis de zoom, do mais abstrato (como o sistema se encaixa no mundo) ao mais detalhado (classes de um componente específico) — mais leve e mais usado atualmente do que notações formais completas como UML.</li>
-<li><strong>Registros de Decisão de Arquitetura (<em>Architecture Decision Records</em> — ADRs)</strong>, <a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions">popularizados por Michael Nygard</a>: pequenos documentos versionados junto ao código, registrando uma decisão de arquitetura, o contexto que levou a ela, e as alternativas consideradas — úteis para que decisões antigas não pareçam arbitrárias para quem chega depois no time.</li>
+<li><strong>Diagramas C4</strong> (Contexto, Contêineres, Componentes, Código): um modelo proposto por Simon Brown, de diagramação em quatro níveis de zoom, do mais abstrato (como o sistema se encaixa no mundo) ao mais detalhado (classes de um componente específico) — uma alternativa mais leve do que modelar o sistema inteiro em UML.</li>
+<li><strong>Registros de Decisão de Arquitetura (<em>Architecture Decision Records</em> — ADRs)</strong>, <a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions">popularizados por Michael Nygard</a>: pequenos documentos versionados junto ao código, cada um registrando uma decisão de arquitetura. O modelo de Nygard tem cinco partes: título, contexto, decisão, situação (<em>status</em>) e consequências. Muitas equipes acrescentam as alternativas consideradas. São úteis para que decisões antigas não pareçam arbitrárias para quem chega depois no time.</li>
 <li><strong>UML</strong>, ainda útil para diagramas específicos (classes, sequência) quando o nível de detalhe compensa o custo de mantê-los atualizados — mas raramente usado hoje como especificação completa e exaustiva de um sistema, como se popularizou nos anos 1990/2000.</li>
 </ul>
 <hr />
 <h2 id="atividades">🎯 Atividades<a class="headerlink" href="#atividades" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Para um sistema de e-commerce de pequeno porte, você optaria por um monólito modularizado ou por microsserviços? Justifique com base nos trade-offs discutidos.</li>
-<li>Escreva um ADR curto (contexto, decisão, alternativas consideradas, consequências) para a escolha de arquitetura do item anterior.</li>
+<li>Escreva um ADR curto (título, contexto, decisão, situação, consequências e alternativas consideradas) para a escolha de arquitetura do item anterior.</li>
 <li>Identifique um padrão de projeto (dos criacionais, estruturais ou comportamentais) que você já usou, mesmo sem saber o nome, em algum código que escreveu. Descreva o problema que ele resolveu.</li>
 <li>Faça a modelagem de ameaças de uma funcionalidade pequena (por exemplo, atribuir uma tarefa a outra pessoa): diagrama com a fronteira de confiança, ao menos quatro ameaças do STRIDE e a resposta escolhida para cada uma.</li>
 <li>Peça a um assistente de IA ameaças para a mesma funcionalidade. Separe as que acrescentam algo, as genéricas e as erradas.</li>
 <li>Inclua no diagrama de estados uma tarefa cancelada. De quais estados se chega a ela? É possível reativá-la? Escreva os testes que essas respostas sugerem.</li>
 <li>Acrescente o formato CSV ao exemplo de exportação, primeiro na versão com <code>if</code> e depois na versão com Strategy. Em cada uma, o que precisou mudar? Escreva um teste que valha para todos os formatos.</li>
+<li>Acrescente etiquetas às tarefas: uma tarefa pode ter várias, e uma etiqueta serve a várias tarefas. Que tabelas surgem, com quais chaves e restrições?</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1832,6 +1935,8 @@
 <li>SOMMERVILLE, Ian. <em>Engenharia de Software</em>. 10. ed. — Capítulo 5 (modelagem de sistemas).</li>
 <li>OMG. <em>Unified Modeling Language</em>, versão 2.5.1, 2017 — <a href="https://www.omg.org/spec/UML/About-UML/">omg.org/spec/UML</a></li>
 <li>FOWLER, Martin. <em>UML Distilled</em>. 3. ed. Addison-Wesley, 2003.</li>
+<li>CODD, E. F. <em>A Relational Model of Data for Large Shared Data Banks</em>. Communications of the ACM, 13(6), 1970.</li>
+<li>SQLite, <em>Foreign Key Support</em> — <a href="https://www.sqlite.org/foreignkeys.html">sqlite.org</a></li>
 <li>GAMMA, Erich et al. <em>Design Patterns: Elements of Reusable Object-Oriented Software</em>. Addison-Wesley, 1994.</li>
 <li>FOWLER, Martin. <em>Patterns of Enterprise Application Architecture</em>. Addison-Wesley, 2002.</li>
 <li>OWASP <em>Threat Modeling Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>

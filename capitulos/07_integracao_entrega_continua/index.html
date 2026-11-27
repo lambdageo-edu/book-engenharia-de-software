@@ -982,6 +982,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../../apendices/http_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  HTTP e APIs em poucas linhas
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../apendices/git_conteineres/" class="md-nav__link">
         
   
@@ -1210,8 +1237,8 @@
 <p>A motivação original, descrita por Martin Fowler há mais de duas décadas, é simples: quanto mais tempo uma mudança fica isolada em uma branch separada, mais ela diverge do resto do código, e mais doloroso (e arriscado) se torna integrá-la depois — o clássico problema de "<em>merge hell</em>". Integrar cedo e com frequência transforma um grande risco ocasional em um risco pequeno e constante, muito mais fácil de gerenciar.</p>
 <p><strong>Entrega contínua (CD — <em>Continuous Delivery</em>)</strong> estende essa ideia: se toda mudança validada no pipeline está, por definição, em um estado potencialmente pronto para produção, o processo de colocá-la em produção também pode — e deve — ser automatizado. A diferença entre <em>Continuous Delivery</em> e <em>Continuous Deployment</em> é sutil, mas importante:</p>
 <ul>
-<li><strong>Continuous Delivery</strong>: toda mudança aprovada pelo pipeline está pronta para ir a produção a qualquer momento, mas o deploy em si ainda pode exigir uma aprovação manual (ex: um clique para liberar).</li>
-<li><strong>Continuous Deployment</strong>: toda mudança aprovada pelo pipeline vai para produção <strong>automaticamente</strong>, sem intervenção humana — o nível mais alto de automação, e o que exige a suíte de testes mais confiável.</li>
+<li><strong>Continuous Delivery</strong>: toda mudança aprovada pelo pipeline está pronta para ir a produção a qualquer momento, mas o deploy em si ainda pode exigir uma aprovação manual (ex: um ambiente protegido do GitHub com revisores obrigatórios), útil quando há razões de negócio, como janelas de manutenção ou <em>compliance</em>, para controlar o momento.</li>
+<li><strong>Continuous Deployment</strong>: toda mudança aprovada pelo pipeline vai para produção <strong>automaticamente</strong>, sem intervenção humana — o nível mais alto de automação, e o que exige a suíte de testes mais confiável, além de formas de reduzir o risco, como <em>feature flags</em> e liberação gradual (veja adiante).</li>
 </ul>
 <h2 id="anatomia-de-um-pipeline">🏗️ Anatomia de um pipeline<a class="headerlink" href="#anatomia-de-um-pipeline" title="Permanent link">&para;</a></h2>
 <p>Um pipeline de CI/CD típico encadeia estágios, cada um servindo de "portão de qualidade" para o próximo — se um estágio falha, o pipeline para ali, e a mudança não avança:</p>
@@ -1347,7 +1374,7 @@
 <li><strong>Remover o <code>pip</code></strong>: o que não é necessário para rodar também não precisa ser corrigido depois.</li>
 <li><strong><code>.dockerignore</code></strong>: evita enviar ao <em>build</em> o ambiente virtual, o histórico do Git e arquivos locais como <code>.env</code>, que podem conter segredos.</li>
 </ul>
-<p>O job <code>imagem</code> apenas constrói a imagem, para garantir que o <code>Dockerfile</code> continua funcionando. O passo seguinte seria usar <code>docker/build-push-action</code> para publicá-la em um registro (GitHub Container Registry, Docker Hub, ECR) a cada merge na branch principal — o primeiro passo em direção à entrega contínua.</p>
+<p>O job <code>imagem</code> apenas constrói a imagem, para garantir que o <code>Dockerfile</code> continua funcionando. O passo seguinte seria usar <code>docker/build-push-action</code> para publicá-la em um registro (GitHub Container Registry, Docker Hub, ECR) a cada merge na branch principal — o primeiro passo em direção à entrega contínua. Com o job <code>seguranca</code>, apresentado adiante, o job que publica deve declarar <code>needs: [test, seguranca]</code>, para que nada seja publicado com uma verificação reprovada.</p>
 <div class="admonition example">
 <p class="admonition-title">Quando há banco de dados</p>
 <p>O sistema de arquivos de um contêiner some junto com ele. O <a href="https://github.com/lambdageo-edu/taskflow/blob/main/Dockerfile"><code>Dockerfile</code> do TaskFlow</a> cria a pasta <code>/dados</code>, entrega-a ao usuário sem privilégios, declara um <code>VOLUME</code> e aponta o banco para lá com a variável <code>TAREFAS_DB</code>:</p>
@@ -1357,16 +1384,6 @@
 <p>Com o volume nomeado, o contêiner pode ser removido e recriado sem perder os dados. Volume não é cópia de segurança. E publicar a porta em <code>127.0.0.1</code> evita expor na rede uma API sem HTTPS.</p>
 </div>
 <p>Para ir além deste <code>Dockerfile</code>, veja o tutorial <a href="https://lambdageo-edu.github.io/lambdageo-tutorials/docker/otimizacao-imagens-dev-vs-prod/">Otimização de imagens: desenvolvimento e produção</a>. Os comandos básicos de Git e Docker estão no <a href="../../apendices/git_conteineres/">apêndice</a>.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Continuous Delivery</label><label for="__tabbed_1_2">Continuous Deployment</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>Após o build da imagem, o pipeline aguarda uma aprovação manual (ex: um ambiente protegido do GitHub com <em>reviewers</em> obrigatórios) antes do deploy em produção — útil quando há razões de negócio (janelas de manutenção, aprovação de compliance) para controlar o momento do deploy.</p>
-</div>
-<div class="tabbed-block">
-<p>Após o build da imagem, o deploy em produção acontece automaticamente, sem intervenção humana — depende de uma suíte de testes muito confiável e, tipicamente, de estratégias de mitigação de risco como <em>feature flags</em> e <em>rollout</em> gradual (abaixo).</p>
-</div>
-</div>
-</div>
 <h2 id="estrategias-de-deploy-com-baixo-risco">🚦 Estratégias de deploy com baixo risco<a class="headerlink" href="#estrategias-de-deploy-com-baixo-risco" title="Permanent link">&para;</a></h2>
 <p>Automatizar o deploy não significa "publicar tudo de uma vez para todo mundo". Estratégias comuns para reduzir o risco de um deploy automatizado:</p>
 <ul>
@@ -1461,15 +1478,16 @@
 </code></pre></div>
 <h2 id="testar-a-aplicacao-em-execucao-dast-e-teste-de-invasao">🎯 Testar a aplicação em execução: DAST e teste de invasão<a class="headerlink" href="#testar-a-aplicacao-em-execucao-dast-e-teste-de-invasao" title="Permanent link">&para;</a></h2>
 <p>As verificações acima examinam arquivos: código, dependências, histórico e imagem. O <strong>DAST</strong> (<em>Dynamic Application Security Testing</em>) faz o contrário: envia requisições à aplicação <strong>em execução</strong>, como alguém de fora, e observa as respostas. Pode encontrar problemas que só aparecem com tudo montado, como cabeçalhos de segurança ausentes ou erros que expõem detalhes internos.</p>
-<p>Uma ferramenta livre é o <a href="https://www.zaproxy.org/docs/docker/api-scan">ZAP</a>. Para uma API que publica a descrição OpenAPI, como as feitas com FastAPI, com a aplicação rodando na porta 8000 (comando para Linux):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span>zaproxy/zap-stable<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>zap-api-scan.py<span class="w"> </span>-t<span class="w"> </span>http://localhost:8000/openapi.json<span class="w"> </span>-f<span class="w"> </span>openapi
+<p>Uma ferramenta livre é o <a href="https://www.zaproxy.org/docs/docker/api-scan">ZAP</a>. Para uma API que publica a descrição OpenAPI, como as feitas com FastAPI, com a aplicação rodando na porta 8000 (comando para Linux; a imagem está fixada por <em>digest</em> na versão 2.17.0):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>zaproxy/zap-stable@sha256:9624669db72f54d86c4b46a7064518bd9bf79d8c61a4c31befa9923489f328af<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span>zap-api-scan.py<span class="w"> </span>-t<span class="w"> </span>http://localhost:8000/openapi.json<span class="w"> </span>-f<span class="w"> </span>openapi
 </code></pre></div>
 <div class="admonition danger">
 <p class="admonition-title">Só em ambiente seu</p>
 <p>Essa varredura é <strong>ativa</strong>: envia ataques de verdade e pode criar ou alterar dados. Rode-a em um ambiente de teste, com banco descartável. Varrer um sistema alheio sem autorização por escrito pode ser crime.</p>
 </div>
-<p>Ler o resultado exige cuidado. Em um teste com o TaskFlow, em novembro de 2026, o ZAP não apontou falha, apenas um aviso sobre o cabeçalho <code>X-Content-Type-Options</code>. Mas cerca de metade das requisições foi recusada com 401: sem um <em>token</em>, a varredura não passou da porta nas rotas protegidas. "Nenhum alerta" não quer dizer "sem vulnerabilidades". Para ir além, é preciso configurar a autenticação na ferramenta, e a autorização entre usuários continua dependendo de testes escritos por quem conhece as regras (<a href="../06_testes_validacao/">Capítulo 6</a>).</p>
+<p>Ler o resultado exige cuidado. Em um teste com o TaskFlow, em novembro de 2026, o ZAP não apontou falha, apenas um aviso sobre o cabeçalho <code>X-Content-Type-Options</code>. Mas, das 1.316 requisições, só 3 receberam 200: cerca de metade foi recusada com 401 e quase todo o resto, por dados inválidos (422). Sem um <em>token</em>, a varredura não passou da porta nas rotas protegidas. "Nenhum alerta" não quer dizer "sem vulnerabilidades". Para ir além, é preciso configurar a autenticação na ferramenta, e a autorização entre usuários continua dependendo de testes escritos por quem conhece as regras (<a href="../06_testes_validacao/">Capítulo 6</a>).</p>
 <table>
 <thead>
 <tr>
@@ -1515,8 +1533,8 @@
 <h2 id="atividades">🎯 Atividades<a class="headerlink" href="#atividades" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Adicione o workflow <code>ci.yml</code> deste capítulo a um repositório GitHub contendo a API de tarefas do Capítulo 6 e confirme que ele roda com sucesso a cada <code>push</code>.</li>
-<li>Modifique o pipeline para falhar propositalmente (ex: aumente <code>--cov-fail-under</code> para 100, acima da cobertura atual do seu código) e observe o comportamento do GitHub Actions.</li>
-<li>Construa a imagem Docker localmente (<code>docker build -t api-tarefas .</code>) e rode um contêiner a partir dela (<code>docker run -p 8000:8000 api-tarefas</code>), acessando <code>http://localhost:8000/docs</code> para ver a documentação interativa gerada automaticamente pelo FastAPI.</li>
+<li>Modifique o pipeline para falhar propositalmente (ex: aumente <code>--cov-fail-under</code> para um valor acima da cobertura atual; se ela já é de 100%, acrescente antes uma função sem teste) e observe o comportamento do GitHub Actions.</li>
+<li>Construa a imagem Docker localmente (<code>docker build -t api-tarefas .</code>) e rode um contêiner a partir dela (<code>docker run -p 127.0.0.1:8000:8000 api-tarefas</code>), acessando <code>http://localhost:8000/docs</code> para ver a documentação interativa gerada automaticamente pelo FastAPI.</li>
 <li>Descreva, para um sistema hipotético que você conheça, qual estratégia de deploy (blue-green, canary, feature flags) você usaria para lançar uma mudança arriscada, e por quê.</li>
 <li>Acrescente o job <code>seguranca</code> ao seu repositório. Depois, em uma branch de teste, grave um token <strong>falso</strong> em um arquivo e confira se o pipeline o aponta.</li>
 <li>Rode o ZAP contra a sua API, em um ambiente de teste. Quantas rotas ele realmente exercitou? O que mudaria se ele tivesse um <em>token</em>?</li>

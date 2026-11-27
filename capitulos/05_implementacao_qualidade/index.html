@@ -1038,6 +1038,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../../apendices/http_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  HTTP e APIs em poucas linhas
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../apendices/git_conteineres/" class="md-nav__link">
         
   
@@ -1323,7 +1350,7 @@
 <p>O termo <em>clean code</em> foi popularizado pelo livro homônimo de Robert C. Martin (2008), mas a ideia é anterior e simples: <strong>código é lido muito mais vezes do que é escrito</strong>. Um desenvolvedor gasta boa parte do seu tempo lendo e entendendo código existente — próprio ou de outros — antes de conseguir modificá-lo com segurança. Código difícil de ler tem um custo real e recorrente, mesmo quando "funciona".</p>
 <p>Algumas práticas amplamente aceitas de código limpo:</p>
 <ul>
-<li><strong>Nomes que revelam intenção</strong>: <code>diasDesdeUltimoLogin</code> comunica mais que <code>d</code>. O tempo economizado por nomes ruins na hora de escrever é pago, com juros, por quem lê depois.</li>
+<li><strong>Nomes que revelam intenção</strong>: <code>dias_desde_ultimo_login</code> comunica mais que <code>d</code>. O tempo economizado por nomes ruins na hora de escrever é pago, com juros, por quem lê depois.</li>
 <li><strong>Funções pequenas e com um único propósito</strong>: uma função que faz "uma coisa" é mais fácil de testar, entender e reutilizar do que uma função de 200 linhas que faz cinco coisas.</li>
 <li><strong>Evitar duplicação (princípio DRY — <em>Don't Repeat Yourself</em>, de Hunt e Thomas)</strong>: lógica duplicada em vários lugares significa que uma correção precisa ser lembrada e replicada em todos eles.</li>
 <li><strong>Comentários que explicam o "porquê", não o "o quê"</strong>: se o código precisa de um comentário para explicar o que ele faz, muitas vezes é sinal de que ele poderia ser reescrito de forma mais clara. Comentários são mais valiosos quando explicam uma decisão não óbvia ("usamos X em vez de Y por causa da limitação Z da API externa").</li>
@@ -1500,7 +1527,7 @@
 </div>
 <h3 id="o-que-a-pesquisa-ja-mostrou">O que a pesquisa já mostrou<a class="headerlink" href="#o-que-a-pesquisa-ja-mostrou" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Num experimento de 2023 com 47 participantes, a maioria estudantes, quem usou um assistente de IA escreveu código <strong>menos seguro</strong> em quatro de cinco tarefas e, ao mesmo tempo, tendeu a <strong>confiar mais</strong> na segurança do que escreveu (<a href="https://arxiv.org/abs/2211.03622">Perry et al., 2023</a>). O modelo usado é antigo, e os números não valem automaticamente para as ferramentas atuais, mas o alerta sobre excesso de confiança continua útil.</li>
+<li>Num experimento com 47 participantes, a maioria estudantes, publicado em 2023, quem usou um assistente de IA escreveu código <strong>menos seguro</strong> em quatro de cinco tarefas e, ao mesmo tempo, tendeu a <strong>confiar mais</strong> na segurança do que escreveu (<a href="https://arxiv.org/abs/2211.03622">Perry et al., 2023</a>). O modelo usado é antigo, e os números não valem automaticamente para as ferramentas atuais, mas o alerta sobre excesso de confiança continua útil.</li>
 <li>Modelos que geram código às vezes recomendam <strong>pacotes que não existem</strong>. Um estudo com 16 modelos mediu, em média, ao menos 5,2% de pacotes inventados nos modelos comerciais e 21,7% nos abertos (<a href="https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen">Spracklen et al., 2025</a>). Alguém pode publicar um pacote malicioso com um desses nomes. Antes de instalar uma dependência sugerida, confirme que ela existe, é a que você pretendia e tem manutenção.</li>
 </ul>
 <h3 id="o-que-nao-entregar-a-ferramenta">O que não entregar à ferramenta<a class="headerlink" href="#o-que-nao-entregar-a-ferramenta" title="Permanent link">&para;</a></h3>

@@ -373,10 +373,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#apendice" class="md-nav__link">
+  <a href="#apendices" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        🧰 Apêndice
+        🧰 Apêndices
       </span>
     </span>
   </a>
@@ -949,6 +949,33 @@
   
   
     <li class="md-nav__item">
+      <a href="./apendices/http_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  HTTP e APIs em poucas linhas
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="./apendices/git_conteineres/" class="md-nav__link">
         
   
@@ -1073,10 +1100,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#apendice" class="md-nav__link">
+  <a href="#apendices" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        🧰 Apêndice
+        🧰 Apêndices
       </span>
     </span>
   </a>
@@ -1142,20 +1169,20 @@
 <p>Este é um livro aberto sobre como construir, entregar e manter software. Em oito capítulos, ele reúne fundamentos clássicos da engenharia de software, consolidados por autores como Sommerville e Pressman, e as práticas atuais: métodos ágeis, arquitetura, testes automatizados e integração e entrega contínuas (CI/CD).</p>
 <hr />
 <h2 id="antes-de-comecar">🧭 Antes de começar<a class="headerlink" href="#antes-de-comecar" title="Permanent link">&para;</a></h2>
-<p>O livro pressupõe lógica de programação e experiência com pelo menos uma linguagem. Os exemplos usam Python (pytest, FastAPI) e GitHub Actions.</p>
+<p>O livro pressupõe lógica de programação e experiência com pelo menos uma linguagem. Conhecer orientação a objetos ajuda no Capítulo 4, que traz uma revisão curta. Os exemplos usam Python (pytest, FastAPI) e GitHub Actions.</p>
 <p>Os capítulos seguem uma ordem progressiva, mas também podem ser consultados separadamente.</p>
 <hr />
 <h2 id="estrutura-do-livro">🎯 Estrutura do Livro<a class="headerlink" href="#estrutura-do-livro" title="Permanent link">&para;</a></h2>
 <h3 id="parte-i-fundamentos-capitulos-1-2">📘 Parte I: Fundamentos (Capítulos 1-2)<a class="headerlink" href="#parte-i-fundamentos-capitulos-1-2" title="Permanent link">&para;</a></h3>
 <p>O que diferencia software de outros produtos, por que a engenharia de software nasceu como disciplina e como as equipes organizam o trabalho: cascata, desenvolvimento incremental, Manifesto Ágil, Scrum, Kanban e a cultura DevOps.</p>
 <h3 id="parte-ii-requisitos-e-projeto-capitulos-3-4">📙 Parte II: Requisitos e projeto (Capítulos 3-4)<a class="headerlink" href="#parte-ii-requisitos-e-projeto-capitulos-3-4" title="Permanent link">&para;</a></h3>
-<p>Como descobrir e registrar o que o sistema precisa fazer, modelar o seu comportamento e a sua estrutura e tomar decisões de arquitetura, inclusive as de segurança.</p>
+<p>Como descobrir, prototipar e registrar o que o sistema precisa fazer, modelar seus conceitos, comportamento, estrutura e dados, aplicar princípios e padrões de projeto e tomar decisões de arquitetura, inclusive as de segurança.</p>
 <h3 id="parte-iii-construcao-capitulos-5-6">📗 Parte III: Construção (Capítulos 5-6)<a class="headerlink" href="#parte-iii-construcao-capitulos-5-6" title="Permanent link">&para;</a></h3>
-<p>Código legível e seguro, revisão, controle de versão e testes, dos unitários aos de aceitação, com TDD.</p>
+<p>Código legível e seguro, revisão, controle de versão verificação e validação, e testes, dos unitários aos de aceitação, com projeto de casos de teste e TDD.</p>
 <h3 id="parte-iv-entrega-e-evolucao-capitulos-7-8">📕 Parte IV: Entrega e evolução (Capítulos 7-8)<a class="headerlink" href="#parte-iv-entrega-e-evolucao-capitulos-7-8" title="Permanent link">&para;</a></h3>
-<p>Pipelines de integração e entrega contínuas, contêineres e a vida do software em produção: manutenção, dependências, débito técnico e observabilidade.</p>
-<h3 id="apendice">🧰 Apêndice<a class="headerlink" href="#apendice" title="Permanent link">&para;</a></h3>
-<p>Os comandos de <a href="apendices/git_conteineres/">Git e contêineres</a> usados ao longo do livro.</p>
+<p>Pipelines de integração e entrega contínuas, contêineres, testes de segurança e a vida do software em produção: manutenção, dependências, resposta a incidentes, débito técnico e observabilidade.</p>
+<h3 id="apendices">🧰 Apêndices<a class="headerlink" href="#apendices" title="Permanent link">&para;</a></h3>
+<p>O vocabulário de <a href="apendices/http_api/">HTTP e APIs</a> e os comandos de <a href="apendices/git_conteineres/">Git e contêineres</a> usados ao longo do livro.</p>
 <hr />
 <h2 id="o-projeto-condutor-taskflow">🧪 O projeto condutor: TaskFlow<a class="headerlink" href="#o-projeto-condutor-taskflow" title="Permanent link">&para;</a></h2>
 <p>Os exemplos giram em torno de um gerenciador de tarefas. Nos Capítulos 6 e 7, ele é uma pequena API em <strong>FastAPI</strong>, com os dados em memória, testada com <strong>pytest</strong> e verificada por um pipeline do <strong>GitHub Actions</strong>. Dela nasce o <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a>: a mesma ideia para uma equipe, com banco SQLite, <em>login</em>, projetos, membros e permissões. É só a API, sem interface web.</p>
