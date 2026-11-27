@@ -255,6 +255,55 @@ Para distribuir as responsabilidades, uma classificação conhecida, de Ivar Jac
 
 Os substantivos são só um começo: nem todos viram classes, e alguns conceitos não aparecem no texto. Os **cartões CRC** (classe, responsabilidades, colaboradores) ajudam a testar o modelo em equipe: cada pessoa representa uma classe, e o grupo encena um caso de uso. O [Capítulo 4](04_projeto_arquitetura.md) transforma este modelo em um diagrama de projeto.
 
+### Do caso de uso à sequência
+
+As classes dizem *quem existe*. Para saber quem faz o quê, percorre-se um caso de uso passo a passo e desenha-se um **diagrama de sequência**: cada coluna é um participante, o tempo corre de cima para baixo e cada seta é um pedido (cheia) ou uma resposta (tracejada). Este realiza o caso *Concluir tarefa*, descrito acima, com os três tipos de classe:
+
+```mermaid
+sequenceDiagram
+    actor M as Membro
+    participant F as Fronteira
+    participant C as Controle
+    participant P as Projeto
+    participant T as Tarefa
+    M->>F: concluir a tarefa
+    F->>C: concluir(usuário, projeto, tarefa)
+    C->>P: o usuário participa? qual é a tarefa?
+    P-->>C: participação e tarefa
+    break não participa ou a tarefa não existe
+        C-->>F: não encontrada
+        F-->>M: 404
+    end
+    C->>P: o usuário é o dono?
+    P-->>C: sim ou não
+    C->>T: o usuário é o responsável?
+    T-->>C: sim ou não
+    break não é dono nem responsável
+        C-->>F: sem permissão
+        F-->>M: 403
+    end
+    C->>T: concluir()
+    break a tarefa não está em andamento
+        T-->>C: estado inválido
+        C-->>F: estado inválido
+        F-->>M: 409
+    end
+    T-->>C: concluída
+    C-->>F: tarefa
+    F-->>M: tarefa concluída
+```
+
+O bloco `break` indica uma alternativa que encerra o caso de uso: se a condição vale, o que está dentro acontece e o restante não.
+
+Para montar o diagrama:
+
+1. coloque o ator, uma fronteira, um controle e as entidades de que o caso fala;
+2. transforme cada passo do fluxo principal em mensagens;
+3. acrescente as alternativas da descrição textual;
+4. confira que o ator só conversa com a fronteira, e que a fronteira não vai direto às entidades.
+
+Cada mensagem recebida é uma responsabilidade da classe que a recebe. Aqui, a regra "só se conclui uma tarefa em andamento" fica em `Tarefa`, e a ordem das verificações, no controle. É um modelo de análise: não diz se haverá classes com esses nomes no código. O [Capítulo 4](04_projeto_arquitetura.md) mostra uma sequência de projeto, já com os elementos da implementação.
+
 ## ✅ Boas práticas de especificação
 
 Independente do formato (documento formal ou história de usuário), um bom requisito deve ser:
@@ -399,6 +448,7 @@ Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de doc
 8. Desenhe no papel um protótipo de baixa fidelidade da devolução de um livro, mostre a um colega e registre o que mudou nos requisitos.
 9. Para o mesmo aplicativo, identifique as classes de análise e justifique dois candidatos que você rejeitou.
 10. Avalie uma tela de um sistema que você usa com três das heurísticas e tente cumprir a mesma tarefa só com o teclado. Escreva um requisito de acessibilidade verificável para o que falhou.
+11. Desenhe o diagrama de sequência do caso de uso que você descreveu no item 6, com fronteira, controle e entidades, incluindo uma alternativa. Alguma mensagem revelou uma responsabilidade que faltava nas classes do item 9?
 
 ## 📚 Para saber mais
 

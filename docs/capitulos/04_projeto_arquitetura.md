@@ -186,7 +186,7 @@ Os números são as **multiplicidades**: um projeto tem zero ou mais tarefas, e 
 
 ### Sequência: quem chama quem, e em que ordem
 
-Este descreve o `POST /tarefas` com a validação do [Capítulo 6](06_testes_validacao.md):
+O [Capítulo 3](03_especificacao_requisitos.md) usou a sequência na análise. Aqui ela está no nível de projeto: os participantes são elementos do código. O diagrama descreve o `POST /tarefas` com a validação do [Capítulo 6](06_testes_validacao.md):
 
 ```mermaid
 sequenceDiagram
