@@ -1247,7 +1247,7 @@
 <li><code>command</code> substitui o <code>CMD</code> do <code>Dockerfile</code> apenas neste ambiente;</li>
 <li>mudou o <code>requirements.txt</code>? Rode de novo com <code>--build</code>.</li>
 </ul>
-<p>Se o servidor não reiniciar ao salvar, o que a documentação do Uvicorn relata no WSL, acrescente ao serviço <code>environment: ["WATCHFILES_FORCE_POLLING=true"]</code>.</p>
+<p>Se o servidor não reiniciar ao salvar (a documentação do Uvicorn relata esse problema no WSL), acrescente ao serviço <code>environment: ["WATCHFILES_FORCE_POLLING=true"]</code>.</p>
 <p>Este arquivo é para a sua máquina. Para implantar, o <a href="../../capitulos/07_integracao_entrega_continua/">Capítulo 7</a> usa outro, sem recarga automática e com HTTPS.</p>
 <p>Para praticar passo a passo (rede, volumes, Docker Compose e otimização de imagens), siga os <a href="https://lambdageo-edu.github.io/lambdageo-tutorials/docker/">tutoriais de Docker da coleção LambdaGeo</a>.</p>
 <h2 id="atividades">🎯 Atividades<a class="headerlink" href="#atividades" title="Permanent link">&para;</a></h2>

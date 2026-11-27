@@ -1911,7 +1911,7 @@
 <li>acrescente as alternativas da descrição textual;</li>
 <li>confira que o ator só conversa com a fronteira, e que a fronteira não vai direto às entidades.</li>
 </ol>
-<p>Cada mensagem recebida é uma responsabilidade da classe que a recebe. Aqui, a regra "só se conclui uma tarefa em andamento" fica em <code>Tarefa</code>, e a ordem das verificações, no controle. É um modelo de análise: não diz se haverá classes com esses nomes no código. O <a href="../04_projeto_arquitetura/">Capítulo 4</a> mostra uma sequência de projeto, já com os elementos da implementação.</p>
+<p>Cada mensagem recebida é uma responsabilidade da classe que a recebe. Aqui, a regra "só se conclui uma tarefa em andamento" fica em <code>Tarefa</code>, e a ordem das verificações, no controle. É um modelo de análise: não diz se haverá classes com esses nomes no código, nem que cada seta será um passo separado. Na implementação, o dado verificado não pode mudar antes da gravação (veja <a href="../05_implementacao_qualidade/#concorrencia">Concorrência</a>). O <a href="../04_projeto_arquitetura/">Capítulo 4</a> mostra uma sequência de projeto, já com os elementos da implementação.</p>
 <h2 id="boas-praticas-de-especificacao">✅ Boas práticas de especificação<a class="headerlink" href="#boas-praticas-de-especificacao" title="Permanent link">&para;</a></h2>
 <p>Independente do formato (documento formal ou história de usuário), um bom requisito deve ser:</p>
 <ul>
