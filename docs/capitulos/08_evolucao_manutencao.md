@@ -58,6 +58,26 @@ Sinais comuns de que um trecho de código pede refatoração (os chamados *code 
 * **Acoplamento excessivo** entre módulos que deveriam ser independentes;
 * **Comentários que compensam código confuso**, em vez de explicar decisões não óbvias.
 
+## 🏚️ Sistemas legados
+
+Chama-se **legado** o sistema antigo que continua necessário e é difícil de mudar: quem o escreveu saiu, a tecnologia envelheceu, a documentação não acompanha. Michael Feathers (2004) concentra o problema em um ponto: sem testes, não há como saber se uma mudança quebrou algo.
+
+Antes de mexer, escreva **testes de caracterização**, que registram o que o código [faz hoje](https://www.infoq.com/news/2007/03/characterization-testing), e não o que deveria fazer:
+
+```python
+def iniciais(nome):  # código herdado, sem documentação
+    return "".join(p[0] for p in nome.split(" ") if len(p) > 2).upper()
+
+
+def test_caracteriza_iniciais():
+    assert iniciais("Ana de Souza") == "AS"
+    assert iniciais("Li Wu") == ""  # estranho, mas é o que ele faz
+```
+
+O segundo caso parece um defeito. Não o corrija junto com a reorganização: alguém pode depender dele. Registre, pergunte e, se for o caso, mude depois, em um passo separado, atualizando o teste. Com essa rede, refatora-se em passos pequenos.
+
+Reescrever tudo de uma vez é arriscado: demora, e o comportamento antigo raramente está todo documentado. Uma alternativa é a [**figueira estranguladora**](https://www.martinfowler.com/bliki/StranglerFigApplication.html) (*strangler fig*), descrita por Martin Fowler: o novo cresce ao lado do antigo e assume uma função por vez, até que o antigo possa ser desligado.
+
 ## 🤖 Débito técnico em código gerado por IA
 
 Gerar código ficou rápido; entendê-lo e mantê-lo, não necessariamente. Quando um trecho entra no sistema sem que ninguém do time consiga explicá-lo, nasce uma dívida que não aparece em nenhum quadro. Alguns sinais: soluções diferentes para o mesmo problema em pontos diferentes, abstrações que ninguém pediu e testes que apenas repetem a implementação.
@@ -154,6 +174,53 @@ def migrar(con):
 
 A função supõe uma conexão aberta com `isolation_level=None`, como a do TaskFlow. Migrações já aplicadas não se editam: corrige-se com uma nova. Faça cópia de segurança antes e teste a migração sobre um banco com dados. Ferramentas como o [Alembic](https://alembic.sqlalchemy.org/) assumem esse controle em projetos que usam SQLAlchemy.
 
+## 💾 Cópias de segurança e restauração
+
+Um volume preserva os dados quando o contêiner é recriado, mas não os protege de um `down -v`, de um disco com defeito, de uma migração errada ou de um invasor. Para isso há as **cópias de segurança**.
+
+Copiar o arquivo do SQLite com o sistema gravando pode gerar uma cópia corrompida. Use a [API de *backup*](https://sqlite.org/backup.html), disponível no Python, que produz um retrato consistente com o banco em uso. Com o `compose.yaml` do [Capítulo 7](07_integracao_entrega_continua.md):
+
+```bash
+docker compose exec -T api python -c "
+import sqlite3
+origem = sqlite3.connect('/dados/tarefas.db')
+copia = sqlite3.connect('/dados/copia.db')
+origem.backup(copia)
+copia.close()
+origem.close()
+"
+docker compose cp api:/dados/copia.db ./copia.db
+docker compose exec -T api rm /dados/copia.db
+```
+
+**Cópia que nunca foi restaurada é só uma esperança.** Para restaurar, pare a API, para que ninguém grave durante a troca, e faça o caminho inverso:
+
+```bash
+docker compose stop api
+docker compose run --rm -T -v "$PWD/copia.db:/tmp/copia.db:ro" api python -c "
+import sqlite3
+copia = sqlite3.connect('/tmp/copia.db')
+banco = sqlite3.connect('/dados/tarefas.db')
+copia.backup(banco)
+print(banco.execute('PRAGMA integrity_check').fetchone()[0])
+banco.close()
+copia.close()
+"
+docker compose start api
+```
+
+O que foi gravado depois da cópia se perde. Sessões encerradas depois dela voltam a existir; se isso importar, apague as linhas da tabela `sessoes` antes de religar a API.
+
+Ao planejar, decida:
+
+* **quanto se pode perder**, o que define a frequência das cópias;
+* **quanto tempo se pode ficar parado**, o que define como restaurar;
+* **onde guardar**: fora do mesmo servidor, e com pelo menos uma cópia que quem invadir o servidor não consiga apagar;
+* **como proteger**: a cópia tem os mesmos dados pessoais e *hashes* de senha que o banco; restrinja o acesso e cifre;
+* **por quanto tempo reter**, e quando ensaiar a restauração.
+
+Os comandos acima são manuais. Em uso real, devem ser agendados, e uma falha precisa avisar alguém.
+
 ## 📖 Documentação de software
 
 Quem mantém um sistema raramente é só quem o escreveu. A documentação registra o que o código não conta: como executar, como usar e por que as coisas são como são. O modelo [Diátaxis](https://diataxis.fr/), de Daniele Procida, separa quatro necessidades que costumam ser misturadas:
@@ -221,6 +288,8 @@ O [TaskFlow](https://github.com/lambdageo-edu/taskflow) ainda não faz esse regi
 6. Peça a um colega que execute um projeto seu seguindo apenas o `README.md`. Anote onde ele travou e corrija o texto.
 7. Escreva o roteiro de resposta para este caso: uma senha do banco de dados foi publicada em um repositório público. Quem age, em que ordem, e o que se registra?
 8. No TaskFlow, registre os acessos negados e escreva um teste que confira o registro e garanta que nenhum *token* aparece nele.
+9. Escolha uma função sua sem testes, escreva testes de caracterização e só então a refatore.
+10. Faça uma cópia do banco do TaskFlow, cadastre um usuário, restaure e confira o que sumiu. Quanto tempo levou?
 
 ## 📚 Para saber mais
 
@@ -233,6 +302,9 @@ O [TaskFlow](https://github.com/lambdageo-edu/taskflow) ainda não faz esse regi
 * PROCIDA, Daniele. *Diátaxis* — [diataxis.fr](https://diataxis.fr/)
 * GitHub, referência de opções do Dependabot — [docs.github.com](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference)
 * Google Cloud. *Announcing the 2025 DORA Report* — [cloud.google.com](https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report)
+* FEATHERS, Michael. *Working Effectively with Legacy Code*. Prentice Hall, 2004 — [oreilly.com](https://oreilly.com/library/view/-/0131177052)
+* FOWLER, Martin. *Strangler Fig* — [martinfowler.com](https://www.martinfowler.com/bliki/StranglerFigApplication.html)
+* SQLite, *Online Backup API* — [sqlite.org](https://sqlite.org/backup.html)
 * FOWLER, Martin. *Refactoring: Improving the Design of Existing Code*. 2. ed. Addison-Wesley, 2018.
 * CUNNINGHAM, Ward. *The WyCash Portfolio Management System* (artigo original sobre débito técnico, 1992) — [c2.com](https://c2.com/doc/oopsla92.html)
 * Artigo *TechnicalDebtQuadrant* — [martinfowler.com/bliki/TechnicalDebtQuadrant.html](https://martinfowler.com/bliki/TechnicalDebtQuadrant.html)

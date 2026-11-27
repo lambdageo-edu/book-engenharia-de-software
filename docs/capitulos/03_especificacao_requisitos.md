@@ -77,6 +77,50 @@ Comece pela menor fidelidade que responda à dúvida: diante de um desenho com a
 !!! warning "Protótipo descartável não vai para produção"
     Ele foi feito sem testes, tratamento de erros nem segurança. Se há intenção de aproveitá-lo, trate-o como código de verdade desde o início. Vale o mesmo para a aplicação que um assistente de IA monta em minutos.
 
+### Usabilidade e acessibilidade
+
+**Usabilidade** é o quanto as pessoas conseguem fazer o que querem, com acerto e sem esforço desnecessário. Um ***wireframe*** é o lugar barato para começar a cuidar disso: mostra o que há em cada tela e para onde se vai, sem aparência final. Um quadro de tarefas, se o TaskFlow ganhasse uma interface:
+
+```text
++--------------------------------------------------------+
+| Projeto: Site do evento              [+ Nova tarefa]   |
++------------------+------------------+------------------+
+| Pendentes (2)    | Em andamento (1) | Concluídas (4)   |
+|                  |                  |                  |
+| Revisar textos   | Montar o mapa    | Reservar a sala  |
+| [Assumir]        | Resp.: Ana       | [Reabrir]        |
+|                  | [Concluir]       |                  |
++------------------+------------------+------------------+
+```
+
+Para avaliar um desenho ou um sistema pronto, uma referência muito usada são as [dez heurísticas de usabilidade](https://nngroup.com/articles/ten-usability-heuristics/) de Nielsen, desenvolvidas com Rolf Molich em 1990 e refinadas em 1994:
+
+| Heurística | Pergunta para o quadro de tarefas |
+|---|---|
+| Visibilidade do estado do sistema | Depois de clicar em "Concluir", dá para ver que funcionou? |
+| Correspondência com o mundo real | A tela fala "tarefa" e "responsável", ou o jargão do banco de dados? |
+| Controle e liberdade do usuário | Dá para desfazer uma ação feita por engano? |
+| Consistência e padrões | A mesma ação tem o mesmo nome em todas as telas? |
+| Prevenção de erros | A tela deixa de oferecer o que não é permitido? |
+| Reconhecer em vez de lembrar | É preciso decorar códigos de uma tela para outra? |
+| Flexibilidade e eficiência | Quem usa muito tem atalhos? |
+| Estética e projeto minimalista | Há informação disputando atenção sem necessidade? |
+| Ajudar a reconhecer e corrigir erros | A mensagem diz o que houve e o que fazer? |
+| Ajuda e documentação | Quando for preciso, a ajuda é fácil de achar? |
+
+Heurísticas encontram problemas cedo, mas não substituem observar pessoas usando: peça uma tarefa concreta, não ajude e anote onde elas hesitam.
+
+**Acessibilidade** é permitir o uso também por pessoas com deficiência, por exemplo quem usa leitor de tela, navega só pelo teclado ou enxerga pouco contraste. As [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) (versão 2.2), do W3C, organizam o tema em quatro princípios, com critérios em três níveis de conformidade (A, AA e AAA):
+
+| Princípio | Exemplo de critério |
+|---|---|
+| **Perceptível** | Imagens têm texto alternativo; o texto comum tem contraste de pelo menos 4,5:1 (nível AA) |
+| **Operável** | Tudo o que se faz com o mouse também se faz pelo teclado |
+| **Compreensível** | Campos têm rótulo, e os erros são explicados em texto |
+| **Robusto** | A marcação é interpretada corretamente por tecnologias assistivas |
+
+No Brasil, a Lei Brasileira de Inclusão (Lei 13.146/2015, art. 63) torna obrigatória a acessibilidade nos sítios mantidos por empresas com sede ou representação comercial no País ou por órgãos de governo. Trate-a como requisito não funcional desde o início, com critérios verificáveis. Ferramentas automáticas ajudam, mas encontram só parte dos problemas.
+
 ### Requisito em formato clássico
 
 Em processos dirigidos a planos, cada requisito costuma ser registrado em um documento, com identificador e campos definidos. Um exemplo:
@@ -354,12 +398,16 @@ Ferramentas modernas de gestão de produto (Jira, Linear, Azure Boards) e de doc
 7. Defina a dúvida que um MVP do aplicativo de biblioteca deveria responder e classifique os requisitos com MoSCoW.
 8. Desenhe no papel um protótipo de baixa fidelidade da devolução de um livro, mostre a um colega e registre o que mudou nos requisitos.
 9. Para o mesmo aplicativo, identifique as classes de análise e justifique dois candidatos que você rejeitou.
+10. Avalie uma tela de um sistema que você usa com três das heurísticas e tente cumprir a mesma tarefa só com o teclado. Escreva um requisito de acessibilidade verificável para o que falhou.
 
 ## 📚 Para saber mais
 
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 4.
 * COHN, Mike. *User Stories Applied: For Agile Software Development*. Addison-Wesley, 2004.
 * SOMMERVILLE, Ian. *Engenharia de Software*. 10. ed. — Capítulo 2 (prototipação).
+* NIELSEN, Jakob. *10 Usability Heuristics for User Interface Design* — [nngroup.com](https://nngroup.com/articles/ten-usability-heuristics/)
+* W3C. *Web Content Accessibility Guidelines (WCAG) 2 Overview* — [w3.org](https://www.w3.org/WAI/standards-guidelines/wcag/)
+* BRASIL. *Lei nº 13.146/2015* (Lei Brasileira de Inclusão); ver a [legislação de acessibilidade](https://www.gov.br/governodigital/pt-br/legislacao/acessibilidade) no portal Governo Digital.
 * NIELSEN, Jakob. *Usability Engineering*. Academic Press, 1993 (protótipos horizontais e verticais).
 * OWASP *Application Security Verification Standard* — [owasp.org/ASVS](https://owasp.org/ASVS/)
 * OWASP *Abuse Case Cheat Sheet* (material histórico) — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Abuse_Case_Cheat_Sheet.html)
