@@ -29,23 +29,24 @@ jobs:
           # - planalto.gov.br não aceita a conexão a partir do GitHub;
           # - ronjeffries.com não responde dentro do prazo;
           # - arquivos desta main podem ainda não existir durante um pull request.
+          # Páginas de arquivo do GitHub (/blob/) podem responder 503 a robôs;
+          # o --remap confere o próprio arquivo, em raw.githubusercontent.com.
           args: >-
             --no-progress
-            --max-retries 5
-            --retry-wait-time 10
-            --max-concurrency 8
+            --max-retries 3
             --timeout 30
             --accept 200..=299,429
             --exclude "SEU_USUARIO"
             --exclude "exemplo\."
             --exclude "example\."
             --exclude-loopback
+            --remap 'https://github\.com/([^/]+)/([^/]+)/blob/(.*) https://raw.githubusercontent.com/$1/$2/$3'
             --exclude "queue\.acm\.org/detail\.cfm\?id=1142065"
             --exclude "etsy\.com/codeascraft/blameless-postmortems"
             --exclude "scrum\.org/resources/blog/myth-9"
             --exclude "oreilly\.com/library/view/-/0131177052"
             --exclude "planalto\.gov\.br/ccivil_03/Leis/L9609"
             --exclude "ronjeffries\.com/xprog/articles/expcardconversationconfirmation"
-            --exclude "book-engenharia-de-software/blob/main/"
+            --exclude "book-engenharia-de-software/(blob/)?main/"
             "docs/**/*.md"
           fail: true
