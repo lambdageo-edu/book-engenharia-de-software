@@ -27,6 +27,7 @@ jobs:
           # Não verificados aqui (confira à mão de vez em quando):
           # - queue.acm.org, etsy.com, scrum.org e oreilly.com recusam robôs (403);
           # - planalto.gov.br não aceita a conexão a partir do GitHub;
+          # - ronjeffries.com não responde dentro do prazo;
           # - arquivos desta main podem ainda não existir durante um pull request.
           args: >-
             --no-progress
@@ -42,6 +43,7 @@ jobs:
             --exclude "scrum\.org/resources/blog/myth-9"
             --exclude "oreilly\.com/library/view/-/0131177052"
             --exclude "planalto\.gov\.br/ccivil_03/Leis/L9609"
+            --exclude "ronjeffries\.com/xprog/articles/expcardconversationconfirmation"
             --exclude "book-engenharia-de-software/blob/main/"
             "docs/**/*.md"
           fail: true
