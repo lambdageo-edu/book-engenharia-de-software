@@ -150,7 +150,31 @@ Outras decisões do mesmo arquivo merecem ser lidas:
 * o erro de *login* é o mesmo para usuário inexistente e senha errada (o cadastro, porém, ainda revela que um *login* já existe);
 * o token de sessão é aleatório, expira, pode ser invalidado e só o seu *hash* vai para o banco.
 
-Isso não dispensa o que está fora do código, como HTTPS e limite de tentativas. Em um sistema real, considere também delegar a autenticação a um provedor de identidade.
+O tamanho mínimo não basta: quinze letras iguais passam pela regra. O NIST SP 800-63B também exige comparar a senha nova com uma lista de senhas comuns, esperadas ou já vazadas, e recusá-la se estiver nela. Por outro lado, ele não recomenda impor regras de composição, como obrigar maiúscula, número e símbolo. O TaskFlow confere apenas o tamanho.
+
+#### Sessão no servidor ou token assinado
+
+Depois do *login*, cada pedido precisa dizer quem é o usuário. Há dois caminhos comuns:
+
+| Caminho | Como o servidor reconhece o usuário | Ganho | Custo |
+|---|---|---|---|
+| **Sessão no servidor** | O token é um número aleatório, procurado no banco a cada pedido | Apagar a sessão vale na hora | Uma consulta por pedido |
+| **Token assinado** (como o [JWT](https://www.rfc-editor.org/rfc/rfc7519)) | O token traz os dados, e o servidor confere a assinatura e a validade | Dispensa a consulta | O que está no token vale até ele expirar |
+
+O custo do segundo caminho aparece quando algo muda. Se o papel do usuário é lido apenas do token, rebaixar ou desativar uma conta não tem efeito enquanto o token não expirar: com validade de 30 minutos, a pessoa desligada continua entrando por até 30 minutos. Respostas possíveis são validade curta, uma [lista de tokens revogados](https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_Cheat_Sheet.html) ou a consulta ao banco em cada pedido, o que devolve o custo que se queria evitar. Quanto atraso é aceitável é um requisito, e deve ser escrito e testado: "uma conta desativada recebe 401 no pedido seguinte".
+
+O TaskFlow guarda as sessões no servidor. Ele ainda não tem como desativar uma conta; se ganhar, as sessões dela precisam ser apagadas ou o estado conferido a cada pedido.
+
+#### Limite de tentativas
+
+Sem limite, um programa pode testar senhas sem parar. O NIST pede no máximo 100 falhas consecutivas por conta, e permite um limite menor. Duas decisões vêm junto:
+
+* **o que contar:** por conta, protege contra quem tenta muitas senhas em um usuário; por endereço de origem, contra quem tenta uma senha em muitos usuários. Um não substitui o outro;
+* **o que fazer ao atingir o limite:** bloquear a conta de vez entrega a um atacante o poder de [trancar a conta de outra pessoa](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html). Esperas crescentes ou bloqueio temporário reduzem esse efeito.
+
+O limite pode ficar na aplicação, que conhece a conta, ou no *proxy* à frente dela, que barra o pedido antes de gastar processamento. O TaskFlow ainda não tem nenhum dos dois.
+
+Nada disso dispensa HTTPS. Em um sistema real, considere também delegar a autenticação a um provedor de identidade.
 
 ## 🧯 Tratamento de erros
 
@@ -509,9 +533,14 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 8. Em um repositório de teste, introduza um defeito no meio de uma sequência de *commits* e encontre-o com `git bisect run`.
 9. Em `corrida.py`, troque o trecho intercalado por chamadas a `assumir` e confira que só a primeira devolve `True`. Depois procure, em um projeto seu, um "consulta, decide, grava" e diga o que acontece se dois pedidos chegarem juntos.
 10. Rode o exemplo de `prazo.py` com cobertura e com teste de mutação. Depois peça a um assistente de IA testes para uma função sua e veja quantos mutantes eles matam.
+11. Em um sistema seu, desative um usuário que está com a sessão aberta. Quanto tempo ele ainda consegue usar o sistema? Escreva o teste que expressa o prazo que você considera aceitável.
 
 ## 📚 Para saber mais
 
+* NIST SP 800-63B-4, *Authentication and Authenticator Management* — [pages.nist.gov](https://pages.nist.gov/800-63-4/sp800-63b.html)
+* RFC 7519, *JSON Web Token (JWT)* — [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc7519)
+* OWASP *Authentication Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
+* OWASP *JSON Web Token Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_Cheat_Sheet.html)
 * MARTIN, Robert C. *Clean Code: A Handbook of Agile Software Craftsmanship*. Prentice Hall, 2008.
 * MEYER, Bertrand. *Object-Oriented Software Construction*. 2. ed. Prentice Hall, 1997.
 * FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. *Accelerate: The Science of Lean Software and DevOps*. IT Revolution, 2018.

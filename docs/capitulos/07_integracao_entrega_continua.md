@@ -397,6 +397,15 @@ Um pacote novo no GHCR é [privado](https://docs.github.com/en/packages/working-
 
 Voltar atrás (*rollback*) é pôr em `IMAGEM` o identificador anterior e repetir os dois comandos, o que só funciona se o banco continuar compatível com ela ([Capítulo 8](08_evolucao_manutencao.md)). E o HTTPS não resolve tudo: continuam faltando [cópias de segurança](08_evolucao_manutencao.md), limite de requisições e monitoramento.
 
+### A proteção está ligada?
+
+Uma proteção pode estar no repositório e não estar no sistema em uso. Dois casos comuns:
+
+* uma classe com o nome certo, como um limitador de requisições, que é só um `TODO` ou nunca foi registrada na aplicação;
+* um limite configurado no *proxy* de um arquivo do Compose, enquanto o arquivo usado por padrão publica a porta da API direto, sem *proxy*.
+
+Nos dois casos, quem lê o repositório por alto acredita que há proteção. Confira o comportamento na configuração que de fato é implantada: envie pedidos além do limite e espere a recusa, tente a porta da API de fora do servidor. O que puder, transforme em teste automatizado. É o que a OWASP classifica como [configuração incorreta de segurança](https://owasp.org/Top10/2025/0x00_2025-Introduction/) quando o padrão fica aberto.
+
 ### Infraestrutura como código
 
 O `compose.yaml` é um exemplo de **infraestrutura como código**: o ambiente é descrito em um arquivo versionado e revisado como o restante, em vez de montado à mão. Ferramentas como [OpenTofu](https://opentofu.org/) ou Terraform descrevem também servidores, redes e bancos; Ansible configura as máquinas. O ganho é poder recriar o ambiente e saber quem mudou o quê. O cuidado: segredos não vão para esses arquivos.
@@ -426,6 +435,7 @@ Um agente com acesso ao repositório traz um risco novo. Ele lê *issues*, comen
 6. Rode o ZAP contra a sua API, em um ambiente de teste. Quantas rotas ele realmente exercitou? O que mudaria se ele tivesse um *token*?
 7. Suba o TaskFlow com o `compose.yaml`. Confira que o HTTP redireciona para HTTPS e que a porta 8000 não responde fora do contêiner. Depois execute `docker compose down` e suba de novo: os dados continuam? (Cuidado: com `-v`, os volumes são apagados.)
 8. Para três mudanças no TaskFlow (uma correção, uma funcionalidade e uma quebra de compatibilidade), diga qual seria a próxima versão a partir de `1.4.2` e escreva a entrada do *changelog*.
+9. Escolha uma proteção de um projeto seu (limite, permissão, cabeçalho, HTTPS) e demonstre, na configuração implantada, que ela está ativa. Se houver mais de um arquivo de implantação, repita em cada um.
 
 ## 📚 Para saber mais
 
