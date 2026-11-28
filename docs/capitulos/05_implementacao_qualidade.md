@@ -399,6 +399,90 @@ Duas outras verificações automáticas complementam a análise do código e nã
 
 A maioria dos times integra essas ferramentas diretamente no pipeline de CI (Capítulo 7), rejeitando automaticamente mudanças que violem regras mínimas de qualidade — tirando a discussão de estilo (tabs vs. espaços, aspas simples vs. duplas) da revisão humana e deixando-a para a ferramenta decidir de forma consistente.
 
+## 📏 Medir a qualidade do código
+
+Ler o código continua sendo a principal forma de julgá-lo, mas algumas propriedades podem ser medidas. Os números ajudam a decidir **onde olhar primeiro**, sobretudo quando o volume de código cresce.
+
+| Métrica | O que responde | Cuidado |
+|---|---|---|
+| **Complexidade ciclomática** ([McCabe, 1976](https://doi.org/10.1109/TSE.1976.233837)) | Quantos caminhos independentes passam por uma função | Não mede nomes nem clareza |
+| **Tamanho** de funções e módulos | Quanto é preciso ler de uma vez | Dividir sem critério só espalha a complexidade |
+| **Duplicação** | Quanto código se repete | Trechos parecidos podem ter razões diferentes para mudar |
+| **Dependências** entre módulos | Quem depende de quem, e se há ciclos ([acoplamento](04_projeto_arquitetura.md)) | O que importa é a direção, não só a quantidade |
+| **Cobertura** ([Capítulo 6](06_testes_validacao.md)) | O que os testes executam | Executar não é verificar |
+| **Teste de mutação** | Se os testes percebem um defeito introduzido de propósito | É lento, e alguns mutantes se comportam como o original |
+| **CRAP** (*Change Risk Anti-Patterns*) | Onde há muita complexidade com pouco teste | O limite adotado é uma convenção |
+
+O CRAP, proposto por Alberto Savoia e Bob Evans, combina a complexidade `c` de uma função com a fração dela coberta por testes, `cov`: `c² × (1 − cov)³ + c`. Com cobertura total, sobra apenas a complexidade.
+
+Em Python, a complexidade pode ser limitada pelo próprio `ruff` (regra [`C901`](https://docs.astral.sh/ruff/rules/complex-structure/)) e listada pelo [`radon`](https://radon.readthedocs.io/).
+
+### Cobertura total e testes fracos
+
+Em `prazo.py`:
+
+```python
+def situacao(dias_restantes):
+    if dias_restantes < 0:
+        return "atrasada"
+    if dias_restantes <= 2:
+        return "urgente"
+    return "normal"
+```
+
+E em `tests/test_prazo.py`:
+
+```python
+from prazo import situacao
+
+
+def test_situacoes():
+    assert situacao(-5) == "atrasada"
+    assert situacao(1) == "urgente"
+    assert situacao(10) == "normal"
+```
+
+O teste passa e cobre 100% das linhas e dos desvios. O teste de mutação faz pequenas alterações no código, os **mutantes**, e roda os testes contra cada uma. Se os testes falham, o mutante foi morto; se passam, sobreviveu. Com o [`mutmut`](https://github.com/boxed/mutmut) 3.8.1, quatro dos dez mutantes deste exemplo sobrevivem, entre eles:
+
+```diff
+-    if dias_restantes <= 2:
++    if dias_restantes < 2:
+```
+
+Os quatro mexem nos limites das faixas, que o teste não visita. Acrescentando os casos de fronteira ([Capítulo 6](06_testes_validacao.md)), os dez são mortos:
+
+```python
+def test_limites():
+    assert situacao(-1) == "atrasada"
+    assert situacao(0) == "urgente"
+    assert situacao(2) == "urgente"
+    assert situacao(3) == "normal"
+```
+
+Para repetir o experimento, indique o arquivo no `pyproject.toml` e rode `mutmut run` e `mutmut results`:
+
+```toml
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[tool.mutmut]
+source_paths = ["prazo.py"]
+```
+
+O `mutmut` depende de um recurso do Unix (`fork`): no Windows, é preciso usar o [WSL](https://learn.microsoft.com/windows/wsl/).
+
+### Métricas e código gerado por IA
+
+Quando agentes escrevem muito mais código do que alguém consegue ler, quanto confiar nos números? Há quem discorde de forma frontal. Segundo [reportagem da Startup Fortune](https://startupfortune.com/uncle-bob-martin-says-he-no-longer-reads-ai-generated-code-and-the-developer-world-is-split/) (julho de 2026), sobre publicações em rede social:
+
+* **Robert C. Martin** diz que já não lê o código dos seus agentes e confia nas barreiras que ele precisa atravessar: testes unitários e de aceitação, procedimentos de qualidade, limites de complexidade e de tamanho de módulo, análise de dependências, cobertura e teste de mutação.
+* **Grady Booch** discorda e revisa todo o código gerado. Para ele, métricas não revelam vulnerabilidades, código morto nem oportunidades de refatoração perdidas.
+
+A posição de Martin pressupõe testes e limites que alguém soube definir e que são cobrados de fato. A pesquisa ainda é recente. Um [estudo não revisado por pares](https://arxiv.org/abs/2603.24755), com tarefas em Python, observou que a repetição e a concentração de complexidade tendem a crescer quando agentes estendem várias vezes o próprio código. Um [relatório da GitClear](https://gitclear.com/the_ai_code_quality_maintainability_gap), empresa que vende ferramentas de análise, registra mais blocos duplicados e menos código movido por refatoração entre 2023 e 2026; são tendências simultâneas à adoção da IA, e não prova de que ela as causou.
+
+!!! warning "Métrica que vira meta"
+    Quando um número passa a ser cobrado por si só, pessoas e agentes aprendem a satisfazê-lo sem melhorar o código: testes sem asserção sobem a cobertura, e funções fatiadas sem critério baixam a complexidade. É a ideia conhecida como **lei de Goodhart**. Use as métricas para fazer perguntas, acompanhe a tendência e continue revisando o que é crítico.
+
 ## 🌳 Controle de versão colaborativo
 
 Git se tornou, de longe, o sistema de controle de versão dominante na indústria. Além de rastrear o histórico de mudanças, ele viabiliza os fluxos de trabalho colaborativos que sustentam revisão de código e integração contínua:
@@ -424,6 +508,7 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 7. Reproduza o erro de `relatorio.py`, pare nele com `breakpoint()` e examine `membros`. Corrija e confira que o teste passa.
 8. Em um repositório de teste, introduza um defeito no meio de uma sequência de *commits* e encontre-o com `git bisect run`.
 9. Em `corrida.py`, troque o trecho intercalado por chamadas a `assumir` e confira que só a primeira devolve `True`. Depois procure, em um projeto seu, um "consulta, decide, grava" e diga o que acontece se dois pedidos chegarem juntos.
+10. Rode o exemplo de `prazo.py` com cobertura e com teste de mutação. Depois peça a um assistente de IA testes para uma função sua e veja quantos mutantes eles matam.
 
 ## 📚 Para saber mais
 
@@ -445,3 +530,5 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 * Guia de código semântico de commits — [conventionalcommits.org](https://www.conventionalcommits.org/pt-br/)
 * HUNT, Andrew; THOMAS, David. *The Pragmatic Programmer*. Addison-Wesley, 1999.
 * BACCHELLI, Alberto; BIRD, Christian. *Expectations, Outcomes, and Challenges of Modern Code Review*. ICSE, 2013 — [microsoft.com/research](https://www.microsoft.com/en-us/research/?p=164195)
+* MCCABE, Thomas J. *A Complexity Measure*. IEEE Transactions on Software Engineering, 1976 — [doi.org](https://doi.org/10.1109/TSE.1976.233837)
+* ORLANSKI, Gabriel et al. *SlopCodeBench: Benchmarking How Coding Agents Degrade Over Long-Horizon Iterative Tasks*. 2026, não revisado por pares — [arxiv.org/abs/2603.24755](https://arxiv.org/abs/2603.24755)
