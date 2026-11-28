@@ -114,7 +114,32 @@ cursor.execute("SELECT * FROM tarefas WHERE titulo = ?", (titulo,))
 
 O [TaskFlow](https://github.com/lambdageo-edu/taskflow) usa parâmetros em todas as consultas que recebem dados e tem um teste que cadastra uma tarefa com o título `x'); DROP TABLE tarefas; --`: ele é guardado como texto, e nada é apagado.
 
-O marcador (`?` no `sqlite3`) varia conforme a biblioteca. A mesma ideia vale para comandos do sistema operacional e para HTML gerado a partir de dados.
+O marcador (`?` no `sqlite3`) varia conforme a biblioteca. A mesma ideia vale para comandos do sistema operacional e para HTML gerado a partir de dados, o próximo assunto.
+
+### XSS: dado que vira código no navegador
+
+No **XSS** (*cross-site scripting*), um texto enviado por um usuário é interpretado como código no navegador de outro. Imagine uma tela que lista as tarefas de uma API:
+
+```javascript
+item.innerHTML = tarefa.titulo;    // vulnerável: o título é lido como HTML
+item.textContent = tarefa.titulo;  // seguro: o título aparece como texto
+```
+
+Com o título `<img src=x onerror="alert('XSS')">`, a primeira linha executa o código do atributo `onerror` no navegador de quem abrir a lista. No lugar do `alert`, um atacante faria pedidos em nome dessa pessoa.
+
+As defesas, em ordem de importância, seguem a [folha da OWASP sobre XSS](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html):
+
+* **tratar o dado na saída, conforme o lugar onde entra** (corpo do HTML, atributo, URL, JavaScript). *Frameworks* de interface e motores de *templates* costumam fazer isso, mas oferecem saídas que desligam a proteção, como o `dangerouslySetInnerHTML` do React ou o filtro `safe` do Jinja. Cada uso delas merece revisão;
+* **higienizar com uma biblioteca mantida**, como o DOMPurify, quando o usuário precisa mesmo escrever HTML;
+* **usar uma [*Content Security Policy*](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP) como segunda barreira**: um cabeçalho que restringe de onde o navegador aceita *scripts*. Ela reduz o dano, mas não substitui as anteriores.
+
+Validar a entrada ajuda, mas não resolve: um título pode legitimamente conter `<` ou aspas, e o mesmo dado pode ser exibido em lugares com regras diferentes.
+
+O TaskFlow não tem interface: aceita esse título e o devolve em JSON, o que sozinho não executa nada. A responsabilidade passa para cada tela que consumir a API.
+
+#### CSRF e *cookies*
+
+No **CSRF** (*cross-site request forgery*), uma página maliciosa faz o navegador da vítima enviar um pedido a um sistema em que ela está conectada. Isso funciona quando a credencial é enviada automaticamente, como um *cookie* de sessão. A [folha da OWASP sobre CSRF](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html) recomenda um *token* anti-CSRF, com o atributo `SameSite` do *cookie* como camada adicional, e lembra que um XSS derruba essas defesas. No TaskFlow, o *token* vai no cabeçalho `Authorization`, que o navegador não acrescenta sozinho a um pedido vindo de outra página. Para um *cookie* de sessão, use também `HttpOnly`, que impede a leitura por JavaScript, e `Secure`, que o restringe ao HTTPS.
 
 ### Segredos fora do código
 
@@ -534,9 +559,13 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 9. Em `corrida.py`, troque o trecho intercalado por chamadas a `assumir` e confira que só a primeira devolve `True`. Depois procure, em um projeto seu, um "consulta, decide, grava" e diga o que acontece se dois pedidos chegarem juntos.
 10. Rode o exemplo de `prazo.py` com cobertura e com teste de mutação. Depois peça a um assistente de IA testes para uma função sua e veja quantos mutantes eles matam.
 11. Em um sistema seu, desative um usuário que está com a sessão aberta. Quanto tempo ele ainda consegue usar o sistema? Escreva o teste que expressa o prazo que você considera aceitável.
+12. Em um projeto seu com interface, procure `innerHTML`, `dangerouslySetInnerHTML` ou o filtro `safe`. Para cada uso, de onde vem o dado? Em um ambiente local, teste com o título do exemplo de XSS.
 
 ## 📚 Para saber mais
 
+* OWASP *Cross Site Scripting Prevention Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)
+* OWASP *Cross-Site Request Forgery Prevention Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)
+* MDN, *Content Security Policy (CSP)* — [developer.mozilla.org](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP)
 * NIST SP 800-63B-4, *Authentication and Authenticator Management* — [pages.nist.gov](https://pages.nist.gov/800-63-4/sp800-63b.html)
 * RFC 7519, *JSON Web Token (JWT)* — [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc7519)
 * OWASP *Authentication Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
