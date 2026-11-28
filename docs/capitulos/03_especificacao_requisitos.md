@@ -397,6 +397,12 @@ então a API responde 422 e nada é armazenado.
 
 Esse critério trata o tamanho de cada tarefa, mas não a quantidade de requisições. Para isso é preciso outro, sobre limite de requisições por cliente. Registre também os riscos que o time decidiu aceitar por ora, com o motivo. Veja a [folha de referência da OWASP sobre casos de abuso](https://cheatsheetseries.owasp.org/cheatsheets/Abuse_Case_Cheat_Sheet.html), mantida como material histórico.
 
+### Quem pode criar uma conta?
+
+O cadastro costuma ser a primeira rota que se escreve, e a pergunta sobre quem pode usá-la fica sem ser feita. Se o cadastro é aberto, "só usuários autenticados veem os relatórios" significa "qualquer pessoa que alcance o sistema vê os relatórios", mesmo que a conta nova receba o papel mais restrito.
+
+Há várias respostas: cadastro aberto, convite, aprovação ou contas criadas somente por um administrador. A escolha é um requisito, e depende do que uma conta recém-criada consegue ver e fazer. Em um sistema interno de uma empresa, uma rota pública de cadastro provavelmente não deveria existir: retirá-la é reduzir a superfície de ataque ([Capítulo 4](04_projeto_arquitetura.md)). O TaskFlow tem cadastro aberto, e uma conta nova só vê os projetos de que participa.
+
 ## 🤖 Especificar antes de pedir código
 
 Um assistente de IA preenche as lacunas de um pedido com suposições, e o resultado pode compilar, passar em testes superficiais e resolver o problema errado. Compare:
