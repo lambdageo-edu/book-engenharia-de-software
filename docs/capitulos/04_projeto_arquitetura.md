@@ -383,6 +383,74 @@ Arquitetura só é útil se for compreendida por quem constrói o sistema. Algum
 * **Registros de Decisão de Arquitetura (*Architecture Decision Records* — ADRs)**, [popularizados por Michael Nygard](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions): pequenos documentos versionados junto ao código, cada um registrando uma decisão de arquitetura. O modelo de Nygard tem cinco partes: título, contexto, decisão, situação (*status*) e consequências. Muitas equipes acrescentam as alternativas consideradas. São úteis para que decisões antigas não pareçam arbitrárias para quem chega depois no time.
 * **UML**, ainda útil para diagramas específicos (classes, sequência) quando o nível de detalhe compensa o custo de mantê-los atualizados — mas raramente usado hoje como especificação completa e exaustiva de um sistema, como se popularizou nos anos 1990/2000.
 
+### C4 no TaskFlow
+
+Os dois primeiros níveis costumam bastar. O de **contexto** mostra o sistema, quem o usa e com que outros sistemas conversa (o TaskFlow não depende de nenhum):
+
+```mermaid
+flowchart TB
+    membro["Membro<br/>[pessoa]<br/>Cuida das suas tarefas"]
+    dono["Dono do projeto<br/>[pessoa]<br/>Monta a equipe e atribui tarefas"]
+    sistema["TaskFlow<br/>[sistema]<br/>Gerencia tarefas de equipe"]
+    membro -- "usa" --> sistema
+    dono -- "usa" --> sistema
+```
+
+O de **contêineres** abre o sistema nas partes que executam ou guardam dados. No C4, *contêiner* não é sinônimo de contêiner Docker: um banco de dados ou um aplicativo móvel também é um.
+
+```mermaid
+flowchart LR
+    cliente["Cliente<br/>(navegador em /docs, script)"]
+    subgraph sistema["TaskFlow"]
+        proxy["Proxy<br/>[Caddy]<br/>Cifra o tráfego"]
+        api["API<br/>[Python, FastAPI]<br/>Regras e permissões"]
+        banco[("Banco<br/>[SQLite]<br/>Usuários, sessões, projetos, tarefas")]
+    end
+    cliente -- "HTTPS" --> proxy
+    proxy -- "HTTP" --> api
+    api -- "SQL" --> banco
+```
+
+Os desenhos usam o fluxograma do Mermaid com as informações que o C4 pede em cada caixa: nome, tipo ou tecnologia e responsabilidade. O proxy é o do `compose.yaml` ([Capítulo 7](07_integracao_entrega_continua.md)).
+
+### Um ADR preenchido
+
+Um exemplo no modelo de Nygard, escrito para este livro sobre uma escolha que se vê no código do TaskFlow:
+
+```markdown
+# ADR 1: sessão guardada no servidor
+
+## Situação
+
+Aceito.
+
+## Contexto
+
+Quase toda requisição precisa identificar o usuário. Há uma única instância da API, que já
+consulta o banco em quase todo pedido. Sair do sistema deve valer na hora.
+
+## Decisão
+
+No login, geraremos um token aleatório e guardaremos no banco apenas o seu hash, com
+validade de 8 horas. Cada requisição autenticada consulta essa tabela.
+
+## Consequências
+
+- Encerrar uma sessão é apagar uma linha, com efeito imediato.
+- Quem copiar o banco não obtém tokens utilizáveis.
+- Cada requisição autenticada faz uma consulta a mais.
+- Com várias instâncias da API, todas precisarão do mesmo banco de sessões.
+
+## Alternativas consideradas
+
+Token assinado (JWT): dispensa a consulta, mas revogar antes de expirar exigiria uma
+lista de tokens revogados.
+```
+
+Repare que o registro diz também o que se perde. Guarde os ADRs numerados no repositório (por exemplo, em `docs/adr/`). Quando uma decisão mudar, não reescreva a antiga: marque-a como substituída e escreva outra.
+
+Há modelos mais detalhados, como o [**MADR**](https://adr.github.io/madr/), que dá mais espaço às opções e aos critérios de escolha. Para descrever a arquitetura inteira, e não uma decisão, o [**arc42**](https://arc42.org/overview) oferece um roteiro de 12 seções, que inclui contexto, decisões, riscos e requisitos de qualidade. Use as seções que respondem a perguntas de alguém: documento preenchido por obrigação envelhece sem leitor.
+
 ---
 
 ## 🎯 Atividades
@@ -412,6 +480,8 @@ Arquitetura só é útil se for compreendida por quem constrói o sistema. Algum
 * *OWASP API Security Top 10*, edição de 2023 — [owasp.org/API-Security](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/)
 * SALTZER, Jerome H.; SCHROEDER, Michael D. *The Protection of Information in Computer Systems*. Proceedings of the IEEE, 63(9), 1975.
 * Modelo C4 — [c4model.com](https://c4model.com/)
+* MADR, *Markdown Architectural Decision Records* — [adr.github.io/madr](https://adr.github.io/madr/)
+* arc42, visão geral do modelo — [arc42.org](https://arc42.org/overview)
 * NEWMAN, Sam. *Building Microservices*. 2. ed. O'Reilly, 2021.
 * IEEE Std 1471-2000. *Recommended Practice for Architectural Description of Software-Intensive Systems* (substituído pela ISO/IEC/IEEE 42010).
 * MARTIN, Robert C. *Agile Software Development: Principles, Patterns, and Practices*. Prentice Hall, 2002 (princípios SOLID).
