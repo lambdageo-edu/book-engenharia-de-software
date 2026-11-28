@@ -962,6 +962,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="🌳 Controle de versão colaborativo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fluxos-de-trabalho" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Fluxos de trabalho
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#habitos-que-valem-em-qualquer-fluxo" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Hábitos que valem em qualquer fluxo
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1636,6 +1664,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="🌳 Controle de versão colaborativo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fluxos-de-trabalho" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Fluxos de trabalho
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#habitos-que-valem-em-qualquer-fluxo" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Hábitos que valem em qualquer fluxo
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2261,12 +2317,48 @@
 <p>Quando um número passa a ser cobrado por si só, pessoas e agentes aprendem a satisfazê-lo sem melhorar o código: testes sem asserção sobem a cobertura, e funções fatiadas sem critério baixam a complexidade. É a ideia conhecida como <strong>lei de Goodhart</strong>. Use as métricas para fazer perguntas, acompanhe a tendência e continue revisando o que é crítico.</p>
 </div>
 <h2 id="controle-de-versao-colaborativo">🌳 Controle de versão colaborativo<a class="headerlink" href="#controle-de-versao-colaborativo" title="Permanent link">&para;</a></h2>
-<p>Git se tornou, de longe, o sistema de controle de versão dominante na indústria. Além de rastrear o histórico de mudanças, ele viabiliza os fluxos de trabalho colaborativos que sustentam revisão de código e integração contínua:</p>
+<p><strong>Gerência de versões</strong> é o controle do que mudou, quando, por quem e por quê, de modo que se possa voltar a um estado anterior e combinar o trabalho de várias pessoas (CHACON; STRAUB, 2014). Há três organizações:</p>
 <ul>
-<li><strong>Branches de curta duração</strong>: criar uma branch a partir da branch principal para cada mudança, integrá-la via <em>pull request</em> após revisão e testes, e apagá-la em seguida. Branches de longa duração tendem a acumular divergência e a tornar a integração (<em>merge</em>) mais dolorosa quanto mais tempo demoram.</li>
-<li><strong>Trunk-based development</strong>: uma prática, adotada por times de alta performance segundo pesquisas como o <em>Accelerate</em> (Forsgren, Humble, Kim), de integrar mudanças pequenas e frequentes diretamente (ou quase diretamente) na branch principal, evitando branches de longa duração e grandes <em>merges</em> conflituosos.</li>
-<li><strong>Mensagens de commit significativas</strong>: descrever o "porquê" de uma mudança, não apenas o "o quê" — o diff já mostra o que mudou; a mensagem de commit é o lugar certo para registrar contexto que o diff sozinho não conta.</li>
-<li><strong>Convenção de commits semânticos</strong> (ex: <code>feat:</code>, <code>fix:</code>, <code>docs:</code>, <code>refactor:</code>), útil para gerar changelogs automaticamente e para comunicar rapidamente a natureza de uma mudança.</li>
+<li><strong>local</strong>: o histórico fica só na máquina de quem trabalha;</li>
+<li><strong>centralizada</strong>, como no Subversion: um servidor guarda o histórico, e cada pessoa tem uma cópia dos arquivos;</li>
+<li><strong>distribuída</strong>, como no Git: cada clone tem o histórico inteiro. Dá para fazer <em>commits</em> e consultar o passado sem rede, e a equipe combina qual repositório serve de referência.</li>
+</ul>
+<p>No Git, um <em>commit</em> registra um estado do projeto; uma <em>branch</em> é um ponteiro que avança a cada <em>commit</em>; e uma <strong>etiqueta</strong> (<em>tag</em>) marca um <em>commit</em> que não deve mudar de lugar, como o de uma versão publicada (<a href="../07_integracao_entrega_continua/">Capítulo 7</a>). Os comandos estão no <a href="../../apendices/git_conteineres/">apêndice</a>.</p>
+<h3 id="fluxos-de-trabalho">Fluxos de trabalho<a class="headerlink" href="#fluxos-de-trabalho" title="Permanent link">&para;</a></h3>
+<p>Um <strong>fluxo de trabalho</strong> é o combinado da equipe sobre quais <em>branches</em> existem, quanto duram e como o trabalho chega à principal. Três são muito citados:</p>
+<table>
+<thead>
+<tr>
+<th>Fluxo</th>
+<th>Como funciona</th>
+<th>Quando faz sentido</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://docs.github.com/en/get-started/using-github/github-flow"><strong>GitHub Flow</strong></a></td>
+<td>Uma <em>branch</em> por mudança, <em>pull request</em>, revisão, <em>merge</em> na <code>main</code> e exclusão da <em>branch</em></td>
+<td>Equipes pequenas, com uma versão em uso e entrega frequente</td>
+</tr>
+<tr>
+<td><a href="https://dora.dev/capabilities/trunk-based-development/"><strong><em>Trunk-based development</em></strong></a></td>
+<td>Integração na principal pelo menos uma vez por dia, com no máximo três <em>branches</em> ativas</td>
+<td>Testes confiáveis, muita automação e revisão rápida</td>
+</tr>
+<tr>
+<td><a href="https://nvie.com/posts/a-successful-git-branching-model"><strong>Git Flow</strong></a> (Driessen, 2010)</td>
+<td>Duas <em>branches</em> permanentes, <code>master</code> (o que está publicado) e <code>develop</code>, e outras temporárias para funcionalidades, preparação de versão e correções urgentes</td>
+<td>Versões planejadas ou várias versões mantidas ao mesmo tempo</td>
+</tr>
+</tbody>
+</table>
+<p>Os três não são opostos perfeitos: um GitHub Flow com <em>branches</em> que duram poucas horas pode ser uma forma de <em>trunk-based</em>. No <em>trunk-based</em>, o que ainda está incompleto entra na principal desligado, por exemplo com <a href="../07_integracao_entrega_continua/"><em>feature flags</em></a>. O próprio autor do Git Flow acrescentou ao texto, em 2020, que para entrega contínua sugere um fluxo bem mais simples, e que o modelo dele ainda pode servir a quem mantém várias versões.</p>
+<p>Para escolher, pergunte: quantas versões precisam de correção ao mesmo tempo? Com que frequência se entrega? Quanto se confia nos testes? Quanto tempo uma revisão espera? O <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a>, com uma só versão e um pipeline que roda a cada <em>pull request</em>, é bem atendido pelo GitHub Flow.</p>
+<h3 id="habitos-que-valem-em-qualquer-fluxo">Hábitos que valem em qualquer fluxo<a class="headerlink" href="#habitos-que-valem-em-qualquer-fluxo" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Branches de curta duração</strong>: quanto mais uma <em>branch</em> vive, mais diverge, e mais difícil fica o <em>merge</em>.</li>
+<li><strong>Mensagens de commit significativas</strong>: descrever o "porquê" de uma mudança, não apenas o "o quê". O <em>diff</em> já mostra o que mudou.</li>
+<li><strong>Convenção de commits semânticos</strong> (ex: <code>feat:</code>, <code>fix:</code>, <code>docs:</code>, <code>refactor:</code>), útil para gerar <em>changelogs</em> e comunicar a natureza de uma mudança.</li>
 </ul>
 <div class="admonition tip">
 <p class="admonition-title">Qualidade de código é um investimento, não um luxo</p>
@@ -2287,6 +2379,7 @@
 <li>Rode o exemplo de <code>prazo.py</code> com cobertura e com teste de mutação. Depois peça a um assistente de IA testes para uma função sua e veja quantos mutantes eles matam.</li>
 <li>Em um sistema seu, desative um usuário que está com a sessão aberta. Quanto tempo ele ainda consegue usar o sistema? Escreva o teste que expressa o prazo que você considera aceitável.</li>
 <li>Em um projeto seu com interface, procure <code>innerHTML</code>, <code>dangerouslySetInnerHTML</code> ou o filtro <code>safe</code>. Para cada uso, de onde vem o dado? Em um ambiente local, teste com o título do exemplo de XSS.</li>
+<li>Descubra o fluxo usado em um projeto que você conhece (ou em um repositório público): que <em>branches</em> existem e há quanto tempo? Ele combina com a forma como o projeto é entregue?</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2297,6 +2390,10 @@
 <li>RFC 7519, <em>JSON Web Token (JWT)</em> — <a href="https://www.rfc-editor.org/rfc/rfc7519">rfc-editor.org</a></li>
 <li>OWASP <em>Authentication Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
 <li>OWASP <em>JSON Web Token Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
+<li>CHACON, Scott; STRAUB, Ben. <em>Pro Git</em>. 2. ed. Apress, 2014 — <a href="https://git-scm.com/book/pt-br/v2">git-scm.com/book/pt-br/v2</a></li>
+<li>GitHub, <em>GitHub flow</em> — <a href="https://docs.github.com/en/get-started/using-github/github-flow">docs.github.com</a></li>
+<li>DORA, <em>Trunk-based development</em> — <a href="https://dora.dev/capabilities/trunk-based-development/">dora.dev</a></li>
+<li>DRIESSEN, Vincent. <em>A successful Git branching model</em>, 2010, com nota de 2020 — <a href="https://nvie.com/posts/a-successful-git-branching-model">nvie.com</a></li>
 <li>MARTIN, Robert C. <em>Clean Code: A Handbook of Agile Software Craftsmanship</em>. Prentice Hall, 2008.</li>
 <li>MEYER, Bertrand. <em>Object-Oriented Software Construction</em>. 2. ed. Prentice Hall, 1997.</li>
 <li>FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. <em>Accelerate: The Science of Lean Software and DevOps</em>. IT Revolution, 2018.</li>
