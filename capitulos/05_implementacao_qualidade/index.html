@@ -729,6 +729,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Senhas e sessões">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sessao-no-servidor-ou-token-assinado" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Sessão no servidor ou token assinado
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limite-de-tentativas" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Limite de tentativas
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -1347,6 +1375,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Senhas e sessões">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sessao-no-servidor-ou-token-assinado" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Sessão no servidor ou token assinado
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limite-de-tentativas" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Limite de tentativas
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -1734,7 +1790,43 @@
 <li>o erro de <em>login</em> é o mesmo para usuário inexistente e senha errada (o cadastro, porém, ainda revela que um <em>login</em> já existe);</li>
 <li>o token de sessão é aleatório, expira, pode ser invalidado e só o seu <em>hash</em> vai para o banco.</li>
 </ul>
-<p>Isso não dispensa o que está fora do código, como HTTPS e limite de tentativas. Em um sistema real, considere também delegar a autenticação a um provedor de identidade.</p>
+<p>O tamanho mínimo não basta: quinze letras iguais passam pela regra. O NIST SP 800-63B também exige comparar a senha nova com uma lista de senhas comuns, esperadas ou já vazadas, e recusá-la se estiver nela. Por outro lado, ele não recomenda impor regras de composição, como obrigar maiúscula, número e símbolo. O TaskFlow confere apenas o tamanho.</p>
+<h4 id="sessao-no-servidor-ou-token-assinado">Sessão no servidor ou token assinado<a class="headerlink" href="#sessao-no-servidor-ou-token-assinado" title="Permanent link">&para;</a></h4>
+<p>Depois do <em>login</em>, cada pedido precisa dizer quem é o usuário. Há dois caminhos comuns:</p>
+<table>
+<thead>
+<tr>
+<th>Caminho</th>
+<th>Como o servidor reconhece o usuário</th>
+<th>Ganho</th>
+<th>Custo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sessão no servidor</strong></td>
+<td>O token é um número aleatório, procurado no banco a cada pedido</td>
+<td>Apagar a sessão vale na hora</td>
+<td>Uma consulta por pedido</td>
+</tr>
+<tr>
+<td><strong>Token assinado</strong> (como o <a href="https://www.rfc-editor.org/rfc/rfc7519">JWT</a>)</td>
+<td>O token traz os dados, e o servidor confere a assinatura e a validade</td>
+<td>Dispensa a consulta</td>
+<td>O que está no token vale até ele expirar</td>
+</tr>
+</tbody>
+</table>
+<p>O custo do segundo caminho aparece quando algo muda. Se o papel do usuário é lido apenas do token, rebaixar ou desativar uma conta não tem efeito enquanto o token não expirar: com validade de 30 minutos, a pessoa desligada continua entrando por até 30 minutos. Respostas possíveis são validade curta, uma <a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_Cheat_Sheet.html">lista de tokens revogados</a> ou a consulta ao banco em cada pedido, o que devolve o custo que se queria evitar. Quanto atraso é aceitável é um requisito, e deve ser escrito e testado: "uma conta desativada recebe 401 no pedido seguinte".</p>
+<p>O TaskFlow guarda as sessões no servidor. Ele ainda não tem como desativar uma conta; se ganhar, as sessões dela precisam ser apagadas ou o estado conferido a cada pedido.</p>
+<h4 id="limite-de-tentativas">Limite de tentativas<a class="headerlink" href="#limite-de-tentativas" title="Permanent link">&para;</a></h4>
+<p>Sem limite, um programa pode testar senhas sem parar. O NIST pede no máximo 100 falhas consecutivas por conta, e permite um limite menor. Duas decisões vêm junto:</p>
+<ul>
+<li><strong>o que contar:</strong> por conta, protege contra quem tenta muitas senhas em um usuário; por endereço de origem, contra quem tenta uma senha em muitos usuários. Um não substitui o outro;</li>
+<li><strong>o que fazer ao atingir o limite:</strong> bloquear a conta de vez entrega a um atacante o poder de <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html">trancar a conta de outra pessoa</a>. Esperas crescentes ou bloqueio temporário reduzem esse efeito.</li>
+</ul>
+<p>O limite pode ficar na aplicação, que conhece a conta, ou no <em>proxy</em> à frente dela, que barra o pedido antes de gastar processamento. O TaskFlow ainda não tem nenhum dos dois.</p>
+<p>Nada disso dispensa HTTPS. Em um sistema real, considere também delegar a autenticação a um provedor de identidade.</p>
 <h2 id="tratamento-de-erros">🧯 Tratamento de erros<a class="headerlink" href="#tratamento-de-erros" title="Permanent link">&para;</a></h2>
 <p>Há erros <strong>esperados</strong>, parte do funcionamento normal, como um <em>login</em> já usado, e erros <strong>inesperados</strong>, como um defeito ou um disco cheio. Os primeiros merecem uma resposta específica; os segundos, uma resposta genérica ao cliente e um registro detalhado para quem mantém o sistema. Tratar mal as situações anormais é a categoria A10 da lista acima.</p>
 <p>O pior tratamento é o que esconde:</p>
@@ -2121,9 +2213,14 @@
 <li>Em um repositório de teste, introduza um defeito no meio de uma sequência de <em>commits</em> e encontre-o com <code>git bisect run</code>.</li>
 <li>Em <code>corrida.py</code>, troque o trecho intercalado por chamadas a <code>assumir</code> e confira que só a primeira devolve <code>True</code>. Depois procure, em um projeto seu, um "consulta, decide, grava" e diga o que acontece se dois pedidos chegarem juntos.</li>
 <li>Rode o exemplo de <code>prazo.py</code> com cobertura e com teste de mutação. Depois peça a um assistente de IA testes para uma função sua e veja quantos mutantes eles matam.</li>
+<li>Em um sistema seu, desative um usuário que está com a sessão aberta. Quanto tempo ele ainda consegue usar o sistema? Escreva o teste que expressa o prazo que você considera aceitável.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
+<li>NIST SP 800-63B-4, <em>Authentication and Authenticator Management</em> — <a href="https://pages.nist.gov/800-63-4/sp800-63b.html">pages.nist.gov</a></li>
+<li>RFC 7519, <em>JSON Web Token (JWT)</em> — <a href="https://www.rfc-editor.org/rfc/rfc7519">rfc-editor.org</a></li>
+<li>OWASP <em>Authentication Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
+<li>OWASP <em>JSON Web Token Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
 <li>MARTIN, Robert C. <em>Clean Code: A Handbook of Agile Software Craftsmanship</em>. Prentice Hall, 2008.</li>
 <li>MEYER, Bertrand. <em>Object-Oriented Software Construction</em>. 2. ed. Prentice Hall, 1997.</li>
 <li>FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. <em>Accelerate: The Science of Lean Software and DevOps</em>. IT Revolution, 2018.</li>

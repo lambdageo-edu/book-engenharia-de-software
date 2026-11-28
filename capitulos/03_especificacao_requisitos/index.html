@@ -744,6 +744,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#quem-pode-criar-uma-conta" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quem pode criar uma conta?
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1455,6 +1466,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#quem-pode-criar-uma-conta" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quem pode criar uma conta?
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2056,6 +2078,9 @@
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>então a API responde 422 e nada é armazenado.
 </code></pre></div>
 <p>Esse critério trata o tamanho de cada tarefa, mas não a quantidade de requisições. Para isso é preciso outro, sobre limite de requisições por cliente. Registre também os riscos que o time decidiu aceitar por ora, com o motivo. Veja a <a href="https://cheatsheetseries.owasp.org/cheatsheets/Abuse_Case_Cheat_Sheet.html">folha de referência da OWASP sobre casos de abuso</a>, mantida como material histórico.</p>
+<h3 id="quem-pode-criar-uma-conta">Quem pode criar uma conta?<a class="headerlink" href="#quem-pode-criar-uma-conta" title="Permanent link">&para;</a></h3>
+<p>O cadastro costuma ser a primeira rota que se escreve, e a pergunta sobre quem pode usá-la fica sem ser feita. Se o cadastro é aberto, "só usuários autenticados veem os relatórios" significa "qualquer pessoa que alcance o sistema vê os relatórios", mesmo que a conta nova receba o papel mais restrito.</p>
+<p>Há várias respostas: cadastro aberto, convite, aprovação ou contas criadas somente por um administrador. A escolha é um requisito, e depende do que uma conta recém-criada consegue ver e fazer. Em um sistema interno de uma empresa, uma rota pública de cadastro provavelmente não deveria existir: retirá-la é reduzir a superfície de ataque (<a href="../04_projeto_arquitetura/">Capítulo 4</a>). O TaskFlow tem cadastro aberto, e uma conta nova só vê os projetos de que participa.</p>
 <h2 id="especificar-antes-de-pedir-codigo">🤖 Especificar antes de pedir código<a class="headerlink" href="#especificar-antes-de-pedir-codigo" title="Permanent link">&para;</a></h2>
 <p>Um assistente de IA preenche as lacunas de um pedido com suposições, e o resultado pode compilar, passar em testes superficiais e resolver o problema errado. Compare:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Pedido vago</label><label for="__tabbed_2_2">Especificação</label></div>

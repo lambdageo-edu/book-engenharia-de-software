@@ -891,6 +891,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#a-protecao-esta-ligada" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        A proteção está ligada?
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#infraestrutura-como-codigo" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1281,6 +1292,17 @@
     <span class="md-ellipsis">
       <span class="md-typeset">
         Do contêiner ao servidor
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-protecao-esta-ligada" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        A proteção está ligada?
       </span>
     </span>
   </a>
@@ -1737,6 +1759,13 @@
 </code></pre></div>
 <p>Um pacote novo no GHCR é <a href="https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry">privado</a>. Para baixá-lo, o servidor precisa de <code>docker login ghcr.io</code> com um <em>personal access token (classic)</em> com a permissão <code>read:packages</code>, a menos que você torne o pacote público.</p>
 <p>Voltar atrás (<em>rollback</em>) é pôr em <code>IMAGEM</code> o identificador anterior e repetir os dois comandos, o que só funciona se o banco continuar compatível com ela (<a href="../08_evolucao_manutencao/">Capítulo 8</a>). E o HTTPS não resolve tudo: continuam faltando <a href="../08_evolucao_manutencao/">cópias de segurança</a>, limite de requisições e monitoramento.</p>
+<h3 id="a-protecao-esta-ligada">A proteção está ligada?<a class="headerlink" href="#a-protecao-esta-ligada" title="Permanent link">&para;</a></h3>
+<p>Uma proteção pode estar no repositório e não estar no sistema em uso. Dois casos comuns:</p>
+<ul>
+<li>uma classe com o nome certo, como um limitador de requisições, que é só um <code>TODO</code> ou nunca foi registrada na aplicação;</li>
+<li>um limite configurado no <em>proxy</em> de um arquivo do Compose, enquanto o arquivo usado por padrão publica a porta da API direto, sem <em>proxy</em>.</li>
+</ul>
+<p>Nos dois casos, quem lê o repositório por alto acredita que há proteção. Confira o comportamento na configuração que de fato é implantada: envie pedidos além do limite e espere a recusa, tente a porta da API de fora do servidor. O que puder, transforme em teste automatizado. É o que a OWASP classifica como <a href="https://owasp.org/Top10/2025/0x00_2025-Introduction/">configuração incorreta de segurança</a> quando o padrão fica aberto.</p>
 <h3 id="infraestrutura-como-codigo">Infraestrutura como código<a class="headerlink" href="#infraestrutura-como-codigo" title="Permanent link">&para;</a></h3>
 <p>O <code>compose.yaml</code> é um exemplo de <strong>infraestrutura como código</strong>: o ambiente é descrito em um arquivo versionado e revisado como o restante, em vez de montado à mão. Ferramentas como <a href="https://opentofu.org/">OpenTofu</a> ou Terraform descrevem também servidores, redes e bancos; Ansible configura as máquinas. O ganho é poder recriar o ambiente e saber quem mudou o quê. O cuidado: segredos não vão para esses arquivos.</p>
 <h2 id="agentes-de-codificacao-e-o-pipeline">🤖 Agentes de codificação e o pipeline<a class="headerlink" href="#agentes-de-codificacao-e-o-pipeline" title="Permanent link">&para;</a></h2>
@@ -1760,6 +1789,7 @@
 <li>Rode o ZAP contra a sua API, em um ambiente de teste. Quantas rotas ele realmente exercitou? O que mudaria se ele tivesse um <em>token</em>?</li>
 <li>Suba o TaskFlow com o <code>compose.yaml</code>. Confira que o HTTP redireciona para HTTPS e que a porta 8000 não responde fora do contêiner. Depois execute <code>docker compose down</code> e suba de novo: os dados continuam? (Cuidado: com <code>-v</code>, os volumes são apagados.)</li>
 <li>Para três mudanças no TaskFlow (uma correção, uma funcionalidade e uma quebra de compatibilidade), diga qual seria a próxima versão a partir de <code>1.4.2</code> e escreva a entrada do <em>changelog</em>.</li>
+<li>Escolha uma proteção de um projeto seu (limite, permissão, cabeçalho, HTTPS) e demonstre, na configuração implantada, que ela está ativa. Se houver mais de um arquivo de implantação, repita em cada um.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
