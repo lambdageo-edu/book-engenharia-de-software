@@ -859,6 +859,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#medir-a-qualidade-do-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        📏 Medir a qualidade do código
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📏 Medir a qualidade do código">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cobertura-total-e-testes-fracos" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Cobertura total e testes fracos
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metricas-e-codigo-gerado-por-ia" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Métricas e código gerado por IA
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#controle-de-versao-colaborativo" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1438,6 +1477,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#medir-a-qualidade-do-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        📏 Medir a qualidade do código
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📏 Medir a qualidade do código">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cobertura-total-e-testes-fracos" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Cobertura total e testes fracos
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metricas-e-codigo-gerado-por-ia" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Métricas e código gerado por IA
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#controle-de-versao-colaborativo" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1920,6 +1998,104 @@
 </tbody>
 </table>
 <p>A maioria dos times integra essas ferramentas diretamente no pipeline de CI (Capítulo 7), rejeitando automaticamente mudanças que violem regras mínimas de qualidade — tirando a discussão de estilo (tabs vs. espaços, aspas simples vs. duplas) da revisão humana e deixando-a para a ferramenta decidir de forma consistente.</p>
+<h2 id="medir-a-qualidade-do-codigo">📏 Medir a qualidade do código<a class="headerlink" href="#medir-a-qualidade-do-codigo" title="Permanent link">&para;</a></h2>
+<p>Ler o código continua sendo a principal forma de julgá-lo, mas algumas propriedades podem ser medidas. Os números ajudam a decidir <strong>onde olhar primeiro</strong>, sobretudo quando o volume de código cresce.</p>
+<table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>O que responde</th>
+<th>Cuidado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Complexidade ciclomática</strong> (<a href="https://doi.org/10.1109/TSE.1976.233837">McCabe, 1976</a>)</td>
+<td>Quantos caminhos independentes passam por uma função</td>
+<td>Não mede nomes nem clareza</td>
+</tr>
+<tr>
+<td><strong>Tamanho</strong> de funções e módulos</td>
+<td>Quanto é preciso ler de uma vez</td>
+<td>Dividir sem critério só espalha a complexidade</td>
+</tr>
+<tr>
+<td><strong>Duplicação</strong></td>
+<td>Quanto código se repete</td>
+<td>Trechos parecidos podem ter razões diferentes para mudar</td>
+</tr>
+<tr>
+<td><strong>Dependências</strong> entre módulos</td>
+<td>Quem depende de quem, e se há ciclos (<a href="../04_projeto_arquitetura/">acoplamento</a>)</td>
+<td>O que importa é a direção, não só a quantidade</td>
+</tr>
+<tr>
+<td><strong>Cobertura</strong> (<a href="../06_testes_validacao/">Capítulo 6</a>)</td>
+<td>O que os testes executam</td>
+<td>Executar não é verificar</td>
+</tr>
+<tr>
+<td><strong>Teste de mutação</strong></td>
+<td>Se os testes percebem um defeito introduzido de propósito</td>
+<td>É lento, e alguns mutantes se comportam como o original</td>
+</tr>
+<tr>
+<td><strong>CRAP</strong> (<em>Change Risk Anti-Patterns</em>)</td>
+<td>Onde há muita complexidade com pouco teste</td>
+<td>O limite adotado é uma convenção</td>
+</tr>
+</tbody>
+</table>
+<p>O CRAP, proposto por Alberto Savoia e Bob Evans, combina a complexidade <code>c</code> de uma função com a fração dela coberta por testes, <code>cov</code>: <code>c² × (1 − cov)³ + c</code>. Com cobertura total, sobra apenas a complexidade.</p>
+<p>Em Python, a complexidade pode ser limitada pelo próprio <code>ruff</code> (regra <a href="https://docs.astral.sh/ruff/rules/complex-structure/"><code>C901</code></a>) e listada pelo <a href="https://radon.readthedocs.io/"><code>radon</code></a>.</p>
+<h3 id="cobertura-total-e-testes-fracos">Cobertura total e testes fracos<a class="headerlink" href="#cobertura-total-e-testes-fracos" title="Permanent link">&para;</a></h3>
+<p>Em <code>prazo.py</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">situacao</span><span class="p">(</span><span class="n">dias_restantes</span><span class="p">):</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="k">if</span> <span class="n">dias_restantes</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>        <span class="k">return</span> <span class="s2">"atrasada"</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="k">if</span> <span class="n">dias_restantes</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        <span class="k">return</span> <span class="s2">"urgente"</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    <span class="k">return</span> <span class="s2">"normal"</span>
+</code></pre></div>
+<p>E em <code>tests/test_prazo.py</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">prazo</span><span class="w"> </span><span class="kn">import</span> <span class="n">situacao</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_situacoes</span><span class="p">():</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"atrasada"</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"urgente"</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"normal"</span>
+</code></pre></div>
+<p>O teste passa e cobre 100% das linhas e dos desvios. O teste de mutação faz pequenas alterações no código, os <strong>mutantes</strong>, e roda os testes contra cada uma. Se os testes falham, o mutante foi morto; se passam, sobreviveu. Com o <a href="https://github.com/boxed/mutmut"><code>mutmut</code></a> 3.8.1, quatro dos dez mutantes deste exemplo sobrevivem, entre eles:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="gd">-    if dias_restantes &lt;= 2:</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="gi">+    if dias_restantes &lt; 2:</span>
+</code></pre></div>
+<p>Os quatro mexem nos limites das faixas, que o teste não visita. Acrescentando os casos de fronteira (<a href="../06_testes_validacao/">Capítulo 6</a>), os dez são mortos:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_limites</span><span class="p">():</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"atrasada"</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"urgente"</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"urgente"</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"normal"</span>
+</code></pre></div>
+<p>Para repetir o experimento, indique o arquivo no <code>pyproject.toml</code> e rode <code>mutmut run</code> e <code>mutmut results</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">[tool.pytest.ini_options]</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">pythonpath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"."</span><span class="p">]</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="k">[tool.mutmut]</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="n">source_paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"prazo.py"</span><span class="p">]</span>
+</code></pre></div>
+<p>O <code>mutmut</code> depende de um recurso do Unix (<code>fork</code>): no Windows, é preciso usar o <a href="https://learn.microsoft.com/windows/wsl/">WSL</a>.</p>
+<h3 id="metricas-e-codigo-gerado-por-ia">Métricas e código gerado por IA<a class="headerlink" href="#metricas-e-codigo-gerado-por-ia" title="Permanent link">&para;</a></h3>
+<p>Quando agentes escrevem muito mais código do que alguém consegue ler, quanto confiar nos números? Há quem discorde de forma frontal. Segundo <a href="https://startupfortune.com/uncle-bob-martin-says-he-no-longer-reads-ai-generated-code-and-the-developer-world-is-split/">reportagem da Startup Fortune</a> (julho de 2026), sobre publicações em rede social:</p>
+<ul>
+<li><strong>Robert C. Martin</strong> diz que já não lê o código dos seus agentes e confia nas barreiras que ele precisa atravessar: testes unitários e de aceitação, procedimentos de qualidade, limites de complexidade e de tamanho de módulo, análise de dependências, cobertura e teste de mutação.</li>
+<li><strong>Grady Booch</strong> discorda e revisa todo o código gerado. Para ele, métricas não revelam vulnerabilidades, código morto nem oportunidades de refatoração perdidas.</li>
+</ul>
+<p>A posição de Martin pressupõe testes e limites que alguém soube definir e que são cobrados de fato. A pesquisa ainda é recente. Um <a href="https://arxiv.org/abs/2603.24755">estudo não revisado por pares</a>, com tarefas em Python, observou que a repetição e a concentração de complexidade tendem a crescer quando agentes estendem várias vezes o próprio código. Um <a href="https://gitclear.com/the_ai_code_quality_maintainability_gap">relatório da GitClear</a>, empresa que vende ferramentas de análise, registra mais blocos duplicados e menos código movido por refatoração entre 2023 e 2026; são tendências simultâneas à adoção da IA, e não prova de que ela as causou.</p>
+<div class="admonition warning">
+<p class="admonition-title">Métrica que vira meta</p>
+<p>Quando um número passa a ser cobrado por si só, pessoas e agentes aprendem a satisfazê-lo sem melhorar o código: testes sem asserção sobem a cobertura, e funções fatiadas sem critério baixam a complexidade. É a ideia conhecida como <strong>lei de Goodhart</strong>. Use as métricas para fazer perguntas, acompanhe a tendência e continue revisando o que é crítico.</p>
+</div>
 <h2 id="controle-de-versao-colaborativo">🌳 Controle de versão colaborativo<a class="headerlink" href="#controle-de-versao-colaborativo" title="Permanent link">&para;</a></h2>
 <p>Git se tornou, de longe, o sistema de controle de versão dominante na indústria. Além de rastrear o histórico de mudanças, ele viabiliza os fluxos de trabalho colaborativos que sustentam revisão de código e integração contínua:</p>
 <ul>
@@ -1944,6 +2120,7 @@
 <li>Reproduza o erro de <code>relatorio.py</code>, pare nele com <code>breakpoint()</code> e examine <code>membros</code>. Corrija e confira que o teste passa.</li>
 <li>Em um repositório de teste, introduza um defeito no meio de uma sequência de <em>commits</em> e encontre-o com <code>git bisect run</code>.</li>
 <li>Em <code>corrida.py</code>, troque o trecho intercalado por chamadas a <code>assumir</code> e confira que só a primeira devolve <code>True</code>. Depois procure, em um projeto seu, um "consulta, decide, grava" e diga o que acontece se dois pedidos chegarem juntos.</li>
+<li>Rode o exemplo de <code>prazo.py</code> com cobertura e com teste de mutação. Depois peça a um assistente de IA testes para uma função sua e veja quantos mutantes eles matam.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1965,6 +2142,8 @@
 <li>Guia de código semântico de commits — <a href="https://www.conventionalcommits.org/pt-br/">conventionalcommits.org</a></li>
 <li>HUNT, Andrew; THOMAS, David. <em>The Pragmatic Programmer</em>. Addison-Wesley, 1999.</li>
 <li>BACCHELLI, Alberto; BIRD, Christian. <em>Expectations, Outcomes, and Challenges of Modern Code Review</em>. ICSE, 2013 — <a href="https://www.microsoft.com/en-us/research/?p=164195">microsoft.com/research</a></li>
+<li>MCCABE, Thomas J. <em>A Complexity Measure</em>. IEEE Transactions on Software Engineering, 1976 — <a href="https://doi.org/10.1109/TSE.1976.233837">doi.org</a></li>
+<li>ORLANSKI, Gabriel et al. <em>SlopCodeBench: Benchmarking How Coding Agents Degrade Over Long-Horizon Iterative Tasks</em>. 2026, não revisado por pares — <a href="https://arxiv.org/abs/2603.24755">arxiv.org/abs/2603.24755</a></li>
 </ul>
 
 
