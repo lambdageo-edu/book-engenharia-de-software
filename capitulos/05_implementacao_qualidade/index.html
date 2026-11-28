@@ -710,6 +710,34 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#xss-dado-que-vira-codigo-no-navegador" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        XSS: dado que vira código no navegador
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="XSS: dado que vira código no navegador">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#csrf-e-cookies" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        CSRF e <em>cookies</em>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#segredos-fora-do-codigo" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1356,6 +1384,34 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#xss-dado-que-vira-codigo-no-navegador" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        XSS: dado que vira código no navegador
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="XSS: dado que vira código no navegador">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#csrf-e-cookies" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        CSRF e <em>cookies</em>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#segredos-fora-do-codigo" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
@@ -1763,12 +1819,28 @@
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT * FROM tarefas WHERE titulo = ?"</span><span class="p">,</span> <span class="p">(</span><span class="n">titulo</span><span class="p">,))</span>
 </code></pre></div>
 <p>O <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a> usa parâmetros em todas as consultas que recebem dados e tem um teste que cadastra uma tarefa com o título <code>x'); DROP TABLE tarefas; --</code>: ele é guardado como texto, e nada é apagado.</p>
-<p>O marcador (<code>?</code> no <code>sqlite3</code>) varia conforme a biblioteca. A mesma ideia vale para comandos do sistema operacional e para HTML gerado a partir de dados.</p>
+<p>O marcador (<code>?</code> no <code>sqlite3</code>) varia conforme a biblioteca. A mesma ideia vale para comandos do sistema operacional e para HTML gerado a partir de dados, o próximo assunto.</p>
+<h3 id="xss-dado-que-vira-codigo-no-navegador">XSS: dado que vira código no navegador<a class="headerlink" href="#xss-dado-que-vira-codigo-no-navegador" title="Permanent link">&para;</a></h3>
+<p>No <strong>XSS</strong> (<em>cross-site scripting</em>), um texto enviado por um usuário é interpretado como código no navegador de outro. Imagine uma tela que lista as tarefas de uma API:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nx">item</span><span class="p">.</span><span class="nx">innerHTML</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tarefa</span><span class="p">.</span><span class="nx">titulo</span><span class="p">;</span><span class="w">    </span><span class="c1">// vulnerável: o título é lido como HTML</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nx">item</span><span class="p">.</span><span class="nx">textContent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tarefa</span><span class="p">.</span><span class="nx">titulo</span><span class="p">;</span><span class="w">  </span><span class="c1">// seguro: o título aparece como texto</span>
+</code></pre></div>
+<p>Com o título <code>&lt;img src=x onerror="alert('XSS')"&gt;</code>, a primeira linha executa o código do atributo <code>onerror</code> no navegador de quem abrir a lista. No lugar do <code>alert</code>, um atacante faria pedidos em nome dessa pessoa.</p>
+<p>As defesas, em ordem de importância, seguem a <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">folha da OWASP sobre XSS</a>:</p>
+<ul>
+<li><strong>tratar o dado na saída, conforme o lugar onde entra</strong> (corpo do HTML, atributo, URL, JavaScript). <em>Frameworks</em> de interface e motores de <em>templates</em> costumam fazer isso, mas oferecem saídas que desligam a proteção, como o <code>dangerouslySetInnerHTML</code> do React ou o filtro <code>safe</code> do Jinja. Cada uso delas merece revisão;</li>
+<li><strong>higienizar com uma biblioteca mantida</strong>, como o DOMPurify, quando o usuário precisa mesmo escrever HTML;</li>
+<li><strong>usar uma <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP"><em>Content Security Policy</em></a> como segunda barreira</strong>: um cabeçalho que restringe de onde o navegador aceita <em>scripts</em>. Ela reduz o dano, mas não substitui as anteriores.</li>
+</ul>
+<p>Validar a entrada ajuda, mas não resolve: um título pode legitimamente conter <code>&lt;</code> ou aspas, e o mesmo dado pode ser exibido em lugares com regras diferentes.</p>
+<p>O TaskFlow não tem interface: aceita esse título e o devolve em JSON, o que sozinho não executa nada. A responsabilidade passa para cada tela que consumir a API.</p>
+<h4 id="csrf-e-cookies">CSRF e <em>cookies</em><a class="headerlink" href="#csrf-e-cookies" title="Permanent link">&para;</a></h4>
+<p>No <strong>CSRF</strong> (<em>cross-site request forgery</em>), uma página maliciosa faz o navegador da vítima enviar um pedido a um sistema em que ela está conectada. Isso funciona quando a credencial é enviada automaticamente, como um <em>cookie</em> de sessão. A <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html">folha da OWASP sobre CSRF</a> recomenda um <em>token</em> anti-CSRF, com o atributo <code>SameSite</code> do <em>cookie</em> como camada adicional, e lembra que um XSS derruba essas defesas. No TaskFlow, o <em>token</em> vai no cabeçalho <code>Authorization</code>, que o navegador não acrescenta sozinho a um pedido vindo de outra página. Para um <em>cookie</em> de sessão, use também <code>HttpOnly</code>, que impede a leitura por JavaScript, e <code>Secure</code>, que o restringe ao HTTPS.</p>
 <h3 id="segredos-fora-do-codigo">Segredos fora do código<a class="headerlink" href="#segredos-fora-do-codigo" title="Permanent link">&para;</a></h3>
 <p>Senhas, tokens e chaves não pertencem ao repositório, nem à imagem de contêiner. A aplicação os recebe do ambiente, por exemplo por variáveis de ambiente ou por um cofre de segredos:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">chave_api</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"CHAVE_API"</span><span class="p">]</span>  <span class="c1"># falha logo se não estiver definida</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">chave_api</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"CHAVE_API"</span><span class="p">]</span>  <span class="c1"># falha logo se não estiver definida</span>
 </code></pre></div>
 <p>Para desenvolvimento, um arquivo <code>.env</code> local funciona, desde que esteja no <code>.gitignore</code> e no <code>.dockerignore</code>.</p>
 <div class="admonition warning">
@@ -1777,12 +1849,12 @@
 </div>
 <h3 id="senhas-e-sessoes">Senhas e sessões<a class="headerlink" href="#senhas-e-sessoes" title="Permanent link">&para;</a></h3>
 <p>Senha não se guarda em texto puro, nem cifrada de forma reversível: guarda-se um <em>hash</em> feito para esse fim, lento e com <em>sal</em>, como o Argon2id (<a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">OWASP</a>). No <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a>, a biblioteca <code>argon2-cffi</code> cuida disso (trecho de <code>app/auth.py</code>):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">argon2</span><span class="w"> </span><span class="kn">import</span> <span class="n">PasswordHasher</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">hasher</span> <span class="o">=</span> <span class="n">PasswordHasher</span><span class="p">()</span>  <span class="c1"># Argon2id, com sal aleatório</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">hash_guardado</span> <span class="o">=</span> <span class="n">hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">senha</span><span class="p">)</span>       <span class="c1"># no cadastro</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">hasher</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">hash_guardado</span><span class="p">,</span> <span class="n">tentativa</span><span class="p">)</span>  <span class="c1"># no login; levanta exceção se não conferir</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">argon2</span><span class="w"> </span><span class="kn">import</span> <span class="n">PasswordHasher</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">hasher</span> <span class="o">=</span> <span class="n">PasswordHasher</span><span class="p">()</span>  <span class="c1"># Argon2id, com sal aleatório</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">hash_guardado</span> <span class="o">=</span> <span class="n">hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">senha</span><span class="p">)</span>       <span class="c1"># no cadastro</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">hasher</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">hash_guardado</span><span class="p">,</span> <span class="n">tentativa</span><span class="p">)</span>  <span class="c1"># no login; levanta exceção se não conferir</span>
 </code></pre></div>
 <p>Outras decisões do mesmo arquivo merecem ser lidas:</p>
 <ul>
@@ -1830,20 +1902,20 @@
 <h2 id="tratamento-de-erros">🧯 Tratamento de erros<a class="headerlink" href="#tratamento-de-erros" title="Permanent link">&para;</a></h2>
 <p>Há erros <strong>esperados</strong>, parte do funcionamento normal, como um <em>login</em> já usado, e erros <strong>inesperados</strong>, como um defeito ou um disco cheio. Os primeiros merecem uma resposta específica; os segundos, uma resposta genérica ao cliente e um registro detalhado para quem mantém o sistema. Tratar mal as situações anormais é a categoria A10 da lista acima.</p>
 <p>O pior tratamento é o que esconde:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">salvar</span><span class="p">(</span><span class="n">banco</span><span class="p">,</span> <span class="n">titulo</span><span class="p">):</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO tarefas (titulo) VALUES (?)"</span><span class="p">,</span> <span class="p">(</span><span class="n">titulo</span><span class="p">,))</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        <span class="k">pass</span>  <span class="c1"># o erro some, e quem chamou acha que gravou</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">salvar</span><span class="p">(</span><span class="n">banco</span><span class="p">,</span> <span class="n">titulo</span><span class="p">):</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>        <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO tarefas (titulo) VALUES (?)"</span><span class="p">,</span> <span class="p">(</span><span class="n">titulo</span><span class="p">,))</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>        <span class="k">pass</span>  <span class="c1"># o erro some, e quem chamou acha que gravou</span>
 </code></pre></div>
 <p>Capture apenas o que você sabe tratar. O TaskFlow captura a violação de unicidade no cadastro e a traduz para o vocabulário da API (trecho de <code>app/auth.py</code>):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">cursor</span> <span class="o">=</span> <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>        <span class="s2">"INSERT INTO usuarios (login, nome, senha_hash) VALUES (?, ?, ?)"</span><span class="p">,</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        <span class="p">(</span><span class="n">dados</span><span class="o">.</span><span class="n">login</span><span class="p">,</span> <span class="n">dados</span><span class="o">.</span><span class="n">nome</span><span class="p">,</span> <span class="n">hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">dados</span><span class="o">.</span><span class="n">senha</span><span class="p">)),</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="p">)</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span><span class="p">:</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="mi">409</span><span class="p">,</span> <span class="s2">"Login já utilizado"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">cursor</span> <span class="o">=</span> <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>        <span class="s2">"INSERT INTO usuarios (login, nome, senha_hash) VALUES (?, ?, ?)"</span><span class="p">,</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>        <span class="p">(</span><span class="n">dados</span><span class="o">.</span><span class="n">login</span><span class="p">,</span> <span class="n">dados</span><span class="o">.</span><span class="n">nome</span><span class="p">,</span> <span class="n">hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">dados</span><span class="o">.</span><span class="n">senha</span><span class="p">)),</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="p">)</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span><span class="p">:</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="mi">409</span><span class="p">,</span> <span class="s2">"Login já utilizado"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
 </code></pre></div>
 <p>Qualquer outra exceção segue adiante e vira um 500. No FastAPI, fora do modo de depuração, o cliente recebe apenas <code>Internal Server Error</code>, e o detalhe vai para o terminal ou o <em>log</em> do servidor.</p>
 <p>Algumas regras práticas:</p>
@@ -1856,60 +1928,60 @@
 <li><strong>Teste o caminho do erro.</strong> É o que menos roda no dia a dia e o que menos se conhece.</li>
 </ul>
 <p>O primeiro item, em código (exemplo fora do TaskFlow, com um serviço de permissões externo):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">pode_concluir</span><span class="p">(</span><span class="n">servico</span><span class="p">,</span> <span class="n">usuario_id</span><span class="p">,</span> <span class="n">tarefa_id</span><span class="p">):</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>        <span class="k">return</span> <span class="n">servico</span><span class="o">.</span><span class="n">permite</span><span class="p">(</span><span class="n">usuario_id</span><span class="p">,</span> <span class="n">tarefa_id</span><span class="p">)</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="k">except</span> <span class="ne">TimeoutError</span><span class="p">:</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>        <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"serviço de permissões não respondeu"</span><span class="p">)</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>        <span class="k">return</span> <span class="kc">False</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">pode_concluir</span><span class="p">(</span><span class="n">servico</span><span class="p">,</span> <span class="n">usuario_id</span><span class="p">,</span> <span class="n">tarefa_id</span><span class="p">):</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>        <span class="k">return</span> <span class="n">servico</span><span class="o">.</span><span class="n">permite</span><span class="p">(</span><span class="n">usuario_id</span><span class="p">,</span> <span class="n">tarefa_id</span><span class="p">)</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    <span class="k">except</span> <span class="ne">TimeoutError</span><span class="p">:</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>        <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"serviço de permissões não respondeu"</span><span class="p">)</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>        <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>
 <h2 id="concorrencia">🔀 Concorrência<a class="headerlink" href="#concorrencia" title="Permanent link">&para;</a></h2>
 <p>Um servidor atende vários pedidos ao mesmo tempo. No FastAPI, por exemplo, uma rota declarada com <code>def</code> roda em um <a href="https://fastapi.tiangolo.com/async/">conjunto de <em>threads</em></a>, e dois pedidos podem executar a mesma função lado a lado. Há uma <strong>condição de corrida</strong> quando a <strong>correção</strong> do resultado depende de como se intercalam os passos de pedidos simultâneos sobre um dado compartilhado: em algumas ordens dá certo, em outras não.</p>
 <p>Suponha que um membro só possa assumir uma tarefa que ainda não tem responsável. O código óbvio consulta e depois grava. No programa abaixo, <code>corrida.py</code>, os passos de Ana e de Bruno são intercalados à mão, para o problema aparecer sempre:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">banco</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">":memory:"</span><span class="p">,</span> <span class="n">isolation_level</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE tarefas (id INTEGER PRIMARY KEY, responsavel TEXT)"</span><span class="p">)</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO tarefas VALUES (1, NULL)"</span><span class="p">)</span>
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">esta_livre</span><span class="p">():</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    <span class="n">linha</span> <span class="o">=</span> <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT responsavel FROM tarefas WHERE id = 1"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>    <span class="k">return</span> <span class="n">linha</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>
-<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
-<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="k">def</span><span class="w"> </span><span class="nf">gravar</span><span class="p">(</span><span class="n">quem</span><span class="p">):</span>
-<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>    <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"UPDATE tarefas SET responsavel = ? WHERE id = 1"</span><span class="p">,</span> <span class="p">(</span><span class="n">quem</span><span class="p">,))</span>
-<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>
-<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>
-<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="n">ana_viu_livre</span> <span class="o">=</span> <span class="n">esta_livre</span><span class="p">()</span>
-<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="n">bruno_viu_livre</span> <span class="o">=</span> <span class="n">esta_livre</span><span class="p">()</span>  <span class="c1"># Ana ainda não gravou</span>
-<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>
-<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="k">if</span> <span class="n">ana_viu_livre</span><span class="p">:</span>
-<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>    <span class="n">gravar</span><span class="p">(</span><span class="s2">"ana"</span><span class="p">)</span>
-<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="k">if</span> <span class="n">bruno_viu_livre</span><span class="p">:</span>
-<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a>    <span class="n">gravar</span><span class="p">(</span><span class="s2">"bruno"</span><span class="p">)</span>  <span class="c1"># apaga a escolha de Ana</span>
-<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>
-<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="nb">print</span><span class="p">(</span><span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT responsavel FROM tarefas"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># bruno</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">banco</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">":memory:"</span><span class="p">,</span> <span class="n">isolation_level</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE TABLE tarefas (id INTEGER PRIMARY KEY, responsavel TEXT)"</span><span class="p">)</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO tarefas VALUES (1, NULL)"</span><span class="p">)</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">esta_livre</span><span class="p">():</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>    <span class="n">linha</span> <span class="o">=</span> <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT responsavel FROM tarefas WHERE id = 1"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="k">return</span> <span class="n">linha</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="k">def</span><span class="w"> </span><span class="nf">gravar</span><span class="p">(</span><span class="n">quem</span><span class="p">):</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>    <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"UPDATE tarefas SET responsavel = ? WHERE id = 1"</span><span class="p">,</span> <span class="p">(</span><span class="n">quem</span><span class="p">,))</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="n">ana_viu_livre</span> <span class="o">=</span> <span class="n">esta_livre</span><span class="p">()</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="n">bruno_viu_livre</span> <span class="o">=</span> <span class="n">esta_livre</span><span class="p">()</span>  <span class="c1"># Ana ainda não gravou</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="k">if</span> <span class="n">ana_viu_livre</span><span class="p">:</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>    <span class="n">gravar</span><span class="p">(</span><span class="s2">"ana"</span><span class="p">)</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="k">if</span> <span class="n">bruno_viu_livre</span><span class="p">:</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>    <span class="n">gravar</span><span class="p">(</span><span class="s2">"bruno"</span><span class="p">)</span>  <span class="c1"># apaga a escolha de Ana</span>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="nb">print</span><span class="p">(</span><span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT responsavel FROM tarefas"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># bruno</span>
 </code></pre></div>
 <p>As duas consultas acharam a tarefa livre, as duas gravações deram certo e Ana acredita que a tarefa é dela. Entre <strong>verificar</strong> e <strong>usar</strong> o resultado, o dado mudou. Essa falha é conhecida como <a href="https://cwe.mitre.org/data/definitions/367.html">TOCTOU</a> (<em>time-of-check to time-of-use</em>) e, quando está numa regra de permissão, é um problema de segurança.</p>
 <p>A correção é fazer a verificação e a gravação em <strong>um só comando</strong>, que o banco executa sem intercalar outra escrita, e depois perguntar quantas linhas mudaram:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">assumir</span><span class="p">(</span><span class="n">quem</span><span class="p">):</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="n">cursor</span> <span class="o">=</span> <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>        <span class="s2">"UPDATE tarefas SET responsavel = ? WHERE id = 1 AND responsavel IS NULL"</span><span class="p">,</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>        <span class="p">(</span><span class="n">quem</span><span class="p">,),</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="p">)</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">1</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"UPDATE tarefas SET responsavel = NULL"</span><span class="p">)</span>  <span class="c1"># libera de novo</span>
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">assumir</span><span class="p">(</span><span class="s2">"ana"</span><span class="p">))</span>    <span class="c1"># True</span>
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">assumir</span><span class="p">(</span><span class="s2">"bruno"</span><span class="p">))</span>  <span class="c1"># False: já tem responsável</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">assumir</span><span class="p">(</span><span class="n">quem</span><span class="p">):</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">cursor</span> <span class="o">=</span> <span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>        <span class="s2">"UPDATE tarefas SET responsavel = ? WHERE id = 1 AND responsavel IS NULL"</span><span class="p">,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>        <span class="p">(</span><span class="n">quem</span><span class="p">,),</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="p">)</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="n">banco</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"UPDATE tarefas SET responsavel = NULL"</span><span class="p">)</span>  <span class="c1"># libera de novo</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">assumir</span><span class="p">(</span><span class="s2">"ana"</span><span class="p">))</span>    <span class="c1"># True</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">assumir</span><span class="p">(</span><span class="s2">"bruno"</span><span class="p">))</span>  <span class="c1"># False: já tem responsável</span>
 </code></pre></div>
 <p>O <a href="https://github.com/lambdageo-edu/taskflow">TaskFlow</a> faz isso em <code>app/tarefas.py</code>: quando quem pede não é o dono do projeto, a condição entra no próprio <code>UPDATE</code> e, se nenhuma linha muda, a resposta é um erro. A mudança de estado da tarefa usa a mesma técnica.</p>
 <p>Algumas regras práticas:</p>
@@ -1931,37 +2003,37 @@
 </ol>
 <h3 id="ler-o-traceback">Ler o <em>traceback</em><a class="headerlink" href="#ler-o-traceback" title="Permanent link">&para;</a></h3>
 <p>Este programa, em <code>relatorio.py</code>, tem um defeito:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">media_por_membro</span><span class="p">(</span><span class="n">tarefas</span><span class="p">,</span> <span class="n">membros</span><span class="p">):</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">tarefas</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">membros</span><span class="p">)</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">resumo</span><span class="p">(</span><span class="n">projeto</span><span class="p">):</span>
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="n">media</span> <span class="o">=</span> <span class="n">media_por_membro</span><span class="p">(</span><span class="n">projeto</span><span class="p">[</span><span class="s2">"tarefas"</span><span class="p">],</span> <span class="n">projeto</span><span class="p">[</span><span class="s2">"membros"</span><span class="p">])</span>
-<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">media</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> tarefas por membro"</span>
-<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
-<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
-<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">resumo</span><span class="p">({</span><span class="s2">"tarefas"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Publicar"</span><span class="p">],</span> <span class="s2">"membros"</span><span class="p">:</span> <span class="p">[]}))</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">media_por_membro</span><span class="p">(</span><span class="n">tarefas</span><span class="p">,</span> <span class="n">membros</span><span class="p">):</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">tarefas</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">membros</span><span class="p">)</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">resumo</span><span class="p">(</span><span class="n">projeto</span><span class="p">):</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="n">media</span> <span class="o">=</span> <span class="n">media_por_membro</span><span class="p">(</span><span class="n">projeto</span><span class="p">[</span><span class="s2">"tarefas"</span><span class="p">],</span> <span class="n">projeto</span><span class="p">[</span><span class="s2">"membros"</span><span class="p">])</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">media</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> tarefas por membro"</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">resumo</span><span class="p">({</span><span class="s2">"tarefas"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Publicar"</span><span class="p">],</span> <span class="s2">"membros"</span><span class="p">:</span> <span class="p">[]}))</span>
 </code></pre></div>
 <p>Com Python 3.14, a saída é esta (o caminho do arquivo varia):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Traceback (most recent call last):
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  File "/app/relatorio.py", line 11, in &lt;module&gt;
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    print(resumo({"tarefas": ["Publicar"], "membros": []}))
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>          ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>  File "/app/relatorio.py", line 6, in resumo
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    media = media_por_membro(projeto["tarefas"], projeto["membros"])
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>  File "/app/relatorio.py", line 2, in media_por_membro
-<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    return len(tarefas) / len(membros)
-<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>           ~~~~~~~~~~~~~^~~~~~~~~~~~~~
-<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>ZeroDivisionError: division by zero
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Traceback (most recent call last):
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>  File "/app/relatorio.py", line 11, in &lt;module&gt;
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    print(resumo({"tarefas": ["Publicar"], "membros": []}))
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>          ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>  File "/app/relatorio.py", line 6, in resumo
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    media = media_por_membro(projeto["tarefas"], projeto["membros"])
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>  File "/app/relatorio.py", line 2, in media_por_membro
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    return len(tarefas) / len(membros)
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>           ~~~~~~~~~~~~~^~~~~~~~~~~~~~
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>ZeroDivisionError: division by zero
 </code></pre></div>
 <p>Comece pela última linha, que diz <strong>o que</strong> aconteceu. Acima dela está o <strong>caminho das chamadas</strong>, com a mais recente embaixo. A linha 2 é onde o erro apareceu, mas a decisão que falta é outra: o que o relatório deve dizer de um projeto sem membros? Respondida a pergunta, escreve-se o teste, em <code>test_resumo.py</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">relatorio</span><span class="w"> </span><span class="kn">import</span> <span class="n">resumo</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_projeto_sem_membros</span><span class="p">():</span>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">projeto</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"tarefas"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Publicar"</span><span class="p">],</span> <span class="s2">"membros"</span><span class="p">:</span> <span class="p">[]}</span>
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="k">assert</span> <span class="n">resumo</span><span class="p">(</span><span class="n">projeto</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"projeto sem membros"</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">relatorio</span><span class="w"> </span><span class="kn">import</span> <span class="n">resumo</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_projeto_sem_membros</span><span class="p">():</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="n">projeto</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"tarefas"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Publicar"</span><span class="p">],</span> <span class="s2">"membros"</span><span class="p">:</span> <span class="p">[]}</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="k">assert</span> <span class="n">resumo</span><span class="p">(</span><span class="n">projeto</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"projeto sem membros"</span>
 </code></pre></div>
 <p>Ele falha com o código atual. A correção entra em <code>resumo</code>, e o teste passa a protegê-la.</p>
 <h3 id="parar-o-programa-e-olhar">Parar o programa e olhar<a class="headerlink" href="#parar-o-programa-e-olhar" title="Permanent link">&para;</a></h3>
@@ -2003,9 +2075,9 @@
 <p>Com <code>pytest --pdb</code>, o depurador abre no ponto em que um teste falha. Editores costumam oferecer os mesmos recursos com uma interface gráfica. Remova os <code>breakpoint()</code> antes do <em>commit</em>. Em produção não se depura parando o programa: usam-se os <em>logs</em> (<a href="../08_evolucao_manutencao/">Capítulo 8</a>).</p>
 <h3 id="quando-comecou">Quando começou?<a class="headerlink" href="#quando-comecou" title="Permanent link">&para;</a></h3>
 <p>Se funcionava e deixou de funcionar, o <a href="https://git-scm.com/docs/git-bisect/2.52.0"><code>git bisect</code></a> procura, por busca binária, o <em>commit</em> que introduziu o problema:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>git<span class="w"> </span>bisect<span class="w"> </span>start<span class="w"> </span>HEAD<span class="w"> </span>v1.2.0<span class="w"> </span>--<span class="w">   </span><span class="c1"># HEAD tem o defeito; v1.2.0 não tinha</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>git<span class="w"> </span>bisect<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-q<span class="w"> </span>test_resumo.py
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>git<span class="w"> </span>bisect<span class="w"> </span>reset<span class="w">                  </span><span class="c1"># volta para onde você estava</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>git<span class="w"> </span>bisect<span class="w"> </span>start<span class="w"> </span>HEAD<span class="w"> </span>v1.2.0<span class="w"> </span>--<span class="w">   </span><span class="c1"># HEAD tem o defeito; v1.2.0 não tinha</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>git<span class="w"> </span>bisect<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-q<span class="w"> </span>test_resumo.py
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>git<span class="w"> </span>bisect<span class="w"> </span>reset<span class="w">                  </span><span class="c1"># volta para onde você estava</span>
 </code></pre></div>
 <p>O teste precisa continuar disponível nos <em>commits</em> antigos. Um arquivo novo, ainda não adicionado ao Git, permanece no lugar durante a busca. <em>Commits</em> pequenos fazem o resultado apontar para poucas linhas.</p>
 <p>Um assistente de IA pode ajudar a interpretar um <em>traceback</em>. Antes de colá-lo, retire segredos e dados pessoais, e confirme a explicação reproduzindo o erro.</p>
@@ -2142,39 +2214,39 @@
 <p>Em Python, a complexidade pode ser limitada pelo próprio <code>ruff</code> (regra <a href="https://docs.astral.sh/ruff/rules/complex-structure/"><code>C901</code></a>) e listada pelo <a href="https://radon.readthedocs.io/"><code>radon</code></a>.</p>
 <h3 id="cobertura-total-e-testes-fracos">Cobertura total e testes fracos<a class="headerlink" href="#cobertura-total-e-testes-fracos" title="Permanent link">&para;</a></h3>
 <p>Em <code>prazo.py</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">situacao</span><span class="p">(</span><span class="n">dias_restantes</span><span class="p">):</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="k">if</span> <span class="n">dias_restantes</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>        <span class="k">return</span> <span class="s2">"atrasada"</span>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="k">if</span> <span class="n">dias_restantes</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        <span class="k">return</span> <span class="s2">"urgente"</span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    <span class="k">return</span> <span class="s2">"normal"</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">situacao</span><span class="p">(</span><span class="n">dias_restantes</span><span class="p">):</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="k">if</span> <span class="n">dias_restantes</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>        <span class="k">return</span> <span class="s2">"atrasada"</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="k">if</span> <span class="n">dias_restantes</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>        <span class="k">return</span> <span class="s2">"urgente"</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="k">return</span> <span class="s2">"normal"</span>
 </code></pre></div>
 <p>E em <code>tests/test_prazo.py</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">prazo</span><span class="w"> </span><span class="kn">import</span> <span class="n">situacao</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_situacoes</span><span class="p">():</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"atrasada"</span>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"urgente"</span>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"normal"</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">prazo</span><span class="w"> </span><span class="kn">import</span> <span class="n">situacao</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_situacoes</span><span class="p">():</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"atrasada"</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"urgente"</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"normal"</span>
 </code></pre></div>
 <p>O teste passa e cobre 100% das linhas e dos desvios. O teste de mutação faz pequenas alterações no código, os <strong>mutantes</strong>, e roda os testes contra cada uma. Se os testes falham, o mutante foi morto; se passam, sobreviveu. Com o <a href="https://github.com/boxed/mutmut"><code>mutmut</code></a> 3.8.1, quatro dos dez mutantes deste exemplo sobrevivem, entre eles:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="gd">-    if dias_restantes &lt;= 2:</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="gi">+    if dias_restantes &lt; 2:</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="gd">-    if dias_restantes &lt;= 2:</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="gi">+    if dias_restantes &lt; 2:</span>
 </code></pre></div>
 <p>Os quatro mexem nos limites das faixas, que o teste não visita. Acrescentando os casos de fronteira (<a href="../06_testes_validacao/">Capítulo 6</a>), os dez são mortos:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_limites</span><span class="p">():</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"atrasada"</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"urgente"</span>
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"urgente"</span>
-<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"normal"</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_limites</span><span class="p">():</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"atrasada"</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"urgente"</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"urgente"</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="k">assert</span> <span class="n">situacao</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"normal"</span>
 </code></pre></div>
 <p>Para repetir o experimento, indique o arquivo no <code>pyproject.toml</code> e rode <code>mutmut run</code> e <code>mutmut results</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">[tool.pytest.ini_options]</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">pythonpath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"."</span><span class="p">]</span>
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="k">[tool.mutmut]</span>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="n">source_paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"prazo.py"</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">[tool.pytest.ini_options]</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="n">pythonpath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"."</span><span class="p">]</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="k">[tool.mutmut]</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="n">source_paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"prazo.py"</span><span class="p">]</span>
 </code></pre></div>
 <p>O <code>mutmut</code> depende de um recurso do Unix (<code>fork</code>): no Windows, é preciso usar o <a href="https://learn.microsoft.com/windows/wsl/">WSL</a>.</p>
 <h3 id="metricas-e-codigo-gerado-por-ia">Métricas e código gerado por IA<a class="headerlink" href="#metricas-e-codigo-gerado-por-ia" title="Permanent link">&para;</a></h3>
@@ -2214,9 +2286,13 @@
 <li>Em <code>corrida.py</code>, troque o trecho intercalado por chamadas a <code>assumir</code> e confira que só a primeira devolve <code>True</code>. Depois procure, em um projeto seu, um "consulta, decide, grava" e diga o que acontece se dois pedidos chegarem juntos.</li>
 <li>Rode o exemplo de <code>prazo.py</code> com cobertura e com teste de mutação. Depois peça a um assistente de IA testes para uma função sua e veja quantos mutantes eles matam.</li>
 <li>Em um sistema seu, desative um usuário que está com a sessão aberta. Quanto tempo ele ainda consegue usar o sistema? Escreva o teste que expressa o prazo que você considera aceitável.</li>
+<li>Em um projeto seu com interface, procure <code>innerHTML</code>, <code>dangerouslySetInnerHTML</code> ou o filtro <code>safe</code>. Para cada uso, de onde vem o dado? Em um ambiente local, teste com o título do exemplo de XSS.</li>
 </ol>
 <h2 id="para-saber-mais">📚 Para saber mais<a class="headerlink" href="#para-saber-mais" title="Permanent link">&para;</a></h2>
 <ul>
+<li>OWASP <em>Cross Site Scripting Prevention Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
+<li>OWASP <em>Cross-Site Request Forgery Prevention Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
+<li>MDN, <em>Content Security Policy (CSP)</em> — <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP">developer.mozilla.org</a></li>
 <li>NIST SP 800-63B-4, <em>Authentication and Authenticator Management</em> — <a href="https://pages.nist.gov/800-63-4/sp800-63b.html">pages.nist.gov</a></li>
 <li>RFC 7519, <em>JSON Web Token (JWT)</em> — <a href="https://www.rfc-editor.org/rfc/rfc7519">rfc-editor.org</a></li>
 <li>OWASP <em>Authentication Cheat Sheet</em> — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html">cheatsheetseries.owasp.org</a></li>
