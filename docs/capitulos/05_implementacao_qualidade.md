@@ -534,12 +534,33 @@ A posição de Martin pressupõe testes e limites que alguém soube definir e qu
 
 ## 🌳 Controle de versão colaborativo
 
-Git se tornou, de longe, o sistema de controle de versão dominante na indústria. Além de rastrear o histórico de mudanças, ele viabiliza os fluxos de trabalho colaborativos que sustentam revisão de código e integração contínua:
+**Gerência de versões** é o controle do que mudou, quando, por quem e por quê, de modo que se possa voltar a um estado anterior e combinar o trabalho de várias pessoas (CHACON; STRAUB, 2014). Há três organizações:
 
-* **Branches de curta duração**: criar uma branch a partir da branch principal para cada mudança, integrá-la via *pull request* após revisão e testes, e apagá-la em seguida. Branches de longa duração tendem a acumular divergência e a tornar a integração (*merge*) mais dolorosa quanto mais tempo demoram.
-* **Trunk-based development**: uma prática, adotada por times de alta performance segundo pesquisas como o *Accelerate* (Forsgren, Humble, Kim), de integrar mudanças pequenas e frequentes diretamente (ou quase diretamente) na branch principal, evitando branches de longa duração e grandes *merges* conflituosos.
-* **Mensagens de commit significativas**: descrever o "porquê" de uma mudança, não apenas o "o quê" — o diff já mostra o que mudou; a mensagem de commit é o lugar certo para registrar contexto que o diff sozinho não conta.
-* **Convenção de commits semânticos** (ex: `feat:`, `fix:`, `docs:`, `refactor:`), útil para gerar changelogs automaticamente e para comunicar rapidamente a natureza de uma mudança.
+* **local**: o histórico fica só na máquina de quem trabalha;
+* **centralizada**, como no Subversion: um servidor guarda o histórico, e cada pessoa tem uma cópia dos arquivos;
+* **distribuída**, como no Git: cada clone tem o histórico inteiro. Dá para fazer *commits* e consultar o passado sem rede, e a equipe combina qual repositório serve de referência.
+
+No Git, um *commit* registra um estado do projeto; uma *branch* é um ponteiro que avança a cada *commit*; e uma **etiqueta** (*tag*) marca um *commit* que não deve mudar de lugar, como o de uma versão publicada ([Capítulo 7](07_integracao_entrega_continua.md)). Os comandos estão no [apêndice](../apendices/git_conteineres.md).
+
+### Fluxos de trabalho
+
+Um **fluxo de trabalho** é o combinado da equipe sobre quais *branches* existem, quanto duram e como o trabalho chega à principal. Três são muito citados:
+
+| Fluxo | Como funciona | Quando faz sentido |
+|---|---|---|
+| [**GitHub Flow**](https://docs.github.com/en/get-started/using-github/github-flow) | Uma *branch* por mudança, *pull request*, revisão, *merge* na `main` e exclusão da *branch* | Equipes pequenas, com uma versão em uso e entrega frequente |
+| [***Trunk-based development***](https://dora.dev/capabilities/trunk-based-development/) | Integração na principal pelo menos uma vez por dia, com no máximo três *branches* ativas | Testes confiáveis, muita automação e revisão rápida |
+| [**Git Flow**](https://nvie.com/posts/a-successful-git-branching-model) (Driessen, 2010) | Duas *branches* permanentes, `master` (o que está publicado) e `develop`, e outras temporárias para funcionalidades, preparação de versão e correções urgentes | Versões planejadas ou várias versões mantidas ao mesmo tempo |
+
+Os três não são opostos perfeitos: um GitHub Flow com *branches* que duram poucas horas pode ser uma forma de *trunk-based*. No *trunk-based*, o que ainda está incompleto entra na principal desligado, por exemplo com [*feature flags*](07_integracao_entrega_continua.md). O próprio autor do Git Flow acrescentou ao texto, em 2020, que para entrega contínua sugere um fluxo bem mais simples, e que o modelo dele ainda pode servir a quem mantém várias versões.
+
+Para escolher, pergunte: quantas versões precisam de correção ao mesmo tempo? Com que frequência se entrega? Quanto se confia nos testes? Quanto tempo uma revisão espera? O [TaskFlow](https://github.com/lambdageo-edu/taskflow), com uma só versão e um pipeline que roda a cada *pull request*, é bem atendido pelo GitHub Flow.
+
+### Hábitos que valem em qualquer fluxo
+
+* **Branches de curta duração**: quanto mais uma *branch* vive, mais diverge, e mais difícil fica o *merge*.
+* **Mensagens de commit significativas**: descrever o "porquê" de uma mudança, não apenas o "o quê". O *diff* já mostra o que mudou.
+* **Convenção de commits semânticos** (ex: `feat:`, `fix:`, `docs:`, `refactor:`), útil para gerar *changelogs* e comunicar a natureza de uma mudança.
 
 !!! tip "Qualidade de código é um investimento, não um luxo"
     Times sob pressão de prazo frequentemente cortam revisão de código, testes ou análise estática como forma de "ir mais rápido". Na prática, as pesquisas da DORA (relatórios *State of DevOps*, até 2024) indicam o oposto: times de alto desempenho entregam **mais rápido e com mais qualidade simultaneamente** — a disciplina de qualidade reduz o retrabalho que, no médio prazo, é o que realmente desacelera um time.
@@ -560,6 +581,7 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 10. Rode o exemplo de `prazo.py` com cobertura e com teste de mutação. Depois peça a um assistente de IA testes para uma função sua e veja quantos mutantes eles matam.
 11. Em um sistema seu, desative um usuário que está com a sessão aberta. Quanto tempo ele ainda consegue usar o sistema? Escreva o teste que expressa o prazo que você considera aceitável.
 12. Em um projeto seu com interface, procure `innerHTML`, `dangerouslySetInnerHTML` ou o filtro `safe`. Para cada uso, de onde vem o dado? Em um ambiente local, teste com o título do exemplo de XSS.
+13. Descubra o fluxo usado em um projeto que você conhece (ou em um repositório público): que *branches* existem e há quanto tempo? Ele combina com a forma como o projeto é entregue?
 
 ## 📚 Para saber mais
 
@@ -570,6 +592,10 @@ Git se tornou, de longe, o sistema de controle de versão dominante na indústri
 * RFC 7519, *JSON Web Token (JWT)* — [rfc-editor.org](https://www.rfc-editor.org/rfc/rfc7519)
 * OWASP *Authentication Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
 * OWASP *JSON Web Token Cheat Sheet* — [cheatsheetseries.owasp.org](https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_Cheat_Sheet.html)
+* CHACON, Scott; STRAUB, Ben. *Pro Git*. 2. ed. Apress, 2014 — [git-scm.com/book/pt-br/v2](https://git-scm.com/book/pt-br/v2)
+* GitHub, *GitHub flow* — [docs.github.com](https://docs.github.com/en/get-started/using-github/github-flow)
+* DORA, *Trunk-based development* — [dora.dev](https://dora.dev/capabilities/trunk-based-development/)
+* DRIESSEN, Vincent. *A successful Git branching model*, 2010, com nota de 2020 — [nvie.com](https://nvie.com/posts/a-successful-git-branching-model)
 * MARTIN, Robert C. *Clean Code: A Handbook of Agile Software Craftsmanship*. Prentice Hall, 2008.
 * MEYER, Bertrand. *Object-Oriented Software Construction*. 2. ed. Prentice Hall, 1997.
 * FORSGREN, Nicole; HUMBLE, Jez; KIM, Gene. *Accelerate: The Science of Lean Software and DevOps*. IT Revolution, 2018.
